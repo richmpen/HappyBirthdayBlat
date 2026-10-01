@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#5c0a1e">
+<meta name="description" content="Вишнёвое приключение ко дню рождения 🍒">
+<title>С Днём Рождения! 🍒</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600;700&family=Nunito:ital,wght@0,400;0,700;0,800;1,700&family=Tiny5&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/game.css">
+<link rel="stylesheet" href="css/dressup.css">
+<link rel="stylesheet" href="css/editor.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍒</text></svg>">
+</head>
+<body>
+
+<!-- ══════════ ИГРОВОЙ ЭКРАН 960×540 (масштабируется под окно) ══════════ -->
+<div id="shell">
+  <div id="view">
+    <section class="scene" id="sc-title" hidden></section>
+    <section class="scene" id="sc-room" hidden></section>
+    <section class="scene" id="sc-kitchen" hidden></section>
+    <section class="scene" id="sc-rhythm" hidden></section>
+    <section class="scene" id="sc-cutscene" hidden></section>
+    <section class="scene" id="sc-finale" hidden></section>
+
+    <div id="dialog" hidden>
+      <div class="dlg__name" id="dlgName"></div>
+      <div class="dlg__text" id="dlgText"></div>
+      <div class="dlg__choices" id="dlgChoices"></div>
+      <div class="dlg__next" id="dlgNext">▼</div>
+    </div>
+    <div id="popup"></div>
+  </div>
+  <div id="shellHint">F10 — редактор</div>
+</div>
+
+<!-- ══════════ ОДЕВАШКА (на всё окно) ══════════ -->
+<section class="du" id="sc-dressup" hidden>
+  <div class="decor" aria-hidden="true">
+    <div class="decor__grid"></div>
+    <svg class="berry berry--a" viewBox="0 0 100 120"><use href="#cherry-outline"/></svg>
+    <svg class="berry berry--b" viewBox="0 0 100 120"><use href="#cherry-outline"/></svg>
+    <svg class="berry berry--c" viewBox="0 0 100 120"><use href="#cherry-outline"/></svg>
+    <span class="spark spark--1">✦</span>
+    <span class="spark spark--2">✧</span>
+    <span class="spark spark--3">✦</span>
+    <span class="spark spark--4">✧</span>
+    <span class="spark spark--5">✦</span>
+    <span class="spark spark--6">✧</span>
+    <div class="floaties">
+      <span style="--l:6%;  --dur:19s; --dl:-2s;  --sz:22px">🍒</span>
+      <span style="--l:17%; --dur:24s; --dl:-9s;  --sz:14px">✦</span>
+      <span style="--l:29%; --dur:21s; --dl:-14s; --sz:18px">🎀</span>
+      <span style="--l:41%; --dur:26s; --dl:-5s;  --sz:13px">♥</span>
+      <span style="--l:55%; --dur:18s; --dl:-11s; --sz:20px">🍒</span>
+      <span style="--l:68%; --dur:23s; --dl:-3s;  --sz:15px">🌹</span>
+      <span style="--l:79%; --dur:27s; --dl:-16s; --sz:24px">🍒</span>
+      <span style="--l:91%; --dur:20s; --dl:-7s;  --sz:16px">✧</span>
+    </div>
+  </div>
+
+  <svg width="0" height="0" aria-hidden="true" style="position:absolute">
+    <symbol id="cherry-outline" viewBox="0 0 100 120">
+      <g fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="30" cy="88" r="22"/>
+        <circle cx="72" cy="94" r="20"/>
+        <path d="M30 66C34 40 46 22 62 10"/>
+        <path d="M72 74C72 48 68 28 62 10"/>
+        <path d="M62 10c10-8 24-8 32 0-8 10-22 12-32 0z"/>
+        <path d="M20 82c2-6 6-9 11-10"/>
+        <path d="M63 88c2-5 5-8 9-9"/>
+      </g>
+    </symbol>
+  </svg>
+
+  <div class="app" id="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand__logo">
+          <span class="brand__word"><span id="duTitle">CHERRY</span><span class="brand__heart">🍒</span></span>
+          <span class="brand__tag" id="duTag"></span>
+        </div>
+      </div>
+      <nav class="tools" aria-label="Инструменты">
+        <button class="tool" id="btnExit" title="Вернуться в комнату"><span>🚪</span><b data-t="exit">Выйти</b></button>
+        <button class="tool" id="btnRandom" title="Случайный образ (R)"><span>🎲</span><b data-t="random">Рандом</b></button>
+        <button class="tool" id="btnClear" title="Снять всё (C)"><span>🧺</span><b data-t="clear">Снять всё</b></button>
+        <button class="tool" id="btnShot" title="Скачать картинку"><span>📸</span><b data-t="shot">Фото</b></button>
+        <button class="tool tool--icon" id="btnSound" title="Звук" aria-pressed="true"><span id="soundIcon">🔔</span></button>
+        <button class="tool tool--done" id="btnDone" title="Наряд готов!"><span>✓</span><b data-t="done">Готово</b></button>
+      </nav>
+    </header>
+
+    <main class="layout">
+      <section class="doll" aria-label="Персонаж">
+        <div class="doll__card">
+          <span class="doll__corner doll__corner--tl">✦</span>
+          <span class="doll__corner doll__corner--tr">✦</span>
+          <span class="doll__corner doll__corner--bl">✦</span>
+          <span class="doll__corner doll__corner--br">✦</span>
+          <span class="doll__mascot" aria-hidden="true">🍒</span>
+          <div class="stage" id="stage">
+            <div class="stage__inner" id="stageInner">
+              <img class="layer layer--base" id="baseImg" alt="Персонаж" draggable="false">
+            </div>
+            <div class="guides" id="guides" aria-hidden="true"></div>
+          </div>
+          <div class="doll__loader" id="loader"><i></i><i></i><i></i></div>
+        </div>
+        <div class="worn" id="worn" aria-label="Надето"></div>
+      </section>
+
+      <aside class="wardrobe" id="wardrobe" aria-label="Гардероб">
+        <button class="wardrobe__grip" id="grip" aria-label="Свернуть/развернуть гардероб"><i></i></button>
+        <div class="wardrobe__head">
+          <h2 class="wardrobe__title"><span data-t="wardrobe">Гардероб</span> <em id="wardrobeCount"></em></h2>
+        </div>
+        <div class="tabs" id="tabs" role="tablist"></div>
+        <div class="shelf" id="shelf" role="tabpanel"></div>
+      </aside>
+    </main>
+
+    <button class="fab" id="fab" aria-label="Открыть гардероб"><span>👗</span><b data-t="wardrobe">Гардероб</b></button>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <canvas id="shotCanvas" hidden></canvas>
+</section>
+
+<!-- ══════════ РЕДАКТОР (F10) ══════════ -->
+<aside id="editor" hidden></aside>
+<div id="edsel" hidden><i id="edselH"></i><b id="edselL"></b></div>
+
+<div id="fade"></div>
+<div id="boot">🍒</div>
+
+<script src="js/core.js"></script>
+<script src="js/rooms.js"></script>
+<script src="js/kitchen.js"></script>
+<script src="js/dressup.js"></script>
+<script src="js/rhythm.js"></script>
+<script src="js/finale.js"></script>
+<script src="js/github.js"></script>
+<script src="js/editor.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

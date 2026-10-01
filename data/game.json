@@ -1,0 +1,1509 @@
+{
+  "meta": {
+    "title": "С Днём Рождения!",
+    "subtitle": "маленькое вишнёвое приключение",
+    "startButton": "Начать",
+    "continueButton": "Продолжить",
+    "newGameButton": "Начать заново",
+    "finaleButton": "К празднику!",
+    "controls": "WASD или стрелки — ходить · E — действие",
+    "music": ""
+  },
+  "github": {
+    "owner": "",
+    "repo": "",
+    "branch": "main"
+  },
+  "texts": {
+    "doorLocked": "Персонаж не дома",
+    "hintDoor": "войти",
+    "hintTalk": "поговорить",
+    "cutsceneContinue": "Нажми E, чтобы продолжить",
+    "replayQuestion": "Хочешь сыграть ещё раз?",
+    "playAgain": "Сыграть ещё раз",
+    "notNow": "Не сейчас",
+    "heroName": "Я"
+  },
+  "player": {
+    "img": "assets/sprites/hero.png",
+    "cols": 3,
+    "rows": 4,
+    "w": 72,
+    "speed": 220,
+    "fps": 8,
+    "rowDown": 0,
+    "rowLeft": 1,
+    "rowRight": 2,
+    "rowUp": 3,
+    "idleFrame": 1
+  },
+  "order": [
+    "kitchen",
+    "dressup",
+    "rhythm"
+  ],
+  "rooms": {
+    "hub": {
+      "name": "Главная комната",
+      "bg": "assets/rooms/hub.png",
+      "music": "",
+      "walk": {
+        "x": 40,
+        "y": 310,
+        "w": 880,
+        "h": 210
+      },
+      "spawn": {
+        "x": 480,
+        "y": 440
+      },
+      "doors": [
+        {
+          "to": "kitchen",
+          "img": "assets/sprites/door.png",
+          "x": 220,
+          "y": 300,
+          "w": 96,
+          "label": "Кухня",
+          "lockedText": "Ани нет дома"
+        },
+        {
+          "to": "dressup",
+          "img": "assets/sprites/door.png",
+          "x": 480,
+          "y": 300,
+          "w": 96,
+          "label": "Гардеробная",
+          "lockedText": "Лизы пока нет дома"
+        },
+        {
+          "to": "rhythm",
+          "img": "assets/sprites/door.png",
+          "x": 740,
+          "y": 300,
+          "w": 96,
+          "label": "Музыкальная",
+          "lockedText": "Сони пока нет дома"
+        }
+      ],
+      "props": []
+    },
+    "kitchen": {
+      "name": "Кухня",
+      "bg": "assets/rooms/kitchen.png",
+      "music": "",
+      "walk": {
+        "x": 40,
+        "y": 310,
+        "w": 880,
+        "h": 210
+      },
+      "spawn": {
+        "x": 150,
+        "y": 360
+      },
+      "doors": [
+        {
+          "to": "hub",
+          "img": "assets/sprites/door.png",
+          "x": 150,
+          "y": 300,
+          "w": 96,
+          "label": "Выход",
+          "lockedText": ""
+        }
+      ],
+      "props": [],
+      "npc": {
+        "name": "Аня",
+        "img": "assets/sprites/anya.png",
+        "x": 620,
+        "y": 390,
+        "w": 72,
+        "dialog": [
+          "Привет! Как хорошо, что ты зашла!",
+          "У кое-кого сегодня день рождения… а праздничного торта ещё нет!",
+          "> Давай испечём вместе!",
+          "Ура! Тогда надевай фартук — начинаем!"
+        ],
+        "dialogAfter": [
+          "Торт получился просто чудесный!",
+          "Загляни теперь к Лизе — она поможет с нарядом."
+        ]
+      },
+      "cutscene": {
+        "img": "assets/cutscenes/kitchen.png",
+        "text": "Торт готов! Осталось дождаться праздника…"
+      }
+    },
+    "dressup": {
+      "name": "Гардеробная",
+      "bg": "assets/rooms/wardrobe.png",
+      "music": "",
+      "walk": {
+        "x": 40,
+        "y": 310,
+        "w": 880,
+        "h": 210
+      },
+      "spawn": {
+        "x": 150,
+        "y": 360
+      },
+      "doors": [
+        {
+          "to": "hub",
+          "img": "assets/sprites/door.png",
+          "x": 150,
+          "y": 300,
+          "w": 96,
+          "label": "Выход",
+          "lockedText": ""
+        }
+      ],
+      "props": [],
+      "npc": {
+        "name": "Лиза",
+        "img": "assets/sprites/liza.png",
+        "x": 520,
+        "y": 400,
+        "w": 72,
+        "dialog": [
+          "О, это ты! Проходи скорее.",
+          "На праздник нельзя идти в чём попало — нужен самый красивый наряд!",
+          "Мой шкаф в твоём распоряжении. Выбирай всё, что нравится!"
+        ],
+        "dialogAfter": [
+          "Выглядишь потрясающе!",
+          "Соня уже ждёт тебя с музыкой."
+        ]
+      },
+      "cutscene": {
+        "img": "assets/cutscenes/dressup.png",
+        "text": "Наряд выбран. Зеркало в восторге!"
+      }
+    },
+    "rhythm": {
+      "name": "Музыкальная",
+      "bg": "assets/rooms/music.png",
+      "music": "",
+      "walk": {
+        "x": 40,
+        "y": 310,
+        "w": 880,
+        "h": 210
+      },
+      "spawn": {
+        "x": 150,
+        "y": 360
+      },
+      "doors": [
+        {
+          "to": "hub",
+          "img": "assets/sprites/door.png",
+          "x": 150,
+          "y": 300,
+          "w": 96,
+          "label": "Выход",
+          "lockedText": ""
+        }
+      ],
+      "props": [],
+      "npc": {
+        "name": "Соня",
+        "img": "assets/sprites/sonya.png",
+        "x": 620,
+        "y": 400,
+        "w": 72,
+        "dialog": [
+          "Привет-привет! Слышишь? Это музыка для нашего праздника!",
+          "Только танцевать одной скучно. Помоги мне попасть в ритм!",
+          "Жми S, D, K и L, когда вишенки долетают до линии."
+        ],
+        "dialogAfter": [
+          "Вот это был танец!",
+          "Теперь всё готово к празднику…"
+        ]
+      },
+      "cutscene": {
+        "img": "assets/cutscenes/rhythm.png",
+        "text": "Танцпол покорён!"
+      }
+    }
+  },
+  "kitchen": {
+    "bg": "assets/kitchen/bg.png",
+    "music": "",
+    "texts": {
+      "wrong": "Сейчас нужно другое!",
+      "miss": "Мимо! Попробуй ещё",
+      "hit": "Отлично!",
+      "exit": "← Выйти",
+      "finish": "Торт готов!"
+    },
+    "add": {
+      "title": "Шаг 1 · Ингредиенты",
+      "hint": "Перетащи в миску: {name}",
+      "bowl": {
+        "img": "assets/kitchen/bowl.png",
+        "imgFull": "assets/kitchen/bowl_full.png",
+        "x": 480,
+        "y": 500,
+        "w": 300
+      },
+      "ingredients": [
+        {
+          "name": "Мука",
+          "img": "assets/kitchen/flour.png",
+          "x": 130,
+          "y": 168,
+          "w": 96
+        },
+        {
+          "name": "Сахар",
+          "img": "assets/kitchen/sugar.png",
+          "x": 300,
+          "y": 168,
+          "w": 84
+        },
+        {
+          "name": "Яйцо",
+          "img": "assets/kitchen/egg.png",
+          "x": 470,
+          "y": 168,
+          "w": 66
+        },
+        {
+          "name": "Масло",
+          "img": "assets/kitchen/butter.png",
+          "x": 640,
+          "y": 168,
+          "w": 102
+        },
+        {
+          "name": "Молоко",
+          "img": "assets/kitchen/milk.png",
+          "x": 820,
+          "y": 168,
+          "w": 72
+        }
+      ]
+    },
+    "mix": {
+      "title": "Шаг 2 · Замешиваем",
+      "hint": "Зажми мышку и води венчиком по кругу в миске",
+      "bowl": {
+        "img": "assets/kitchen/bowl_full.png",
+        "imgDone": "assets/kitchen/bowl_batter.png",
+        "x": 480,
+        "y": 500,
+        "w": 340
+      },
+      "whisk": {
+        "img": "assets/kitchen/whisk.png",
+        "w": 70
+      },
+      "turns": 6
+    },
+    "bake": {
+      "title": "Шаг 3 · Выпекаем",
+      "hint": "Жми пробел или кликай, когда стрелка в зелёной зоне",
+      "oven": {
+        "img": "assets/kitchen/oven.png",
+        "x": 480,
+        "y": 410,
+        "w": 330
+      },
+      "bar": {
+        "x": 230,
+        "y": 440,
+        "w": 500,
+        "h": 36
+      },
+      "hits": 3,
+      "speed": 1.1,
+      "zone": 0.24
+    },
+    "decor": {
+      "title": "Шаг 4 · Украшаем",
+      "hint": "Перетаскивай украшения на торт. Минимум: {min}",
+      "cake": {
+        "img": "assets/kitchen/cake_frosted.png",
+        "x": 380,
+        "y": 510,
+        "w": 400
+      },
+      "min": 5,
+      "items": [
+        {
+          "name": "Крем",
+          "img": "assets/kitchen/cream.png",
+          "x": 750,
+          "y": 170,
+          "w": 72
+        },
+        {
+          "name": "Вишенка",
+          "img": "assets/ui/cherry.png",
+          "x": 870,
+          "y": 170,
+          "w": 64
+        },
+        {
+          "name": "Клубника",
+          "img": "assets/kitchen/strawberry.png",
+          "x": 750,
+          "y": 270,
+          "w": 60
+        },
+        {
+          "name": "Свечка",
+          "img": "assets/kitchen/candle.png",
+          "x": 870,
+          "y": 280,
+          "w": 36
+        },
+        {
+          "name": "Шоколад",
+          "img": "assets/kitchen/chocolate.png",
+          "x": 750,
+          "y": 360,
+          "w": 68
+        },
+        {
+          "name": "Сердечко",
+          "img": "assets/kitchen/heart.png",
+          "x": 870,
+          "y": 370,
+          "w": 60
+        },
+        {
+          "name": "Звёздочка",
+          "img": "assets/kitchen/star.png",
+          "x": 810,
+          "y": 460,
+          "w": 56
+        }
+      ]
+    }
+  },
+  "dressup": {
+    "title": "CHERRY",
+    "tag": "примерочная Лизы",
+    "texts": {
+      "wardrobe": "Гардероб",
+      "random": "Рандом",
+      "clear": "Снять всё",
+      "shot": "Фото",
+      "done": "Готово",
+      "exit": "Выйти",
+      "hello": "Одевай девочку — кликай по вещам 🍒",
+      "needMore": "Надень хотя бы {min} вещи, прежде чем идти на праздник",
+      "watermark": "🍒 с днём рождения!"
+    },
+    "minItems": 3,
+    "base": {
+      "w": 1033,
+      "h": 1909,
+      "src": "assets/dressup/base.webp",
+      "thumb": "assets/dressup/base.webp",
+      "name": "Тело"
+    },
+    "categories": [
+      {
+        "id": "hair",
+        "name": "Причёски",
+        "emoji": "🎀",
+        "z": -10,
+        "limit": 1
+      },
+      {
+        "id": "bangs",
+        "name": "Чёлки",
+        "emoji": "💫",
+        "z": 60,
+        "limit": 1
+      },
+      {
+        "id": "top",
+        "name": "Верх",
+        "emoji": "👚",
+        "z": 40,
+        "limit": 2
+      },
+      {
+        "id": "bottom",
+        "name": "Низ",
+        "emoji": "🩳",
+        "z": 30,
+        "limit": 1
+      },
+      {
+        "id": "dress",
+        "name": "Платья",
+        "emoji": "👗",
+        "z": 50,
+        "limit": 1
+      },
+      {
+        "id": "socks",
+        "name": "Носочки",
+        "emoji": "🧦",
+        "z": 10,
+        "limit": 1
+      },
+      {
+        "id": "shoes",
+        "name": "Обувь",
+        "emoji": "👠",
+        "z": 20,
+        "limit": 1
+      },
+      {
+        "id": "accessories",
+        "name": "Аксессуары",
+        "emoji": "🍒",
+        "z": 70,
+        "limit": 99
+      }
+    ],
+    "settings": {
+      "cardSize": 92
+    },
+    "defaultOutfit": {
+      "hair": [
+        9
+      ],
+      "bangs": [
+        1
+      ]
+    },
+    "items": {
+      "hair": [
+        {
+          "n": 1,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/hair/1.webp",
+          "thumb": "assets/dressup/thumbs/hair/1.webp"
+        },
+        {
+          "n": 2,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/hair/2.webp",
+          "thumb": "assets/dressup/thumbs/hair/2.webp"
+        },
+        {
+          "n": 3,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/hair/3.webp",
+          "thumb": "assets/dressup/thumbs/hair/3.webp"
+        },
+        {
+          "n": 4,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/hair/4.webp",
+          "thumb": "assets/dressup/thumbs/hair/4.webp"
+        },
+        {
+          "n": 5,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/hair/5.webp",
+          "thumb": "assets/dressup/thumbs/hair/5.webp"
+        },
+        {
+          "n": 6,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/hair/6.webp",
+          "thumb": "assets/dressup/thumbs/hair/6.webp"
+        },
+        {
+          "n": 7,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/hair/7.webp",
+          "thumb": "assets/dressup/thumbs/hair/7.webp"
+        },
+        {
+          "n": 8,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/hair/8.webp",
+          "thumb": "assets/dressup/thumbs/hair/8.webp"
+        },
+        {
+          "n": 9,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/hair/9.webp",
+          "thumb": "assets/dressup/thumbs/hair/9.webp"
+        },
+        {
+          "n": 10,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/hair/10.webp",
+          "thumb": "assets/dressup/thumbs/hair/10.webp"
+        }
+      ],
+      "bangs": [
+        {
+          "n": 1,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/bangs/1.webp",
+          "thumb": "assets/dressup/thumbs/bangs/1.webp"
+        },
+        {
+          "n": 2,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/bangs/2.webp",
+          "thumb": "assets/dressup/thumbs/bangs/2.webp"
+        },
+        {
+          "n": 3,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/bangs/3.webp",
+          "thumb": "assets/dressup/thumbs/bangs/3.webp"
+        },
+        {
+          "n": 4,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/bangs/4.webp",
+          "thumb": "assets/dressup/thumbs/bangs/4.webp"
+        },
+        {
+          "n": 5,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/bangs/5.webp",
+          "thumb": "assets/dressup/thumbs/bangs/5.webp"
+        },
+        {
+          "n": 6,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/bangs/6.webp",
+          "thumb": "assets/dressup/thumbs/bangs/6.webp"
+        },
+        {
+          "n": 7,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/bangs/7.webp",
+          "thumb": "assets/dressup/thumbs/bangs/7.webp"
+        },
+        {
+          "n": 8,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/bangs/8.webp",
+          "thumb": "assets/dressup/thumbs/bangs/8.webp"
+        },
+        {
+          "n": 9,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/bangs/9.webp",
+          "thumb": "assets/dressup/thumbs/bangs/9.webp"
+        },
+        {
+          "n": 10,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/bangs/10.webp",
+          "thumb": "assets/dressup/thumbs/bangs/10.webp"
+        }
+      ],
+      "top": [
+        {
+          "n": 1,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/top/1.webp",
+          "thumb": "assets/dressup/thumbs/top/1.webp"
+        },
+        {
+          "n": 2,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/top/2.webp",
+          "thumb": "assets/dressup/thumbs/top/2.webp",
+          "z": 46
+        },
+        {
+          "n": 3,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/top/3.webp",
+          "thumb": "assets/dressup/thumbs/top/3.webp",
+          "z": 46
+        },
+        {
+          "n": 4,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/top/4.webp",
+          "thumb": "assets/dressup/thumbs/top/4.webp",
+          "z": 46
+        },
+        {
+          "n": 5,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/top/5.webp",
+          "thumb": "assets/dressup/thumbs/top/5.webp"
+        },
+        {
+          "n": 6,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/top/6.webp",
+          "thumb": "assets/dressup/thumbs/top/6.webp"
+        },
+        {
+          "n": 7,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/top/7.webp",
+          "thumb": "assets/dressup/thumbs/top/7.webp"
+        },
+        {
+          "n": 8,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/top/8.webp",
+          "thumb": "assets/dressup/thumbs/top/8.webp"
+        },
+        {
+          "n": 9,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/top/9.webp",
+          "thumb": "assets/dressup/thumbs/top/9.webp"
+        },
+        {
+          "n": 10,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/top/10.webp",
+          "thumb": "assets/dressup/thumbs/top/10.webp",
+          "z": 46
+        },
+        {
+          "n": 11,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/top/11.webp",
+          "thumb": "assets/dressup/thumbs/top/11.webp"
+        },
+        {
+          "n": 12,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/top/12.webp",
+          "thumb": "assets/dressup/thumbs/top/12.webp"
+        },
+        {
+          "n": 13,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/top/13.webp",
+          "thumb": "assets/dressup/thumbs/top/13.webp"
+        },
+        {
+          "n": 14,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/top/14.webp",
+          "thumb": "assets/dressup/thumbs/top/14.webp",
+          "z": 46
+        },
+        {
+          "n": 15,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/top/15.webp",
+          "thumb": "assets/dressup/thumbs/top/15.webp"
+        },
+        {
+          "n": 16,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/top/16.webp",
+          "thumb": "assets/dressup/thumbs/top/16.webp"
+        },
+        {
+          "n": 17,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/top/17.webp",
+          "thumb": "assets/dressup/thumbs/top/17.webp"
+        },
+        {
+          "n": 18,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/top/18.webp",
+          "thumb": "assets/dressup/thumbs/top/18.webp"
+        },
+        {
+          "n": 19,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/top/19.webp",
+          "thumb": "assets/dressup/thumbs/top/19.webp"
+        },
+        {
+          "n": 20,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/top/20.webp",
+          "thumb": "assets/dressup/thumbs/top/20.webp"
+        },
+        {
+          "n": 21,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/top/21.webp",
+          "thumb": "assets/dressup/thumbs/top/21.webp"
+        },
+        {
+          "n": 22,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/top/22.webp",
+          "thumb": "assets/dressup/thumbs/top/22.webp",
+          "z": 46
+        }
+      ],
+      "bottom": [
+        {
+          "n": 1,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/bottom/1.webp",
+          "thumb": "assets/dressup/thumbs/bottom/1.webp"
+        },
+        {
+          "n": 2,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/bottom/2.webp",
+          "thumb": "assets/dressup/thumbs/bottom/2.webp"
+        },
+        {
+          "n": 3,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/bottom/3.webp",
+          "thumb": "assets/dressup/thumbs/bottom/3.webp"
+        },
+        {
+          "n": 4,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/bottom/4.webp",
+          "thumb": "assets/dressup/thumbs/bottom/4.webp"
+        },
+        {
+          "n": 5,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/bottom/5.webp",
+          "thumb": "assets/dressup/thumbs/bottom/5.webp"
+        },
+        {
+          "n": 6,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/bottom/6.webp",
+          "thumb": "assets/dressup/thumbs/bottom/6.webp"
+        },
+        {
+          "n": 7,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/bottom/7.webp",
+          "thumb": "assets/dressup/thumbs/bottom/7.webp"
+        },
+        {
+          "n": 8,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/bottom/8.webp",
+          "thumb": "assets/dressup/thumbs/bottom/8.webp"
+        },
+        {
+          "n": 9,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/bottom/9.webp",
+          "thumb": "assets/dressup/thumbs/bottom/9.webp"
+        },
+        {
+          "n": 10,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/bottom/10.webp",
+          "thumb": "assets/dressup/thumbs/bottom/10.webp"
+        },
+        {
+          "n": 11,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/bottom/11.webp",
+          "thumb": "assets/dressup/thumbs/bottom/11.webp"
+        },
+        {
+          "n": 12,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/bottom/12.webp",
+          "thumb": "assets/dressup/thumbs/bottom/12.webp"
+        },
+        {
+          "n": 13,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/bottom/13.webp",
+          "thumb": "assets/dressup/thumbs/bottom/13.webp"
+        },
+        {
+          "n": 14,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/bottom/14.webp",
+          "thumb": "assets/dressup/thumbs/bottom/14.webp"
+        },
+        {
+          "n": 15,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/bottom/15.webp",
+          "thumb": "assets/dressup/thumbs/bottom/15.webp"
+        },
+        {
+          "n": 16,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/bottom/16.webp",
+          "thumb": "assets/dressup/thumbs/bottom/16.webp"
+        },
+        {
+          "n": 17,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/bottom/17.webp",
+          "thumb": "assets/dressup/thumbs/bottom/17.webp"
+        },
+        {
+          "n": 18,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/bottom/18.webp",
+          "thumb": "assets/dressup/thumbs/bottom/18.webp"
+        },
+        {
+          "n": 19,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/bottom/19.webp",
+          "thumb": "assets/dressup/thumbs/bottom/19.webp"
+        },
+        {
+          "n": 20,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/bottom/20.webp",
+          "thumb": "assets/dressup/thumbs/bottom/20.webp"
+        },
+        {
+          "n": 21,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/bottom/21.webp",
+          "thumb": "assets/dressup/thumbs/bottom/21.webp"
+        }
+      ],
+      "dress": [
+        {
+          "n": 1,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/dress/1.webp",
+          "thumb": "assets/dressup/thumbs/dress/1.webp"
+        },
+        {
+          "n": 2,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/dress/2.webp",
+          "thumb": "assets/dressup/thumbs/dress/2.webp"
+        },
+        {
+          "n": 3,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/dress/3.webp",
+          "thumb": "assets/dressup/thumbs/dress/3.webp"
+        },
+        {
+          "n": 4,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/dress/4.webp",
+          "thumb": "assets/dressup/thumbs/dress/4.webp"
+        },
+        {
+          "n": 5,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/dress/5.webp",
+          "thumb": "assets/dressup/thumbs/dress/5.webp"
+        },
+        {
+          "n": 6,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/dress/6.webp",
+          "thumb": "assets/dressup/thumbs/dress/6.webp"
+        },
+        {
+          "n": 7,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/dress/7.webp",
+          "thumb": "assets/dressup/thumbs/dress/7.webp"
+        },
+        {
+          "n": 8,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/dress/8.webp",
+          "thumb": "assets/dressup/thumbs/dress/8.webp"
+        },
+        {
+          "n": 9,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/dress/9.webp",
+          "thumb": "assets/dressup/thumbs/dress/9.webp"
+        },
+        {
+          "n": 10,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/dress/10.webp",
+          "thumb": "assets/dressup/thumbs/dress/10.webp"
+        }
+      ],
+      "socks": [
+        {
+          "n": 1,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/socks/1.webp",
+          "thumb": "assets/dressup/thumbs/socks/1.webp"
+        },
+        {
+          "n": 2,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/socks/2.webp",
+          "thumb": "assets/dressup/thumbs/socks/2.webp"
+        },
+        {
+          "n": 3,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/socks/3.webp",
+          "thumb": "assets/dressup/thumbs/socks/3.webp"
+        },
+        {
+          "n": 4,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/socks/4.webp",
+          "thumb": "assets/dressup/thumbs/socks/4.webp"
+        },
+        {
+          "n": 5,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/socks/5.webp",
+          "thumb": "assets/dressup/thumbs/socks/5.webp"
+        },
+        {
+          "n": 6,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/socks/6.webp",
+          "thumb": "assets/dressup/thumbs/socks/6.webp"
+        },
+        {
+          "n": 7,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/socks/7.webp",
+          "thumb": "assets/dressup/thumbs/socks/7.webp"
+        },
+        {
+          "n": 8,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/socks/8.webp",
+          "thumb": "assets/dressup/thumbs/socks/8.webp"
+        },
+        {
+          "n": 9,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/socks/9.webp",
+          "thumb": "assets/dressup/thumbs/socks/9.webp"
+        },
+        {
+          "n": 10,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/socks/10.webp",
+          "thumb": "assets/dressup/thumbs/socks/10.webp"
+        }
+      ],
+      "shoes": [
+        {
+          "n": 1,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/shoes/1.webp",
+          "thumb": "assets/dressup/thumbs/shoes/1.webp"
+        },
+        {
+          "n": 2,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/shoes/2.webp",
+          "thumb": "assets/dressup/thumbs/shoes/2.webp"
+        },
+        {
+          "n": 3,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/shoes/3.webp",
+          "thumb": "assets/dressup/thumbs/shoes/3.webp"
+        },
+        {
+          "n": 4,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/shoes/4.webp",
+          "thumb": "assets/dressup/thumbs/shoes/4.webp"
+        },
+        {
+          "n": 5,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/shoes/5.webp",
+          "thumb": "assets/dressup/thumbs/shoes/5.webp"
+        },
+        {
+          "n": 6,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/shoes/6.webp",
+          "thumb": "assets/dressup/thumbs/shoes/6.webp"
+        },
+        {
+          "n": 7,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/shoes/7.webp",
+          "thumb": "assets/dressup/thumbs/shoes/7.webp"
+        },
+        {
+          "n": 8,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/shoes/8.webp",
+          "thumb": "assets/dressup/thumbs/shoes/8.webp"
+        },
+        {
+          "n": 9,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/shoes/9.webp",
+          "thumb": "assets/dressup/thumbs/shoes/9.webp"
+        },
+        {
+          "n": 10,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/shoes/10.webp",
+          "thumb": "assets/dressup/thumbs/shoes/10.webp"
+        },
+        {
+          "n": 11,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/shoes/11.webp",
+          "thumb": "assets/dressup/thumbs/shoes/11.webp"
+        },
+        {
+          "n": 12,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/shoes/12.webp",
+          "thumb": "assets/dressup/thumbs/shoes/12.webp"
+        },
+        {
+          "n": 13,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/shoes/13.webp",
+          "thumb": "assets/dressup/thumbs/shoes/13.webp"
+        },
+        {
+          "n": 14,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/shoes/14.webp",
+          "thumb": "assets/dressup/thumbs/shoes/14.webp"
+        },
+        {
+          "n": 15,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/shoes/15.webp",
+          "thumb": "assets/dressup/thumbs/shoes/15.webp"
+        },
+        {
+          "n": 16,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/shoes/16.webp",
+          "thumb": "assets/dressup/thumbs/shoes/16.webp"
+        },
+        {
+          "n": 17,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/shoes/17.webp",
+          "thumb": "assets/dressup/thumbs/shoes/17.webp"
+        }
+      ],
+      "accessories": [
+        {
+          "n": 1,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/accessories/1.webp",
+          "thumb": "assets/dressup/thumbs/accessories/1.webp"
+        },
+        {
+          "n": 2,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/accessories/2.webp",
+          "thumb": "assets/dressup/thumbs/accessories/2.webp"
+        },
+        {
+          "n": 3,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/accessories/3.webp",
+          "thumb": "assets/dressup/thumbs/accessories/3.webp"
+        },
+        {
+          "n": 4,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/accessories/4.webp",
+          "thumb": "assets/dressup/thumbs/accessories/4.webp"
+        },
+        {
+          "n": 5,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/accessories/5.webp",
+          "thumb": "assets/dressup/thumbs/accessories/5.webp"
+        },
+        {
+          "n": 6,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/accessories/6.webp",
+          "thumb": "assets/dressup/thumbs/accessories/6.webp",
+          "z": -20
+        },
+        {
+          "n": 7,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/accessories/7.webp",
+          "thumb": "assets/dressup/thumbs/accessories/7.webp"
+        },
+        {
+          "n": 8,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/accessories/8.webp",
+          "thumb": "assets/dressup/thumbs/accessories/8.webp",
+          "z": 48
+        },
+        {
+          "n": 9,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/accessories/9.webp",
+          "thumb": "assets/dressup/thumbs/accessories/9.webp"
+        },
+        {
+          "n": 10,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/accessories/10.webp",
+          "thumb": "assets/dressup/thumbs/accessories/10.webp",
+          "z": 58
+        },
+        {
+          "n": 11,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/accessories/11.webp",
+          "thumb": "assets/dressup/thumbs/accessories/11.webp",
+          "z": 58
+        },
+        {
+          "n": 12,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/accessories/12.webp",
+          "thumb": "assets/dressup/thumbs/accessories/12.webp"
+        },
+        {
+          "n": 13,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/accessories/13.webp",
+          "thumb": "assets/dressup/thumbs/accessories/13.webp"
+        },
+        {
+          "n": 14,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/accessories/14.webp",
+          "thumb": "assets/dressup/thumbs/accessories/14.webp"
+        },
+        {
+          "n": 15,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/accessories/15.webp",
+          "thumb": "assets/dressup/thumbs/accessories/15.webp"
+        },
+        {
+          "n": 16,
+          "w": 1033,
+          "h": 1909,
+          "src": "assets/dressup/items/accessories/16.webp",
+          "thumb": "assets/dressup/thumbs/accessories/16.webp"
+        }
+      ]
+    },
+    "layout": {}
+  },
+  "rhythm": {
+    "bg": "assets/rhythm/bg.png",
+    "texts": {
+      "title": "Выбери песню",
+      "soon": "скоро…",
+      "loading": "Слушаем песню…",
+      "score": "Счёт",
+      "combo": "Комбо",
+      "record": "Рекорд",
+      "newRecord": "Новый рекорд!",
+      "perfect": "Идеально!",
+      "good": "Хорошо",
+      "miss": "Мимо",
+      "again": "Ещё раз",
+      "toSongs": "К песням",
+      "next": "Дальше",
+      "exit": "← Выйти",
+      "paused": "Пауза",
+      "resume": "Продолжить",
+      "quit": "К песням",
+      "play": "Играть"
+    },
+    "difficulties": [
+      {
+        "id": "easy",
+        "name": "Легко",
+        "gap": 0.5,
+        "perSec": 1.1,
+        "approach": 1.9,
+        "perfect": 0.09,
+        "good": 0.18
+      },
+      {
+        "id": "normal",
+        "name": "Нормально",
+        "gap": 0.3,
+        "perSec": 2,
+        "approach": 1.6,
+        "perfect": 0.07,
+        "good": 0.14
+      },
+      {
+        "id": "hard",
+        "name": "Сложно",
+        "gap": 0.17,
+        "perSec": 3.4,
+        "approach": 1.25,
+        "perfect": 0.055,
+        "good": 0.115
+      }
+    ],
+    "keys": [
+      "S",
+      "D",
+      "K",
+      "L"
+    ],
+    "lanes": [
+      {
+        "color": "#ff4d6d",
+        "img": "assets/rhythm/note1.png"
+      },
+      {
+        "color": "#ff8fab",
+        "img": "assets/rhythm/note2.png"
+      },
+      {
+        "color": "#ffd166",
+        "img": "assets/rhythm/note3.png"
+      },
+      {
+        "color": "#c77dff",
+        "img": "assets/rhythm/note4.png"
+      }
+    ],
+    "highway": {
+      "x": 110,
+      "y": 0,
+      "w": 420,
+      "h": 540
+    },
+    "hitLine": 450,
+    "noteSize": 64,
+    "offsetMs": 0,
+    "volume": 1,
+    "hud": {
+      "x": 760,
+      "y": 150
+    },
+    "dancer": {
+      "img": "assets/rhythm/sonya_dance.png",
+      "cols": 3,
+      "x": 760,
+      "y": 500,
+      "w": 240
+    },
+    "songs": [
+      {
+        "id": "loser",
+        "title": "Loser",
+        "artist": "Tame Impala",
+        "src": "assets/audio/loser.mp3",
+        "bpm": 0,
+        "offset": 0
+      },
+      {
+        "id": "song2",
+        "title": "Песня 2",
+        "artist": "",
+        "src": "",
+        "bpm": 0,
+        "offset": 0
+      },
+      {
+        "id": "song3",
+        "title": "Песня 3",
+        "artist": "",
+        "src": "",
+        "bpm": 0,
+        "offset": 0
+      }
+    ]
+  },
+  "finale": {
+    "music": "",
+    "musicVolume": 0.7,
+    "fireworks": true,
+    "girls": [
+      {
+        "name": "Аня",
+        "img": "assets/sprites/anya.png",
+        "x": 270,
+        "y": 392,
+        "w": 110
+      },
+      {
+        "name": "Лиза",
+        "img": "assets/sprites/liza.png",
+        "x": 480,
+        "y": 262,
+        "w": 110
+      },
+      {
+        "name": "Соня",
+        "img": "assets/sprites/sonya.png",
+        "x": 690,
+        "y": 392,
+        "w": 110
+      }
+    ],
+    "cake": {
+      "img": "assets/finale/cake.png",
+      "x": 480,
+      "y": 404,
+      "w": 200
+    },
+    "flame": {
+      "img": "assets/finale/flame.png",
+      "cols": 3,
+      "x": 479,
+      "y": 257,
+      "w": 22,
+      "fps": 8
+    },
+    "dialog": [
+      {
+        "name": "Аня",
+        "text": "С днём рождения!!!"
+      },
+      {
+        "name": "Лиза",
+        "text": "Мы так долго готовили для тебя этот сюрприз…"
+      },
+      {
+        "name": "Соня",
+        "text": "Пусть этот год будет самым сладким, красивым и музыкальным!"
+      },
+      {
+        "name": "Все вместе",
+        "text": "Загадывай желание и задувай свечку! 🍒"
+      }
+    ],
+    "endTitle": "С Днём Рождения!",
+    "endText": "мы тебя очень любим 🍒",
+    "backButton": "В главное меню"
+  }
+}
