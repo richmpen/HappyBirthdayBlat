@@ -1,35 +1,33 @@
 /* ============================================================
    dressup.css — стили одевашки (сцена на всё окно)
    ------------------------------------------------------------
-   Логика и каркас перенесены из CottsugDRESSUP, оформление —
-   в эстетике «Space Cherry»: кремовая бумага, чернильные контуры,
-   тёмная вишня, ретро-антиква, четырёхлучевые звёздочки, орбиты.
+   Перенесено из CottsugDRESSUP и перекрашено в вишнёвые тона.
    Все правила живут под корнем .du, чтобы не задевать саму игру.
-   Палитра — переменные --p50…--p700 в первом блоке и --ink/--cherry
-   в блоке темы (в конце файла).
+   Палитра — переменные --p50…--p700 в первом блоке.
+   Вишнёвая тема (фон, клетка-гингем, кнопка «Готово») — в конце файла.
    ============================================================ */
 .du{
-  --p50:#fffdf8;
-  --p100:#f8f1e7;
-  --p150:#efe3d2;
-  --p200:#2a1215;
-  --p300:#a11d2e;
-  --p400:#a11d2e;
-  --p500:#7a1420;
-  --p600:#7a1420;
-  --p700:#4d0c14;
+  --p50:#fff5f6;
+  --p100:#ffe9ec;
+  --p150:#ffdbe1;
+  --p200:#ffc7d0;
+  --p300:#ff9eae;
+  --p400:#e8556f;
+  --p500:#c9184a;
+  --p600:#a4133c;
+  --p700:#7d1128;
 
-  --plum:#2a1215;
-  --plum-soft:#6b4a4f;
-  --berry:#a11d2e;
-  --leaf:#5d7a52;
-  --cream:#fffdf8;
+  --plum:#4a0d1f;
+  --plum-soft:#8c4a5c;
+  --berry:#d90429;
+  --leaf:#6a994e;
+  --cream:#fffaf5;
   --white:#fff;
 
   --ring:0 0 0 4px rgba(201,24,74,.16);
   --soft:0 10px 30px -12px rgba(164,19,60,.35);
   --soft-lg:0 22px 60px -24px rgba(164,19,60,.5);
-  --edge:#7a1420;
+  --edge:#f2b6c2;
 
   --r-sm:14px;
   --r-md:20px;
@@ -676,205 +674,118 @@
 }
 
 /* ============================================================
-   ТЕМА «SPACE CHERRY»
+   ВИШНЁВАЯ ТЕМА
    ============================================================ */
 .du{
-  --ink:#2a1215; --cherry:#7a1420; --cherry2:#a11d2e; --paper:#fffdf8; --bg:#f8f1e7;
-  --font-title:'Yeseva One', 'Playfair Display', Georgia, serif;
-  --font-body:'Jost', 'Nunito', 'Segoe UI', system-ui, sans-serif;
-  --r-sm:12px; --r-md:16px; --r-lg:22px; --r-xl:28px;
-  --ring:0 0 0 3px rgba(122,20,32,.18);
-  --soft:4px 4px 0 var(--cherry);
-  --soft-lg:6px 6px 0 var(--cherry);
   position:fixed; inset:0; z-index:100;
   height:auto;
-  color:var(--ink);
-  font-family:var(--font-body);
+  color:var(--plum);
   background:
-    radial-gradient(900px 600px at 18% 8%, #fffaf2 0%, rgba(255,250,242,0) 70%),
-    radial-gradient(800px 600px at 96% 100%, #f1e2cf 0%, rgba(241,226,207,0) 70%),
-    var(--bg);
+    radial-gradient(1100px 700px at 10% -12%, #b3163f 0%, rgba(179,22,63,0) 62%),
+    radial-gradient(900px 620px at 106% 112%, #8a1030 0%, rgba(138,16,48,0) 66%),
+    linear-gradient(168deg, #5c0a1e 0%, #3a0512 55%, #4d0919 100%);
   background-attachment:scroll;
+  font-family:var(--font-body);
 }
 .du[hidden]{ display:none; }
 body.editing .du{ right:var(--ed-w); }
+
 .du .app{ height:100%; }
 .du .app.is-beta{ padding-right:calc(var(--pad) + env(safe-area-inset-right)); }
-.du button{ font-family:var(--font-body); }
 
-/* --- фон: орбиты, контуры вишен, чернильные звёздочки --- */
+/* фон: тонкая сетка, контуры вишен, искры */
 .du .decor{ position:absolute; }
-.du .orbit{ position:absolute; color:var(--ink); opacity:.5; }
-.du .orbit--a{ width:520px; left:-170px; bottom:-150px; animation:du-floaty 18s ease-in-out infinite; }
-.du .orbit--b{ width:380px; right:-120px; top:-110px; opacity:.4; animation:du-floaty 22s ease-in-out infinite reverse; }
-.du .berry{ color:var(--cherry); opacity:.5; }
-.du .berry--a{ width:120px; top:auto; bottom:6%; left:2%; }
-.du .berry--b{ width:150px; bottom:auto; top:16%; right:1.5%; color:var(--cherry); }
-.du .spark{ color:var(--ink); text-shadow:none; font-size:22px; }
-.du .spark--1, .du .spark--4{ color:var(--cherry); }
-.du .floaties{ position:absolute; inset:0; overflow:hidden; opacity:.75; }
+.du .decor__grid{
+  background-image:
+    linear-gradient(rgba(255,204,213,.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,204,213,.07) 1px, transparent 1px);
+  opacity:1;
+}
+.du .berry{ color:#ff8fa3; opacity:.28; }
+.du .berry--b{ color:#ffb3c1; }
+.du .berry--c{ opacity:.2; }
+.du .spark{ color:#ffb3c1; text-shadow:0 0 18px rgba(255,143,163,.9); }
+.du .floaties span{ opacity:.5; }
 
-/* --- шапка: логотип + круглые чернильные кнопки --- */
+/* шапка */
 .du .topbar{
-  background:transparent; border:0; border-radius:0; box-shadow:none;
-  -webkit-backdrop-filter:none; backdrop-filter:none;
-  padding:2px 6px;
+  background:rgba(255,250,245,.94);
+  border-color:#fff;
+  box-shadow:0 14px 34px -14px rgba(0,0,0,.55), inset 0 -3px 0 var(--p150);
 }
-.du .brand{ display:flex; align-items:center; gap:12px; }
-.du .brand__mark{ width:clamp(54px, 6vw, 78px); height:auto; flex:0 0 auto; animation:du-floaty 7s ease-in-out infinite; }
-.du .brand__word{
-  font-family:var(--font-title); font-weight:400;
-  font-size:clamp(26px, 3.6vw, 44px); letter-spacing:.005em; line-height:.92;
-  background:none; -webkit-background-clip:border-box; background-clip:border-box;
-  color:var(--ink); -webkit-text-fill-color:var(--ink);
-  animation:none;
-}
-.du .brand__word i{ font-style:normal; color:var(--cherry); -webkit-text-fill-color:var(--cherry); }
-.du .brand__tag{
-  margin-top:7px;
-  font-family:var(--font-body); font-weight:500; font-size:clamp(8px, .95vw, 11px);
-  letter-spacing:.34em; text-transform:uppercase; color:var(--ink);
-}
-.du .tools{ gap:10px; }
-.du .tool{
-  padding:8px 16px 9px; gap:8px;
-  font-weight:600; font-size:12px; letter-spacing:.14em; text-transform:uppercase;
-  color:var(--ink); background:var(--paper);
-  border:2px solid var(--ink); border-radius:999px;
-  box-shadow:3px 3px 0 var(--ink);
-}
-.du .tool span{ font-size:14px; color:var(--cherry); }
-.du .tool:hover{ transform:translate(-1px,-2px); background:#fff; border-color:var(--ink); box-shadow:5px 5px 0 var(--ink); }
-.du .tool:active{ transform:translate(2px,2px); box-shadow:1px 1px 0 var(--ink); }
-.du .tool--icon{ padding:8px 12px 9px; }
-.du .tool.is-muted{ opacity:.45; }
-.du .tool--done{
-  background:var(--cherry); color:var(--paper); border-color:var(--ink);
-  box-shadow:3px 3px 0 var(--ink);
-  animation:none;
-}
-.du .tool--done span{ color:var(--paper); }
-.du .tool--done b{ display:inline !important; }
-.du .tool--done:hover{ background:var(--cherry2); box-shadow:5px 5px 0 var(--ink); }
+.du .brand__word{ display:inline-flex; align-items:center; gap:.18em; }
+.du .brand__heart{ font-size:.8em; -webkit-text-fill-color:initial; }
+.du .brand__tag{ letter-spacing:.22em; text-transform:uppercase; color:var(--p500); }
 
-/* --- карточка персонажа: арка с орбитой --- */
+.du .tool--done{
+  background:linear-gradient(150deg, var(--p500), var(--p700));
+  color:#fff; border-color:var(--p700);
+  box-shadow:0 4px 0 #4a0d1f;
+  animation:du-donePulse 2.2s ease-in-out infinite;
+}
+.du .tool--done span{ font-weight:900; }
+.du .tool--done:hover{ background:linear-gradient(150deg, var(--p400), var(--p600)); border-color:var(--p600); box-shadow:0 6px 0 #4a0d1f; }
+.du .tool--done b{ display:inline !important; }
+@keyframes du-donePulse{
+  0%,100%{ box-shadow:0 4px 0 #4a0d1f, 0 0 0 0 rgba(255,143,163,.55); }
+  50%    { box-shadow:0 4px 0 #4a0d1f, 0 0 0 9px rgba(255,143,163,0); }
+}
+
+/* карточка персонажа: кремовый фон в вишнёвую клетку */
 .du .doll__card{
   background:
-    radial-gradient(70% 34% at 50% 100%, #efe0cb 0%, rgba(239,224,203,0) 72%),
-    var(--paper);
-  border:2px solid var(--ink);
-  outline:1.5px dashed rgba(42,18,21,.55); outline-offset:-11px;
-  border-radius:min(46%, 340px) min(46%, 340px) var(--r-lg) var(--r-lg) / min(30%, 240px) min(30%, 240px) var(--r-lg) var(--r-lg);
-  box-shadow:var(--soft-lg);
-  animation:none;
+    radial-gradient(72% 46% at 50% 100%, #ffdbe1 0%, rgba(255,219,225,0) 72%),
+    repeating-linear-gradient(0deg, rgba(201,24,74,.05) 0 24px, transparent 24px 48px),
+    repeating-linear-gradient(90deg, rgba(201,24,74,.05) 0 24px, transparent 24px 48px),
+    var(--cream);
+  border-color:#fff;
+  outline-color:var(--p300);
+  box-shadow:0 26px 60px -22px rgba(0,0,0,.65);
 }
-.du .doll__ring{
-  position:absolute; left:50%; top:54%; width:min(118%, 620px); transform:translate(-50%,-50%);
-  color:var(--cherry); opacity:.4; pointer-events:none;
-  animation:du-floaty 12s ease-in-out infinite;
+.du .doll__corner{ color:var(--p400); }
+@keyframes du-cardGlow{
+  0%,100%{ box-shadow:0 26px 60px -22px rgba(0,0,0,.65); }
+  50%    { box-shadow:0 26px 66px -20px rgba(0,0,0,.7), 0 0 0 6px rgba(255,143,163,.22); }
 }
-.du .doll__corner{ color:var(--ink); font-size:16px; }
-.du .doll__corner--tl{ top:30%; left:8%; }
-.du .doll__corner--tr{ top:22%; right:9%; color:var(--cherry); }
-.du .doll__corner--bl{ bottom:20px; left:20px; color:var(--cherry); }
-.du .doll__corner--br{ bottom:20px; right:20px; }
-.du .doll__loader i{ background:var(--cherry); }
 
-/* --- «надето» --- */
-.du .worn__chip{
-  font-weight:600; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase;
-  color:var(--ink); background:var(--paper);
-  border:1.5px solid var(--ink); box-shadow:2px 2px 0 var(--ink);
-}
-.du .worn__chip img{ background:var(--bg); }
-.du .worn__chip i{ color:var(--cherry); }
-.du .worn__chip:hover{ border-color:var(--ink); background:#fff; }
-.du .worn__chip--base{ background:var(--bg); border-color:var(--ink); }
-
-/* --- гардероб --- */
+/* гардероб */
 .du .wardrobe{
-  background:var(--paper);
-  -webkit-backdrop-filter:none; backdrop-filter:none;
-  border:2px solid var(--ink); border-radius:var(--r-xl);
-  box-shadow:var(--soft-lg);
+  background:rgba(255,250,245,.95);
+  border-color:#fff;
+  box-shadow:0 26px 60px -22px rgba(0,0,0,.65);
 }
 .du .wardrobe::before{
-  height:10px; opacity:1; animation:none;
-  background:
-    radial-gradient(circle at 8px 0, var(--cherry) 5.5px, transparent 6px) 0 0/16px 10px repeat-x;
+  background:radial-gradient(circle at 10px 0, var(--p500) 7px, transparent 7.5px) 0 0/20px 14px repeat-x;
+  opacity:.8;
 }
-.du .wardrobe__title{
-  font-family:var(--font-title); font-weight:400; font-size:clamp(20px, 2vw, 28px); color:var(--ink);
-}
-.du .wardrobe__title span::after{ content:' ✦'; color:var(--cherry); font-size:.6em; vertical-align:middle; }
-.du .wardrobe__title em{ font-weight:500; font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--plum-soft); }
-.du .tab{
-  padding:7px 13px 8px;
-  font-weight:600; font-size:11px; letter-spacing:.1em; text-transform:uppercase;
-  color:var(--ink); background:var(--paper);
-  border:1.5px solid var(--ink); box-shadow:2px 2px 0 var(--ink);
-}
-.du .tab span{ display:none; }
-.du .tab em{ font-size:10px; opacity:.6; letter-spacing:0; }
-.du .tab:hover{ background:#fff; transform:translate(-1px,-1px); }
-.du .tab[aria-selected="true"]{
-  background:var(--cherry); color:var(--paper); border-color:var(--ink);
-  box-shadow:2px 2px 0 var(--ink);
-}
-.du .shelf{ grid-auto-rows:max-content; gap:12px; padding-top:8px; }
-.du .shelf::-webkit-scrollbar-thumb{ background:var(--cherry); background-clip:padding-box; }
-.du .card{
-  background:var(--bg);
-  border:1.5px solid var(--ink); border-radius:var(--r-md);
-  box-shadow:3px 3px 0 var(--ink);
-}
-.du .card img{ left:5px; top:5px; width:calc(100% - 10px); height:calc(100% - 10px); filter:none; }
-.du .card:hover{ border-color:var(--ink); box-shadow:5px 5px 0 var(--cherry); transform:translate(-2px,-3px); }
-.du .card:active{ transform:translate(2px,2px); box-shadow:1px 1px 0 var(--ink); }
-.du .card.is-on{ background:#fff; border-color:var(--cherry); box-shadow:3px 3px 0 var(--cherry); }
-.du .card.is-on::before{ border:1.5px dashed var(--cherry); opacity:1; animation:none; }
-.du .card.is-on::after{ content:'✦'; color:var(--cherry); font-size:14px; top:4px; right:7px; }
-.du .card__num{ font-weight:600; color:var(--plum-soft); }
-.du .card--none{ background:var(--paper); border-style:dashed; box-shadow:none; }
-.du .card--none::before{ content:'✕'; font-size:22px; color:var(--cherry); filter:none; }
-.du .card--none b{ font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--ink); }
-.du .card__shine::before{ background:linear-gradient(100deg, transparent, rgba(255,255,255,.9), transparent); }
+.du .card{ background:radial-gradient(60% 60% at 50% 40%, #fff 0%, var(--p50) 100%); }
+.du .card img{ left:5px; top:5px; width:calc(100% - 10px); height:calc(100% - 10px); }
+.du .card--none::before{ content:'🧺'; }
+.du .worn__chip{ box-shadow:0 3px 0 rgba(0,0,0,.25); }
+.du .toast{ background:linear-gradient(150deg, var(--p500), var(--p700)); box-shadow:0 18px 40px -14px rgba(0,0,0,.7); }
+.du .fab{ border-color:#fff; }
 
-.du .toast{
-  background:var(--ink); color:var(--paper);
-  font-weight:500; letter-spacing:.06em;
-  border:2px solid var(--paper); box-shadow:4px 4px 0 var(--cherry);
-}
-.du .fab{
-  background:var(--cherry); color:var(--paper);
-  border:2px solid var(--ink); box-shadow:4px 4px 0 var(--ink);
-  font-weight:600; letter-spacing:.14em; text-transform:uppercase; font-size:12px;
-}
+.du .shelf::-webkit-scrollbar-thumb{ background:var(--p300); background-clip:padding-box; }
+
+/* направляющие в режиме настройки: ось по центру тела */
 .du .guides::before{ background-size:10% 5%; }
 .du .guides::after{ left:50%; }
-.du .layer.is-picked{ outline-color:var(--cherry); }
 
-@media (max-width:1100px){
-  .du .tool b{ display:none; }
-  .du .tool{ padding:8px 12px 9px; }
-}
 @media (max-width:760px){
-  .du .topbar{ flex-wrap:wrap; row-gap:8px; padding:0 2px; }
-  .du .tools{ flex:1 1 100%; flex-wrap:nowrap; justify-content:space-between; gap:6px; }
-  .du .brand__mark{ width:44px; }
-  .du .brand__tag{ display:inline-flex; letter-spacing:.2em; }
-  .du .wardrobe{ border-width:2px 0 0; border-radius:var(--r-xl) var(--r-xl) 0 0; box-shadow:0 -5px 0 var(--cherry); background:var(--paper); }
-  .du .wardrobe__grip{ background:var(--paper); }
-  .du .wardrobe__grip i{ background:var(--ink); }
-  .du .doll__card{ border-radius:var(--r-xl); }
-  .du .orbit, .du .doll__ring{ display:none; }
+  .du .wardrobe{ background:rgba(255,250,245,.97); box-shadow:0 -18px 50px -18px rgba(0,0,0,.6); }
+  .du .tool b{ display:none; }
+}
+
+/* вещей много: ряды полки не должны сжиматься под высоту гардероба (иначе карточки наезжают друг на друга) */
+.du .shelf{ grid-auto-rows:max-content; }
+
+/* телефон: кнопки шапки уходят на вторую строку, чтобы «Готово» не убегало за край */
+@media (max-width:760px){
+  .du .topbar{ flex-wrap:wrap; row-gap:8px; }
+  .du .tools{ flex:1 1 100%; flex-wrap:nowrap; justify-content:space-between; }
+  .du .brand__tag{ display:inline-flex; letter-spacing:.14em; }
 }
 @media (max-height:520px) and (orientation:landscape){
   .du .topbar{ flex-wrap:nowrap; }
   .du .tools{ flex:0 1 auto; }
-  .du .doll__card{ border-radius:var(--r-lg); }
-  .du .wardrobe{ border-width:2px; border-radius:var(--r-lg); box-shadow:var(--soft); }
 }
-.du .wardrobe__title{ display:block; }
-.du .wardrobe__title em{ display:block; margin-top:3px; }
-.du .shelf{ gap:10px; }

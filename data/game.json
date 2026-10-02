@@ -1080,9 +1080,8 @@
     }
   },
   "dressup": {
-    "title": "Cherry",
-    "title2": "Closet",
-    "tag": "наряды · туфельки · блеск",
+    "title": "CHERRY",
+    "tag": "примерочная Лизы",
     "texts": {
       "wardrobe": "Гардероб",
       "random": "Рандом",
@@ -1161,7 +1160,7 @@
       }
     ],
     "settings": {
-      "cardSize": 86
+      "cardSize": 92
     },
     "defaultOutfit": {
       "hair": [

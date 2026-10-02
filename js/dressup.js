@@ -377,7 +377,7 @@ function randomize() {
     el.classList.add('is-new');
   });
   sndWow(); berryRain(); burst(10);
-  toast('Новый образ! ✦');
+  toast('Новый образ! 🎲');
 }
 
 function clearAll() {
@@ -386,7 +386,7 @@ function clearAll() {
   rebuildAll();
   pick(null);
   sndOff();
-  toast('Всё снято');
+  toast('Всё снято 🧺');
 }
 
 async function screenshot() {
@@ -441,7 +441,7 @@ async function screenshot() {
       a.download = 'cherry-look.png';
       a.click();
       setTimeout(() => URL.revokeObjectURL(a.href), 4000);
-      toast('Картинка сохранена ✦');
+      toast('Картинка сохранена 📸');
       sndOn(); berryRain(14);
     }, 'image/png');
   } catch {
@@ -944,11 +944,11 @@ function applyTexts() {
   const T = D().texts;
   $$('[data-t]').forEach(e => { if (T[e.dataset.t] != null) e.textContent = T[e.dataset.t]; });
   $('#duTitle').textContent = D().title;
-  $('#duTitle2').textContent = D().title2 || '';
+  if ($('#duTitle2')) $('#duTitle2').textContent = D().title2 || '';
   $('#duTag').textContent = D().tag;
 }
 function paintSound() {
-  $('#soundIcon').textContent = G.soundOn ? '♪' : '∅';
+  $('#soundIcon').textContent = G.soundOn ? '🔔' : '🔕';
   $('#btnSound').classList.toggle('is-muted', !G.soundOn);
   $('#btnSound').setAttribute('aria-pressed', String(G.soundOn));
 }
@@ -982,7 +982,7 @@ function init() {
   baseImg.dataset.cat = 'base';
   baseImg.dataset.n = 0;
   // мерцающие искры на фоне
-  const tw = G.fx.el('twinkleCherry', { loop: true, scale: 4 });
+  const tw = $('#duTwinkle') && G.fx.el('twinkleCherry', { loop: true, scale: 4 });
   if (tw) { tw.style.left = '50%'; tw.style.top = '50%'; $('#duTwinkle').appendChild(tw); }
 }
 
