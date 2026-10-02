@@ -1,0 +1,417 @@
+{
+ "app": "arcadia-effects",
+ "v": 1,
+ "doc": {
+  "id": "fx_cherry_hit_good",
+  "name": "Cherry Hit Good",
+  "comp": {
+   "w": 256,
+   "h": 256,
+   "dur": 0.36
+  },
+  "exp": {
+   "cols": 4,
+   "rows": 2,
+   "frames": 8,
+   "cellW": 128,
+   "cellH": 128
+  },
+  "layers": [
+   {
+    "id": "lr_hit_good_1",
+    "type": "emitter",
+    "name": "Dots",
+    "blend": "normal",
+    "em": {
+     "bursts": [
+      {
+       "t": 0,
+       "n": 9
+      }
+     ],
+     "shape": "ring",
+     "sx": 26,
+     "sy": 4,
+     "dir": "out",
+     "speed": 300,
+     "speedRnd": 0.3,
+     "seed": 5
+    },
+    "pt": {
+     "life": 0.3,
+     "lifeRnd": 0.2,
+     "sprite": {
+      "kind": "shape",
+      "id": "dot",
+      "p": {}
+     },
+     "size": 13,
+     "sizeRnd": 0.4,
+     "sizeOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0.2
+       }
+      ]
+     },
+     "opacityOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 1
+       },
+       {
+        "t": 0.55,
+        "v": 0.85
+       },
+       {
+        "t": 1,
+        "v": 0
+       }
+      ]
+     },
+     "grad": {
+      "stops": [
+       {
+        "t": 0,
+        "c": [
+         255,
+         255,
+         255
+        ]
+       },
+       {
+        "t": 0.3,
+        "c": [
+         88,
+         198,
+         255
+        ]
+       },
+       {
+        "t": 1,
+        "c": [
+         79,
+         217,
+         168
+        ]
+       }
+      ]
+     },
+     "drag": 3.5,
+     "spin": 0
+    }
+   },
+   {
+    "id": "lr_hit_good_2",
+    "type": "emitter",
+    "name": "Sparks",
+    "blend": "normal",
+    "em": {
+     "bursts": [
+      {
+       "t": 0,
+       "n": 4
+      }
+     ],
+     "dir": "omni",
+     "speed": 180,
+     "speedRnd": 0.4,
+     "seed": 9
+    },
+    "pt": {
+     "life": 0.32,
+     "sprite": {
+      "kind": "shape",
+      "id": "spark",
+      "p": {}
+     },
+     "size": 30,
+     "sizeRnd": 0.3,
+     "sizeOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 0.3
+       },
+       {
+        "t": 0.2,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0
+       }
+      ]
+     },
+     "opacityOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 1
+       },
+       {
+        "t": 0.55,
+        "v": 0.85
+       },
+       {
+        "t": 1,
+        "v": 0
+       }
+      ]
+     },
+     "grad": {
+      "stops": [
+       {
+        "t": 0,
+        "c": [
+         255,
+         255,
+         255
+        ]
+       },
+       {
+        "t": 1,
+        "c": [
+         255,
+         204,
+         213
+        ]
+       }
+      ]
+     },
+     "spin": 90,
+     "drag": 3
+    }
+   },
+   {
+    "id": "lr_hit_good_3",
+    "type": "sprite",
+    "name": "Ring",
+    "blend": "normal",
+    "start": 0,
+    "end": 0.32,
+    "opacity": {
+     "keys": [
+      {
+       "t": 0,
+       "v": 1,
+       "i": {
+        "m": "ease"
+       },
+       "o": {
+        "m": "ease"
+       }
+      },
+      {
+       "t": 0.2,
+       "v": 0.9,
+       "i": {
+        "m": "ease"
+       },
+       "o": {
+        "m": "ease"
+       }
+      },
+      {
+       "t": 0.3,
+       "v": 0,
+       "i": {
+        "m": "ease"
+       },
+       "o": {
+        "m": "ease"
+       }
+      }
+     ]
+    },
+    "sp": {
+     "sprite": {
+      "kind": "shape",
+      "id": "ring",
+      "p": {
+       "th": 0.16
+      }
+     },
+     "size": 130,
+     "scale": {
+      "keys": [
+       {
+        "t": 0,
+        "v": 0.3,
+        "i": {
+         "m": "ease"
+        },
+        "o": {
+         "m": "ease"
+        }
+       },
+       {
+        "t": 0.3,
+        "v": 1.2,
+        "i": {
+         "m": "ease"
+        },
+        "o": {
+         "m": "ease"
+        }
+       }
+      ]
+     },
+     "color": [
+      255,
+      255,
+      255
+     ]
+    }
+   },
+   {
+    "id": "lr_hit_good_4",
+    "type": "sprite",
+    "name": "Ring blue",
+    "blend": "normal",
+    "start": 0.02,
+    "end": 0.34,
+    "opacity": {
+     "keys": [
+      {
+       "t": 0,
+       "v": 0.9,
+       "i": {
+        "m": "ease"
+       },
+       "o": {
+        "m": "ease"
+       }
+      },
+      {
+       "t": 0.3,
+       "v": 0,
+       "i": {
+        "m": "ease"
+       },
+       "o": {
+        "m": "ease"
+       }
+      }
+     ]
+    },
+    "sp": {
+     "sprite": {
+      "kind": "shape",
+      "id": "ring",
+      "p": {
+       "th": 0.1
+      }
+     },
+     "size": 130,
+     "scale": {
+      "keys": [
+       {
+        "t": 0,
+        "v": 0.2,
+        "i": {
+         "m": "ease"
+        },
+        "o": {
+         "m": "ease"
+        }
+       },
+       {
+        "t": 0.3,
+        "v": 1.05,
+        "i": {
+         "m": "ease"
+        },
+        "o": {
+         "m": "ease"
+        }
+       }
+      ]
+     },
+     "color": [
+      88,
+      198,
+      255
+     ]
+    }
+   },
+   {
+    "id": "lr_hit_good_5",
+    "type": "sprite",
+    "name": "Flash",
+    "blend": "screen",
+    "start": 0,
+    "end": 0.18,
+    "opacity": {
+     "keys": [
+      {
+       "t": 0,
+       "v": 0.9,
+       "i": {
+        "m": "ease"
+       },
+       "o": {
+        "m": "ease"
+       }
+      },
+      {
+       "t": 0.16,
+       "v": 0,
+       "i": {
+        "m": "ease"
+       },
+       "o": {
+        "m": "ease"
+       }
+      }
+     ]
+    },
+    "sp": {
+     "sprite": {
+      "kind": "shape",
+      "id": "soft",
+      "p": {}
+     },
+     "size": 130,
+     "scale": {
+      "keys": [
+       {
+        "t": 0,
+        "v": 0.4,
+        "i": {
+         "m": "ease"
+        },
+        "o": {
+         "m": "ease"
+        }
+       },
+       {
+        "t": 0.12,
+        "v": 1,
+        "i": {
+         "m": "ease"
+        },
+        "o": {
+         "m": "ease"
+        }
+       }
+      ]
+     },
+     "color": [
+      214,
+      240,
+      255
+     ]
+    }
+   }
+  ],
+  "textures": []
+ },
+ "tex": {}
+}

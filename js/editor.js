@@ -56,6 +56,29 @@ const LABELS = {
   songs: 'Песни', artist: 'Исполнитель', bpm: 'BPM для танца (0 — авто)', offset: 'Первый удар, с',
   loading: 'Загрузка', score: 'Счёт', combo: 'Комбо', record: 'Рекорд', newRecord: 'Новый рекорд', soon: 'Песни ещё нет',
   again: 'Кнопка «ещё раз»', toSongs: 'Кнопка «к песням»', next: 'Кнопка «дальше»', paused: 'Пауза', resume: 'Продолжить', quit: 'Выйти в меню', play: 'Кнопка «играть»',
+  world: 'Дом (комнаты и двери)', scale: 'Увеличение', tile: 'Размер клетки, px', wallH: 'Высота стены, клеток', dark: 'Темнота непосещённых комнат (0–1)',
+  voidColor: 'Цвет пустоты', frame: 'Рамка', frame2: 'Рамка (светлая)', start: 'Где начинается игра', wall: 'Текстура стены', floor: 'Текстура пола',
+  a: 'Комната A (id)', b: 'Комната B (id)', side: 'Сторона комнаты A: top / left / right', at: 'Отступ вдоль стены, клеток',
+  closed: 'Дверь закрыта', open: 'Дверь открыта', solid: 'Преграда (нельзя пройти)', flat: 'Лежит на полу (ковёр)', flip: 'Отразить',
+  foot: 'Глубина преграды, px', lift: 'Поднять слой (стоит на столе)', room: 'Комната (id)',
+  timeLimit: 'Время на торт, секунд (0 — без таймера)', recipe: 'Рецепт', note: 'Подпись', steps: 'Порядок шагов', decoys: 'Обманки (лишние продукты)',
+  amount: 'Количество', gather: 'Шаг: продукты', measure: 'Шаг: отмерить', eggs: 'Шаг: яйца', whisk: 'Шаг: взбить', stack: 'Шаг: коржи', frost: 'Шаг: крем',
+  cupboard: 'Шкаф с полками', tray: 'Поднос', shelfInset: 'Нижний отступ полок, px', cup: 'Мерный стакан', fill: 'Область наполнения',
+  taper: 'Сужение стакана, px', target: 'Сколько нужно (0–1)', tolerance: 'Допуск', ingredient: 'Продукт (id)', ok: 'Текст «получилось»', over: 'Текст «перебор»',
+  count: 'Сколько', radius: 'Радиус цели', period: 'Период кольца, с', shells: 'Осколков скорлупы', shellText: 'Текст про скорлупу',
+  left: 'Левая половинка', right: 'Правая половинка', yolk: 'Желток', shell: 'Скорлупка', egg: 'Яйцо',
+  seconds: 'Сколько секунд держать', speedMin: 'Темп от, об/с', speedMax: 'Темп до, об/с', dyeAt: 'Когда добавить краситель (0–1)',
+  colorFrom: 'Цвет теста в начале', colorTo: 'Цвет теста в конце', dye: 'Краситель', drop: 'Капля', dyeText: 'Текст про краситель',
+  tooFast: 'Текст «слишком быстро»', tooHot: 'Текст «горячо»', gaugeLabel: 'Подпись шкалы', rise: 'Скорость нагрева', fall: 'Скорость остывания',
+  drift: 'Как быстро гуляет зона', window: 'Окно духовки', inside: 'Нутро духовки', layers: 'Сколько коржей', top: 'Высота, с которой падает',
+  swing: 'Размах, px', okDist: 'Допуск «попал», px', perfectDist: 'Допуск «идеально», px', sponge: 'Корж', cream: 'Прослойка крема', plate: 'Тарелка',
+  missText: 'Текст «мимо»', need: 'Сколько закрасить (0–1)', brush: 'Размер лопатки, px', spatula: 'Лопатка',
+  title2: 'Вторая строка названия', stage: 'Сцена (цвета)', grid: 'Сетка: 1 — доли, 2 — половинки, 4 — четвертушки',
+  keep: 'Сколько клеток занято [доли, половинки, четв.]', minGap: 'Мин. пауза между нотами, с', hold: 'Доля длинных нот (0–1)',
+  slowBeat: 'Быстрая песня, если доля короче, с', detectLag: 'Запаздывание детектора, с', holdSlack: 'Запас отпускания длинной ноты, с',
+  comboEvery: 'Вспышка комбо каждые N', auraCombo: 'Аура танцовщицы с комбо', pixel: 'Пиксельная картинка (без сглаживания)', icon: 'Значок: left/down/up/right/heart/star/circle',
+  fx: 'Эффекты (атласы Arcadia Effector)', blend: 'Смешивание: normal / add', loop: 'Зациклен', frames: 'Кадров', fireworkEvery: 'Пауза между залпами, с',
+  cherry: 'Падающая вишенка', keysHint: 'Подсказка про клавиши',
   fireworks: 'Салют', girls: 'Девочки', flame: 'Огонёк свечи', endTitle: 'Финальный заголовок', endText: 'Финальный текст', backButton: 'Кнопка «в меню»'
 };
 const TEMPLATES = {
@@ -66,15 +89,17 @@ const TEMPLATES = {
   items: { name: 'Новое', img: '', x: 800, y: 300, w: 64 },
   songs: { id: '', title: 'Новая песня', artist: '', src: '', bpm: 0, offset: 0 }
 };
-const hidden = p => p === 'dressup.items' || p === 'dressup.layout' || p === 'github' || p === 'order' || /\.charts$/.test(p);
-const IMG_KEYS = /^(img|imgFull|imgDone|bg|thumb|cover|portrait)$/;
+const hidden = p => p === 'dressup.items' || p === 'dressup.layout' || p === 'github' || /\.charts$/.test(p);
+const IMG_KEYS = /^(img|imgFull|imgDone|bg|thumb|cover|portrait|wall|floor|closed|open|inside|sponge|cream|spatula|yolk|shell|drop|cherry)$/;
 const AUD_KEYS = /^(music|audio|sound)$/;
 function kind(p, key, val) {
   if (typeof val === 'number') return 'num';
   if (typeof val === 'boolean') return 'bool';
   val = String(val ?? '');
   if (AUD_KEYS.test(key) || /\.(mp3|ogg|wav|m4a)$/i.test(val) || /songs\.\d+\.src$/.test(p)) return 'audio';
-  if (IMG_KEYS.test(key) || key === 'src' || /\.(png|jpe?g|webp|gif|svg)$/i.test(val)) return 'image';
+  if (/\.(png|jpe?g|webp|gif|svg)$/i.test(val) || G.pending.has(val)) return 'image';
+  if (val && !/[\/.]/.test(val)) return /^#[0-9a-f]{6}$/i.test(val) ? 'color' : 'text';
+  if (IMG_KEYS.test(key) || key === 'src') return 'image';
   if (/^#[0-9a-f]{6}$/i.test(val)) return 'color';
   return 'text';
 }
@@ -323,7 +348,7 @@ function buildSel() {
 
 function buildScene() {
   const sc = G.scene;
-  $('#edScene').textContent = ({ title: 'заставка', room: 'комната', kitchen: 'торт', dressup: 'одевашка',
+  $('#edScene').textContent = ({ title: 'заставка', world: 'дом', kitchen: 'торт', dressup: 'одевашка',
     rhythm: 'ритм-игра', cutscene: 'катсцена', finale: 'финал' })[G.sceneId] || '';
   const tools = $('#edTools'), tsec = $('#edToolsSec');
   tools.innerHTML = '';
@@ -347,12 +372,12 @@ function buildAll() {
 
 function buildNav() {
   const box = $('#edNavBox');
-  const rooms = Object.keys(G.cfg.rooms);
+  const R = G.cfg.world.rooms, rooms = Object.keys(R);
   const items = [
     ['title', 'Заставка'],
-    ...rooms.map(r => [`room:${r}`, '🚪 ' + G.cfg.rooms[r].name]),
+    ...rooms.map(r => [`room:${r}`, '🚪 ' + R[r].name]),
     ['kitchen:0', '🎂 Торт'], ['dressup', '👗 Одевашка'], ['rhythm', '🎵 Ритм'],
-    ...rooms.filter(r => G.cfg.rooms[r].cutscene).map(r => [`cutscene:${r}`, '🖼 Катсцена: ' + G.cfg.rooms[r].name]),
+    ...rooms.filter(r => R[r].cutscene).map(r => [`cutscene:${r}`, '🖼 Катсцена: ' + R[r].name]),
     ['finale', '🎆 Финал']
   ];
   box.innerHTML = '';
@@ -452,7 +477,7 @@ function build() {
   $('#edImport').onclick = () => pickFile('.json,application/json', async f => {
     try {
       const c = JSON.parse(await f.text());
-      if (!c.rooms || !c.meta) throw new Error('это не файл настроек игры');
+      if (!c.world || !c.meta) throw new Error('это не файл настроек игры');
       G.cfg = c; sel = null;
       G.refresh(); rebuild(); paintState();
       note('Настройки загружены. Чтобы они попали на сайт — «Сохранить»');
@@ -524,6 +549,7 @@ async function save() {
 function select(path) {
   sel = path;
   buildSel();
+  if (built && G.editing && G.scene?.selectTools) G.scene.editorTools($('#edTools'));
   if (path) panel.querySelector('.ed__body').scrollTop = 0;
 }
 const selEl = () => sel ? view.querySelector(`[data-edit="${CSS.escape(sel)}"]`) : null;
@@ -539,11 +565,12 @@ view.addEventListener('pointerdown', e => {
   if (!G.editing) return;
   e.preventDefault(); e.stopPropagation();
   const t = e.target.closest('[data-edit]');
-  if (!t) { select(null); return; }
+  if (!t) { select(null); G.scene?.editPan?.(e); return; }
   const path = t.dataset.edit, o = G.get(path);
   if (sel !== path) select(path);
-  if (!movable(o)) return;
-  drag = { mode: 'move', path, el: t, o, sx: e.clientX, sy: e.clientY, ox: o.x, oy: o.y, moved: false };
+  if (!movable(o) || t.dataset.nodrag) { G.scene?.editPan?.(e); return; }
+  const unit = +(t.closest('[data-unit]')?.dataset.unit || 1);
+  drag = { mode: 'move', path, el: t, o, sx: e.clientX, sy: e.clientY, ox: o.x, oy: o.y, moved: false, unit };
   view.setPointerCapture(e.pointerId);
 }, true);
 
@@ -551,14 +578,14 @@ selH.addEventListener('pointerdown', e => {
   const el = selEl(), o = sel && G.get(sel);
   if (!o || typeof o.w !== 'number') return;
   e.preventDefault(); e.stopPropagation();
-  drag = { mode: 'size', path: sel, el, o, sx: e.clientX, sy: e.clientY, ow: o.w, oh: o.h, moved: false };
+  drag = { mode: 'size', path: sel, el, o, sx: e.clientX, sy: e.clientY, ow: o.w, oh: o.h, moved: false, unit: +(el?.closest('[data-unit]')?.dataset.unit || 1) };
   selH.setPointerCapture(e.pointerId);
 });
 
 function onMove(e) {
   if (!drag) return;
-  const dx = (e.clientX - drag.sx) / G.k, dy = (e.clientY - drag.sy) / G.k, o = drag.o;
-  if (!drag.moved && Math.hypot(dx, dy) * G.k < 3) return;
+  const dx = (e.clientX - drag.sx) / G.k / drag.unit, dy = (e.clientY - drag.sy) / G.k / drag.unit, o = drag.o;
+  if (!drag.moved && Math.hypot(e.clientX - drag.sx, e.clientY - drag.sy) < 3) return;
   drag.moved = true;
   if (drag.mode === 'move') {
     o.x = Math.round(drag.ox + dx);
@@ -636,7 +663,11 @@ const api = G.editor = {
 
   /** сцена сама поменяла конфиг (например, одевашка подвинула вещь) */
   changed: touch,
-  stash, note,
+  stash, stashFile, pickFile, note,
+  get sel() { return sel; },
+  select(path) { select(path); G.scene?.editorTools && this.toolsChanged(); },
+  /** перестроить панель после добавления/удаления объектов */
+  structural,
 
   /** клавиши в режиме редактора; true — клавиша обработана */
   key(e) {
@@ -662,7 +693,7 @@ const api = G.editor = {
     selBox.hidden = false;
     selBox.style.left = r.left + 'px'; selBox.style.top = r.top + 'px';
     selBox.style.width = r.width + 'px'; selBox.style.height = r.height + 'px';
-    selH.hidden = !(o && typeof o.w === 'number');
+    selH.hidden = !(o && typeof o.w === 'number') || !!el.dataset.nodrag;
     const label = movable(o) ? `${Math.round(o.x)}, ${Math.round(o.y)}${typeof o.w === 'number' ? ' · ' + Math.round(o.w) : ''}` : '';
     if (selL.textContent !== label) selL.textContent = label;
   },

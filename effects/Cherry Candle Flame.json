@@ -1,0 +1,234 @@
+{
+ "app": "arcadia-effects",
+ "v": 1,
+ "doc": {
+  "id": "fx_cherry_flame",
+  "name": "Cherry Candle Flame",
+  "comp": {
+   "w": 96,
+   "h": 144,
+   "dur": 3
+  },
+  "exp": {
+   "cols": 4,
+   "rows": 2,
+   "frames": 8,
+   "pixelArt": true,
+   "t0": 1.2,
+   "t1": 2
+  },
+  "layers": [
+   {
+    "id": "lr_flame_1",
+    "type": "postfx",
+    "name": "Pixelate",
+    "fx": {
+     "effect": "pixelate",
+     "pxW": 24,
+     "pxSnap": true,
+     "pxSample": "peak",
+     "pxAlpha": "cut",
+     "pxThr": 0.42,
+     "pxGain": 1.5,
+     "pxColor": "levels",
+     "pxLev": 5,
+     "pxSat": 1.2
+    }
+   },
+   {
+    "id": "lr_flame_2",
+    "type": "emitter",
+    "name": "Core",
+    "blend": "normal",
+    "em": {
+     "y": 44,
+     "shape": "circle",
+     "sx": 4,
+     "sy": 2,
+     "dir": "dir",
+     "angle": -90,
+     "spread": 8,
+     "speed": 80,
+     "speedRnd": 0.2,
+     "rate": 46,
+     "bursts": [],
+     "seed": 4
+    },
+    "pt": {
+     "life": 0.42,
+     "lifeRnd": 0.2,
+     "sprite": {
+      "kind": "shape",
+      "id": "dot",
+      "p": {}
+     },
+     "size": 30,
+     "sizeRnd": 0.2,
+     "sizeOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 0.9
+       },
+       {
+        "t": 0.3,
+        "v": 0.8
+       },
+       {
+        "t": 1,
+        "v": 0
+       }
+      ]
+     },
+     "opacityOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 1
+       },
+       {
+        "t": 0.8,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0
+       }
+      ]
+     },
+     "grad": {
+      "stops": [
+       {
+        "t": 0,
+        "c": [
+         255,
+         255,
+         255
+        ]
+       },
+       {
+        "t": 0.4,
+        "c": [
+         255,
+         243,
+         176
+        ]
+       },
+       {
+        "t": 1,
+        "c": [
+         255,
+         209,
+         102
+        ]
+       }
+      ]
+     },
+     "spin": 0,
+     "gravY": -120,
+     "drag": 1.5,
+     "turbAmp": 110,
+     "turbFreq": 5
+    }
+   },
+   {
+    "id": "lr_flame_3",
+    "type": "emitter",
+    "name": "Flame",
+    "blend": "normal",
+    "em": {
+     "y": 46,
+     "shape": "circle",
+     "sx": 7,
+     "sy": 3,
+     "dir": "dir",
+     "angle": -90,
+     "spread": 12,
+     "speed": 110,
+     "speedRnd": 0.3,
+     "rate": 60,
+     "bursts": [],
+     "seed": 2
+    },
+    "pt": {
+     "life": 0.6,
+     "lifeRnd": 0.25,
+     "sprite": {
+      "kind": "shape",
+      "id": "dot",
+      "p": {}
+     },
+     "size": 44,
+     "sizeRnd": 0.25,
+     "sizeOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 0.85
+       },
+       {
+        "t": 0.35,
+        "v": 0.8
+       },
+       {
+        "t": 1,
+        "v": 0
+       }
+      ]
+     },
+     "opacityOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 1
+       },
+       {
+        "t": 0.8,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0
+       }
+      ]
+     },
+     "grad": {
+      "stops": [
+       {
+        "t": 0,
+        "c": [
+         255,
+         209,
+         102
+        ]
+       },
+       {
+        "t": 0.45,
+        "c": [
+         255,
+         158,
+         44
+        ]
+       },
+       {
+        "t": 1,
+        "c": [
+         226,
+         83,
+         27
+        ]
+       }
+      ]
+     },
+     "spin": 0,
+     "gravY": -230,
+     "drag": 1.4,
+     "turbAmp": 190,
+     "turbFreq": 4.5
+    }
+   }
+  ],
+  "textures": []
+ },
+ "tex": {}
+}

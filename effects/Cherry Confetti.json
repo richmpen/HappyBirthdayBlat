@@ -1,0 +1,700 @@
+{
+ "app": "arcadia-effects",
+ "v": 1,
+ "doc": {
+  "id": "fx_cherry_confetti",
+  "name": "Cherry Confetti",
+  "comp": {
+   "w": 512,
+   "h": 384,
+   "dur": 1.9
+  },
+  "exp": {
+   "cols": 6,
+   "rows": 4,
+   "frames": 24,
+   "cellW": 256,
+   "cellH": 192
+  },
+  "layers": [
+   {
+    "id": "lr_confetti_1",
+    "type": "emitter",
+    "name": "Confetti 1",
+    "blend": "normal",
+    "em": {
+     "x": -236,
+     "y": 190,
+     "bursts": [
+      {
+       "t": 0,
+       "n": 13
+      },
+      {
+       "t": 0.12,
+       "n": 8
+      },
+      {
+       "t": 0.26,
+       "n": 4
+      }
+     ],
+     "dir": "dir",
+     "angle": -62,
+     "spread": 34,
+     "speed": 760,
+     "speedRnd": 0.45,
+     "seed": 20
+    },
+    "pt": {
+     "life": 1.6,
+     "lifeRnd": 0.15,
+     "sprite": {
+      "kind": "shape",
+      "id": "square",
+      "p": {}
+     },
+     "size": 15,
+     "sizeRnd": 0.5,
+     "sizeOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0.8
+       }
+      ]
+     },
+     "opacityOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 1
+       },
+       {
+        "t": 0.82,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0
+       }
+      ]
+     },
+     "grad": {
+      "stops": [
+       {
+        "t": 0,
+        "c": [
+         255,
+         77,
+         109
+        ]
+       },
+       {
+        "t": 1,
+        "c": [
+         201,
+         24,
+         74
+        ]
+       }
+      ]
+     },
+     "rotRnd": 1,
+     "spin": 420,
+     "spinRnd": 1,
+     "gravY": 640,
+     "drag": 1.15,
+     "turbAmp": 260,
+     "turbFreq": 2.2
+    }
+   },
+   {
+    "id": "lr_confetti_2",
+    "type": "emitter",
+    "name": "Confetti 2",
+    "blend": "normal",
+    "em": {
+     "x": 236,
+     "y": 190,
+     "bursts": [
+      {
+       "t": 0,
+       "n": 13
+      },
+      {
+       "t": 0.12,
+       "n": 8
+      },
+      {
+       "t": 0.26,
+       "n": 4
+      }
+     ],
+     "dir": "dir",
+     "angle": -118,
+     "spread": 34,
+     "speed": 760,
+     "speedRnd": 0.45,
+     "seed": 21
+    },
+    "pt": {
+     "life": 1.6,
+     "lifeRnd": 0.15,
+     "sprite": {
+      "kind": "shape",
+      "id": "square",
+      "p": {}
+     },
+     "size": 15,
+     "sizeRnd": 0.5,
+     "sizeOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0.8
+       }
+      ]
+     },
+     "opacityOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 1
+       },
+       {
+        "t": 0.82,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0
+       }
+      ]
+     },
+     "grad": {
+      "stops": [
+       {
+        "t": 0,
+        "c": [
+         255,
+         209,
+         102
+        ]
+       },
+       {
+        "t": 1,
+        "c": [
+         255,
+         183,
+         3
+        ]
+       }
+      ]
+     },
+     "rotRnd": 1,
+     "spin": 420,
+     "spinRnd": 1,
+     "gravY": 640,
+     "drag": 1.15,
+     "turbAmp": 260,
+     "turbFreq": 2.2
+    }
+   },
+   {
+    "id": "lr_confetti_3",
+    "type": "emitter",
+    "name": "Confetti 3",
+    "blend": "normal",
+    "em": {
+     "x": -236,
+     "y": 190,
+     "bursts": [
+      {
+       "t": 0,
+       "n": 13
+      },
+      {
+       "t": 0.12,
+       "n": 8
+      },
+      {
+       "t": 0.26,
+       "n": 4
+      }
+     ],
+     "dir": "dir",
+     "angle": -62,
+     "spread": 34,
+     "speed": 760,
+     "speedRnd": 0.45,
+     "seed": 22
+    },
+    "pt": {
+     "life": 1.6,
+     "lifeRnd": 0.15,
+     "sprite": {
+      "kind": "shape",
+      "id": "poly",
+      "p": {
+       "n": 3
+      }
+     },
+     "size": 15,
+     "sizeRnd": 0.5,
+     "sizeOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0.8
+       }
+      ]
+     },
+     "opacityOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 1
+       },
+       {
+        "t": 0.82,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0
+       }
+      ]
+     },
+     "grad": {
+      "stops": [
+       {
+        "t": 0,
+        "c": [
+         255,
+         255,
+         255
+        ]
+       },
+       {
+        "t": 1,
+        "c": [
+         255,
+         204,
+         213
+        ]
+       }
+      ]
+     },
+     "rotRnd": 1,
+     "spin": 420,
+     "spinRnd": 1,
+     "gravY": 640,
+     "drag": 1.15,
+     "turbAmp": 260,
+     "turbFreq": 2.2
+    }
+   },
+   {
+    "id": "lr_confetti_4",
+    "type": "emitter",
+    "name": "Confetti 4",
+    "blend": "normal",
+    "em": {
+     "x": 236,
+     "y": 190,
+     "bursts": [
+      {
+       "t": 0,
+       "n": 13
+      },
+      {
+       "t": 0.12,
+       "n": 8
+      },
+      {
+       "t": 0.26,
+       "n": 4
+      }
+     ],
+     "dir": "dir",
+     "angle": -118,
+     "spread": 34,
+     "speed": 760,
+     "speedRnd": 0.45,
+     "seed": 23
+    },
+    "pt": {
+     "life": 1.6,
+     "lifeRnd": 0.15,
+     "sprite": {
+      "kind": "shape",
+      "id": "square",
+      "p": {}
+     },
+     "size": 15,
+     "sizeRnd": 0.5,
+     "sizeOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0.8
+       }
+      ]
+     },
+     "opacityOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 1
+       },
+       {
+        "t": 0.82,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0
+       }
+      ]
+     },
+     "grad": {
+      "stops": [
+       {
+        "t": 0,
+        "c": [
+         155,
+         231,
+         196
+        ]
+       },
+       {
+        "t": 1,
+        "c": [
+         94,
+         201,
+         160
+        ]
+       }
+      ]
+     },
+     "rotRnd": 1,
+     "spin": 420,
+     "spinRnd": 1,
+     "gravY": 640,
+     "drag": 1.15,
+     "turbAmp": 260,
+     "turbFreq": 2.2
+    }
+   },
+   {
+    "id": "lr_confetti_5",
+    "type": "emitter",
+    "name": "Confetti 5",
+    "blend": "normal",
+    "em": {
+     "x": -236,
+     "y": 190,
+     "bursts": [
+      {
+       "t": 0,
+       "n": 13
+      },
+      {
+       "t": 0.12,
+       "n": 8
+      },
+      {
+       "t": 0.26,
+       "n": 4
+      }
+     ],
+     "dir": "dir",
+     "angle": -62,
+     "spread": 34,
+     "speed": 760,
+     "speedRnd": 0.45,
+     "seed": 24
+    },
+    "pt": {
+     "life": 1.6,
+     "lifeRnd": 0.15,
+     "sprite": {
+      "kind": "shape",
+      "id": "square",
+      "p": {}
+     },
+     "size": 15,
+     "sizeRnd": 0.5,
+     "sizeOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0.8
+       }
+      ]
+     },
+     "opacityOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 1
+       },
+       {
+        "t": 0.82,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0
+       }
+      ]
+     },
+     "grad": {
+      "stops": [
+       {
+        "t": 0,
+        "c": [
+         201,
+         167,
+         255
+        ]
+       },
+       {
+        "t": 1,
+        "c": [
+         155,
+         109,
+         255
+        ]
+       }
+      ]
+     },
+     "rotRnd": 1,
+     "spin": 420,
+     "spinRnd": 1,
+     "gravY": 640,
+     "drag": 1.15,
+     "turbAmp": 260,
+     "turbFreq": 2.2
+    }
+   },
+   {
+    "id": "lr_confetti_6",
+    "type": "emitter",
+    "name": "Confetti 6",
+    "blend": "normal",
+    "em": {
+     "x": 236,
+     "y": 190,
+     "bursts": [
+      {
+       "t": 0,
+       "n": 13
+      },
+      {
+       "t": 0.12,
+       "n": 8
+      },
+      {
+       "t": 0.26,
+       "n": 4
+      }
+     ],
+     "dir": "dir",
+     "angle": -118,
+     "spread": 34,
+     "speed": 760,
+     "speedRnd": 0.45,
+     "seed": 25
+    },
+    "pt": {
+     "life": 1.6,
+     "lifeRnd": 0.15,
+     "sprite": {
+      "kind": "shape",
+      "id": "poly",
+      "p": {
+       "n": 3
+      }
+     },
+     "size": 15,
+     "sizeRnd": 0.5,
+     "sizeOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0.8
+       }
+      ]
+     },
+     "opacityOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 1
+       },
+       {
+        "t": 0.82,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0
+       }
+      ]
+     },
+     "grad": {
+      "stops": [
+       {
+        "t": 0,
+        "c": [
+         255,
+         143,
+         163
+        ]
+       },
+       {
+        "t": 1,
+        "c": [
+         255,
+         77,
+         109
+        ]
+       }
+      ]
+     },
+     "rotRnd": 1,
+     "spin": 420,
+     "spinRnd": 1,
+     "gravY": 640,
+     "drag": 1.15,
+     "turbAmp": 260,
+     "turbFreq": 2.2
+    }
+   },
+   {
+    "id": "lr_confetti_7",
+    "type": "emitter",
+    "name": "Glints",
+    "blend": "add",
+    "em": {
+     "y": 60,
+     "shape": "box",
+     "sx": 200,
+     "sy": 110,
+     "speed": 0,
+     "speedRnd": 0,
+     "rate": 0,
+     "bursts": [
+      {
+       "t": 0.1,
+       "n": 6
+      },
+      {
+       "t": 0.3,
+       "n": 6
+      },
+      {
+       "t": 0.55,
+       "n": 5
+      }
+     ],
+     "seed": 40
+    },
+    "pt": {
+     "life": 0.45,
+     "lifeRnd": 0.3,
+     "sprite": {
+      "kind": "shape",
+      "id": "spark",
+      "p": {}
+     },
+     "size": 40,
+     "sizeRnd": 0.5,
+     "sizeOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 0
+       },
+       {
+        "t": 0.4,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0
+       }
+      ]
+     },
+     "opacityOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 0
+       },
+       {
+        "t": 0.4,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0
+       }
+      ]
+     },
+     "grad": {
+      "stops": [
+       {
+        "t": 0,
+        "c": [
+         255,
+         255,
+         255
+        ]
+       },
+       {
+        "t": 1,
+        "c": [
+         255,
+         243,
+         176
+        ]
+       }
+      ]
+     },
+     "spin": 60,
+     "drag": 0,
+     "glow": 0.4
+    }
+   }
+  ],
+  "textures": []
+ },
+ "tex": {}
+}

@@ -1,0 +1,198 @@
+{
+ "app": "arcadia-effects",
+ "v": 1,
+ "doc": {
+  "id": "fx_cherry_twinkle",
+  "name": "Cherry Twinkle",
+  "comp": {
+   "w": 512,
+   "h": 288,
+   "dur": 4
+  },
+  "exp": {
+   "cols": 6,
+   "rows": 4,
+   "frames": 24,
+   "cellW": 256,
+   "cellH": 144,
+   "t0": 2,
+   "t1": 4
+  },
+  "layers": [
+   {
+    "id": "lr_twinkle_1",
+    "type": "emitter",
+    "name": "Big sparks",
+    "blend": "add",
+    "em": {
+     "shape": "box",
+     "sx": 236,
+     "sy": 124,
+     "speed": 0,
+     "speedRnd": 0,
+     "rate": 6,
+     "bursts": [],
+     "seed": 5
+    },
+    "pt": {
+     "life": 1.1,
+     "lifeRnd": 0.3,
+     "sprite": {
+      "kind": "shape",
+      "id": "star",
+      "p": {
+       "n": 4,
+       "inr": 0.22
+      }
+     },
+     "size": 40,
+     "sizeRnd": 0.6,
+     "sizeOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 0
+       },
+       {
+        "t": 0.4,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0
+       }
+      ]
+     },
+     "opacityOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 0
+       },
+       {
+        "t": 0.4,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0
+       }
+      ]
+     },
+     "grad": {
+      "stops": [
+       {
+        "t": 0,
+        "c": [
+         255,
+         255,
+         255
+        ]
+       },
+       {
+        "t": 1,
+        "c": [
+         255,
+         243,
+         176
+        ]
+       }
+      ]
+     },
+     "rot": 0,
+     "rotRnd": 0,
+     "spin": 25,
+     "spinRnd": 1,
+     "drag": 0,
+     "glow": 0.5
+    }
+   },
+   {
+    "id": "lr_twinkle_2",
+    "type": "emitter",
+    "name": "Tiny dots",
+    "blend": "add",
+    "em": {
+     "shape": "box",
+     "sx": 240,
+     "sy": 130,
+     "dir": "dir",
+     "angle": -90,
+     "spread": 30,
+     "speed": 14,
+     "speedRnd": 0.6,
+     "rate": 9,
+     "bursts": [],
+     "seed": 9
+    },
+    "pt": {
+     "life": 1.3,
+     "lifeRnd": 0.3,
+     "sprite": {
+      "kind": "shape",
+      "id": "dot",
+      "p": {}
+     },
+     "size": 7,
+     "sizeRnd": 0.6,
+     "sizeOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 0
+       },
+       {
+        "t": 0.4,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0
+       }
+      ]
+     },
+     "opacityOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 0
+       },
+       {
+        "t": 0.4,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0
+       }
+      ]
+     },
+     "grad": {
+      "stops": [
+       {
+        "t": 0,
+        "c": [
+         255,
+         255,
+         255
+        ]
+       },
+       {
+        "t": 1,
+        "c": [
+         255,
+         243,
+         176
+        ]
+       }
+      ]
+     },
+     "spin": 0,
+     "drag": 0
+    }
+   }
+  ],
+  "textures": []
+ },
+ "tex": {}
+}

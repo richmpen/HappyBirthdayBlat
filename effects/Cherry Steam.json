@@ -1,0 +1,134 @@
+{
+ "app": "arcadia-effects",
+ "v": 1,
+ "doc": {
+  "id": "fx_cherry_steam",
+  "name": "Cherry Steam",
+  "comp": {
+   "w": 128,
+   "h": 256,
+   "dur": 5
+  },
+  "exp": {
+   "cols": 4,
+   "rows": 3,
+   "frames": 12,
+   "pixelArt": true,
+   "t0": 3,
+   "t1": 4.5
+  },
+  "layers": [
+   {
+    "id": "lr_steam_1",
+    "type": "postfx",
+    "name": "Pixelate",
+    "fx": {
+     "effect": "pixelate",
+     "pxW": 32,
+     "pxSnap": true,
+     "pxSample": "peak",
+     "pxAlpha": "cut",
+     "pxThr": 0.34,
+     "pxGain": 1.2
+    }
+   },
+   {
+    "id": "lr_steam_2",
+    "type": "emitter",
+    "name": "Steam",
+    "blend": "normal",
+    "em": {
+     "y": 104,
+     "shape": "box",
+     "sx": 22,
+     "sy": 4,
+     "dir": "dir",
+     "angle": -90,
+     "spread": 14,
+     "speed": 78,
+     "speedRnd": 0.3,
+     "rate": 9,
+     "bursts": [],
+     "seed": 3
+    },
+    "pt": {
+     "life": 1.9,
+     "lifeRnd": 0.2,
+     "sprite": {
+      "kind": "shape",
+      "id": "smoke",
+      "p": {}
+     },
+     "size": 58,
+     "sizeRnd": 0.3,
+     "sizeOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 0.3
+       },
+       {
+        "t": 0.5,
+        "v": 0.9
+       },
+       {
+        "t": 1,
+        "v": 1.2
+       }
+      ]
+     },
+     "opacityOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 0
+       },
+       {
+        "t": 0.2,
+        "v": 0.8
+       },
+       {
+        "t": 0.6,
+        "v": 0.55
+       },
+       {
+        "t": 1,
+        "v": 0
+       }
+      ]
+     },
+     "grad": {
+      "stops": [
+       {
+        "t": 0,
+        "c": [
+         255,
+         255,
+         255
+        ]
+       },
+       {
+        "t": 1,
+        "c": [
+         243,
+         230,
+         224
+        ]
+       }
+      ]
+     },
+     "spin": 25,
+     "spinRnd": 1,
+     "gravY": -18,
+     "drag": 0.5,
+     "turbMode": "curl",
+     "turbAmp": 90,
+     "turbScale": 50,
+     "turbRise": 40
+    }
+   }
+  ],
+  "textures": []
+ },
+ "tex": {}
+}

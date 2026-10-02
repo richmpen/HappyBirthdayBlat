@@ -7,7 +7,9 @@
    • Игровой экран — «виртуальные» 960×540, растягивается под окно.
      Координаты объектов: x,y — точка НИЗ-ЦЕНТР картинки («ноги»),
      w — ширина; высота считается сама по пропорциям картинки.
-   • Сцены: title, room, kitchen, dressup, rhythm, cutscene, finale.
+   • Сцены: title, world, kitchen, dressup, rhythm, cutscene, finale.
+   • Эффекты (G.fx) — спрайт-атласы, собранные в Arcadia Effector
+     из файлов effects/*.json; список — data/game.json → fx.
    ============================================================ */
 (() => {
 'use strict';
@@ -75,7 +77,7 @@ G.loadConfig = async () => {
 
 /* ---------------- прогресс игрока (в браузере) ---------------- */
 const PKEY = 'cherry.progress.v1';
-const freshProgress = () => ({ done: {}, songs: {}, records: {}, outfit: null, finale: false, unlockAll: false });
+const freshProgress = () => ({ done: {}, visited: {}, songs: {}, records: {}, outfit: null, finale: false, unlockAll: false });
 G.progress = Object.assign(freshProgress(), readLS(PKEY, {}));
 G.saveProgress  = () => writeLS(PKEY, G.progress);
 G.resetProgress = () => { G.progress = freshProgress(); G.saveProgress(); };
@@ -207,6 +209,83 @@ G.zone = (o, path, label, cls = '') => {
   return z;
 };
 
+/* ---------------- эффекты: атласы из Arcadia Effector ---------------- */
+const fxImgs = new Map(), fxLive = new Set();
+function fxFrame(st, f) {
+  const d = st.d;
+  st.frame = f;
+  st.e.style.backgroundPosition =
+    `${d.cols > 1 ? (f % d.cols) / (d.cols - 1) * 100 : 0}% ${d.rows > 1 ? Math.floor(f / d.cols) / (d.rows - 1) * 100 : 0}%`;
+}
+G.fx = {
+  def: name => G.cfg.fx?.[name],
+  image(name) {
+    const d = this.def(name);
+    if (!d) return null;
+    let im = fxImgs.get(d.img);
+    if (!im) { im = new Image(); im.src = G.asset(d.img); fxImgs.set(d.img, im); }
+    return im;
+  },
+  /** элемент, который проигрывает эффект (сам удалится в конце, если эффект не зациклен) */
+  el(name, o = {}) {
+    const d = this.def(name);
+    if (!d || !d.img) return null;
+    const e = G.el('div', 'fx' + (d.pixel ? ' px' : '') + (d.blend === 'add' ? ' fx--add' : ''));
+    const k = (o.scale ?? 1) * (d.scale ?? 1);
+    e.style.width = d.w * k + 'px'; e.style.height = d.h * k + 'px';
+    e.style.backgroundImage = `url("${G.asset(d.img)}")`;
+    e.style.backgroundSize = `${d.cols * 100}% ${d.rows * 100}%`;
+    const st = { e, d, t: 0, loop: o.loop ?? !!d.loop, onEnd: o.onEnd, frame: 0, seen: false };
+    fxFrame(st, 0);
+    fxLive.add(st);
+    return e;
+  },
+  /** эффект в точке (x, y) внутри элемента parent */
+  at(name, parent, x, y, o = {}) {
+    const e = this.el(name, o);
+    if (!e || !parent) return null;
+    e.style.left = x + 'px'; e.style.top = y + 'px';
+    if (o.z != null) e.style.zIndex = o.z;
+    parent.appendChild(e);
+    return e;
+  },
+  /** эффект поверх всего, в координатах окна */
+  screen(name, cx, cy, o) { return this.at(name, $('#fxLayer'), cx, cy, o); },
+  /** эффект над элементом (по его центру) */
+  over(name, el, o = {}) {
+    const r = el.getBoundingClientRect();
+    return this.screen(name, r.left + r.width / 2 + (o.dx || 0), r.top + r.height / 2 + (o.dy || 0), o);
+  },
+  /** кадр эффекта на canvas в момент t; false — эффект уже кончился */
+  draw(g, name, t, x, y, scale = 1, alpha = 1) {
+    const d = this.def(name), im = this.image(name);
+    if (!d || !im || !im.complete || !im.naturalWidth) return t < 1;
+    let f = Math.floor(t * d.fps);
+    if (f >= d.frames) { if (!d.loop) return false; f %= d.frames; }
+    if (f < 0) return true;
+    const sw = im.naturalWidth / d.cols, sh = im.naturalHeight / d.rows, w = d.w * scale * (d.scale ?? 1), h = d.h * scale * (d.scale ?? 1);
+    const pa = g.globalAlpha, pc = g.globalCompositeOperation;
+    g.globalAlpha = pa * alpha;
+    if (d.blend === 'add') g.globalCompositeOperation = 'lighter';
+    g.drawImage(im, (f % d.cols) * sw, Math.floor(f / d.cols) * sh, sw, sh, x - w / 2, y - h / 2, w, h);
+    g.globalAlpha = pa; g.globalCompositeOperation = pc;
+    return true;
+  },
+  tick(dt) {
+    for (const st of fxLive) {
+      if (st.e.isConnected) st.seen = true;
+      else if (st.seen) { fxLive.delete(st); continue; }
+      st.t += dt;
+      let f = Math.floor(st.t * st.d.fps);
+      if (f >= st.d.frames) {
+        if (st.loop) f %= st.d.frames;
+        else { fxLive.delete(st); st.e.remove(); st.onEnd && st.onEnd(); continue; }
+      }
+      if (f !== st.frame) fxFrame(st, f);
+    }
+  }
+};
+
 /* ---------------- затемнение при переходах ---------------- */
 const fadeEl = $('#fade');
 G.fade = async on => {
@@ -245,8 +324,8 @@ G.completeRoom = id => {
   G.saveProgress();
   G.sfx.win();
   return G.go('cutscene', {
-    path: `rooms.${id}.cutscene`,
-    next: () => (G.allDone() && !G.progress.finale) ? G.go('finale') : G.go('room', { id, at: 'npc' })
+    path: `world.rooms.${id}.cutscene`,
+    next: () => (G.allDone() && !G.progress.finale) ? G.go('finale') : G.go('world', { room: id })
   });
 };
 
@@ -396,6 +475,7 @@ function frame(now) {
   const dt = Math.min(.05, (now - last) / 1000);
   last = now;
   try { G.scene?.update?.(dt, now / 1000); } catch (e) { console.error(e); }
+  G.fx.tick(dt);
   G.editor?.tick?.();
   requestAnimationFrame(frame);
 }

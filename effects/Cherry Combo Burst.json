@@ -1,0 +1,546 @@
+{
+ "app": "arcadia-effects",
+ "v": 1,
+ "doc": {
+  "id": "fx_cherry_combo_burst",
+  "name": "Cherry Combo Burst",
+  "comp": {
+   "w": 384,
+   "h": 384,
+   "dur": 0.95
+  },
+  "exp": {
+   "cols": 4,
+   "rows": 4,
+   "frames": 16,
+   "cellW": 192,
+   "cellH": 192
+  },
+  "layers": [
+   {
+    "id": "lr_combo_burst_1",
+    "type": "emitter",
+    "name": "Hearts",
+    "blend": "normal",
+    "em": {
+     "y": 70,
+     "bursts": [
+      {
+       "t": 0,
+       "n": 10
+      },
+      {
+       "t": 0.1,
+       "n": 5
+      }
+     ],
+     "dir": "dir",
+     "angle": -90,
+     "spread": 75,
+     "speed": 470,
+     "speedRnd": 0.35,
+     "seed": 4
+    },
+    "pt": {
+     "life": 0.85,
+     "lifeRnd": 0.15,
+     "sprite": {
+      "kind": "tex",
+      "texId": "tex_cherry_heart"
+     },
+     "tintTex": true,
+     "size": 46,
+     "sizeRnd": 0.35,
+     "sizeOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 0.2
+       },
+       {
+        "t": 0.15,
+        "v": 1.1
+       },
+       {
+        "t": 0.3,
+        "v": 1
+       },
+       {
+        "t": 0.85,
+        "v": 0.9
+       },
+       {
+        "t": 1,
+        "v": 0
+       }
+      ]
+     },
+     "opacityOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 1
+       },
+       {
+        "t": 0.85,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0
+       }
+      ]
+     },
+     "grad": {
+      "stops": [
+       {
+        "t": 0,
+        "c": [
+         255,
+         143,
+         163
+        ]
+       },
+       {
+        "t": 0.5,
+        "c": [
+         255,
+         77,
+         109
+        ]
+       },
+       {
+        "t": 1,
+        "c": [
+         201,
+         24,
+         74
+        ]
+       }
+      ]
+     },
+     "rot": 0,
+     "rotRnd": 0.08,
+     "spin": 30,
+     "spinRnd": 1,
+     "gravY": 620,
+     "drag": 0.9
+    }
+   },
+   {
+    "id": "lr_combo_burst_2",
+    "type": "emitter",
+    "name": "Stars",
+    "blend": "normal",
+    "em": {
+     "y": 70,
+     "bursts": [
+      {
+       "t": 0,
+       "n": 12
+      }
+     ],
+     "dir": "dir",
+     "angle": -90,
+     "spread": 100,
+     "speed": 520,
+     "speedRnd": 0.4,
+     "seed": 8,
+     "sub": {
+      "on": true,
+      "emit": "death",
+      "count": 3,
+      "dir": "omni",
+      "speed": 80,
+      "speedRnd": 0.5,
+      "budget": 200,
+      "pt": {
+       "life": 0.25,
+       "sprite": {
+        "kind": "shape",
+        "id": "dot",
+        "p": {}
+       },
+       "size": 7,
+       "sizeOL": {
+        "pts": [
+         {
+          "t": 0,
+          "v": 1
+         },
+         {
+          "t": 1,
+          "v": 0
+         }
+        ]
+       },
+       "opacityOL": {
+        "pts": [
+         {
+          "t": 0,
+          "v": 1
+         },
+         {
+          "t": 0.55,
+          "v": 0.85
+         },
+         {
+          "t": 1,
+          "v": 0
+         }
+        ]
+       },
+       "grad": {
+        "stops": [
+         {
+          "t": 0,
+          "c": [
+           255,
+           255,
+           255
+          ]
+         },
+         {
+          "t": 1,
+          "c": [
+           255,
+           209,
+           102
+          ]
+         }
+        ]
+       },
+       "spin": 0,
+       "drag": 2
+      }
+     }
+    },
+    "pt": {
+     "life": 0.6,
+     "lifeRnd": 0.3,
+     "sprite": {
+      "kind": "shape",
+      "id": "star",
+      "p": {
+       "n": 5,
+       "inr": 0.45
+      }
+     },
+     "size": 30,
+     "sizeRnd": 0.4,
+     "sizeOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 0.3
+       },
+       {
+        "t": 0.2,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0
+       }
+      ]
+     },
+     "opacityOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 1
+       },
+       {
+        "t": 0.7,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0
+       }
+      ]
+     },
+     "grad": {
+      "stops": [
+       {
+        "t": 0,
+        "c": [
+         255,
+         255,
+         255
+        ]
+       },
+       {
+        "t": 0.3,
+        "c": [
+         255,
+         243,
+         176
+        ]
+       },
+       {
+        "t": 1,
+        "c": [
+         255,
+         183,
+         3
+        ]
+       }
+      ]
+     },
+     "spin": 200,
+     "spinRnd": 1,
+     "gravY": 500,
+     "drag": 1.2
+    }
+   },
+   {
+    "id": "lr_combo_burst_3",
+    "type": "emitter",
+    "name": "Confetti",
+    "blend": "normal",
+    "em": {
+     "y": 70,
+     "bursts": [
+      {
+       "t": 0,
+       "n": 22
+      }
+     ],
+     "dir": "dir",
+     "angle": -90,
+     "spread": 120,
+     "speed": 430,
+     "speedRnd": 0.6,
+     "seed": 12
+    },
+    "pt": {
+     "life": 0.8,
+     "lifeRnd": 0.2,
+     "sprite": {
+      "kind": "shape",
+      "id": "square",
+      "p": {}
+     },
+     "size": 11,
+     "sizeRnd": 0.5,
+     "sizeOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0.6
+       }
+      ]
+     },
+     "opacityOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 1
+       },
+       {
+        "t": 0.75,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0
+       }
+      ]
+     },
+     "grad": {
+      "stops": [
+       {
+        "t": 0,
+        "c": [
+         155,
+         231,
+         196
+        ]
+       },
+       {
+        "t": 0.5,
+        "c": [
+         155,
+         212,
+         255
+        ]
+       },
+       {
+        "t": 1,
+        "c": [
+         201,
+         167,
+         255
+        ]
+       }
+      ]
+     },
+     "spin": 500,
+     "spinRnd": 1,
+     "gravY": 560,
+     "drag": 1.4,
+     "turbAmp": 220,
+     "turbFreq": 2.5
+    }
+   },
+   {
+    "id": "lr_combo_burst_4",
+    "type": "sprite",
+    "name": "Ring",
+    "blend": "normal",
+    "start": 0,
+    "end": 0.4,
+    "opacity": {
+     "keys": [
+      {
+       "t": 0,
+       "v": 0.95,
+       "i": {
+        "m": "ease"
+       },
+       "o": {
+        "m": "ease"
+       }
+      },
+      {
+       "t": 0.36,
+       "v": 0,
+       "i": {
+        "m": "ease"
+       },
+       "o": {
+        "m": "ease"
+       }
+      }
+     ]
+    },
+    "sp": {
+     "sprite": {
+      "kind": "shape",
+      "id": "ring",
+      "p": {
+       "th": 0.1
+      }
+     },
+     "size": 170,
+     "y": 60,
+     "scale": {
+      "keys": [
+       {
+        "t": 0,
+        "v": 0.2,
+        "i": {
+         "m": "ease"
+        },
+        "o": {
+         "m": "ease"
+        }
+       },
+       {
+        "t": 0.36,
+        "v": 1.6,
+        "i": {
+         "m": "ease"
+        },
+        "o": {
+         "m": "ease"
+        }
+       }
+      ]
+     },
+     "color": [
+      255,
+      255,
+      255
+     ]
+    }
+   },
+   {
+    "id": "lr_combo_burst_5",
+    "type": "sprite",
+    "name": "Flash",
+    "blend": "screen",
+    "start": 0,
+    "end": 0.25,
+    "opacity": {
+     "keys": [
+      {
+       "t": 0,
+       "v": 1,
+       "i": {
+        "m": "ease"
+       },
+       "o": {
+        "m": "ease"
+       }
+      },
+      {
+       "t": 0.22,
+       "v": 0,
+       "i": {
+        "m": "ease"
+       },
+       "o": {
+        "m": "ease"
+       }
+      }
+     ]
+    },
+    "sp": {
+     "sprite": {
+      "kind": "shape",
+      "id": "soft",
+      "p": {}
+     },
+     "size": 220,
+     "y": 60,
+     "scale": {
+      "keys": [
+       {
+        "t": 0,
+        "v": 0.3,
+        "i": {
+         "m": "ease"
+        },
+        "o": {
+         "m": "ease"
+        }
+       },
+       {
+        "t": 0.14,
+        "v": 1.2,
+        "i": {
+         "m": "ease"
+        },
+        "o": {
+         "m": "ease"
+        }
+       }
+      ]
+     },
+     "color": [
+      255,
+      227,
+      234
+     ],
+     "glow": 0.5
+    }
+   }
+  ],
+  "textures": [
+   {
+    "id": "tex_cherry_heart",
+    "name": "heart",
+    "sheet": null
+   }
+  ]
+ },
+ "tex": {
+  "tex_cherry_heart": "data:image/png;base64,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"
+ }
+}

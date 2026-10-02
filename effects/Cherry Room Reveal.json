@@ -1,0 +1,362 @@
+{
+ "app": "arcadia-effects",
+ "v": 1,
+ "doc": {
+  "id": "fx_cherry_room_reveal",
+  "name": "Cherry Room Reveal",
+  "comp": {
+   "w": 384,
+   "h": 288,
+   "dur": 0.95
+  },
+  "exp": {
+   "cols": 4,
+   "rows": 3,
+   "frames": 12,
+   "pixelArt": true
+  },
+  "layers": [
+   {
+    "id": "lr_room_reveal_1",
+    "type": "postfx",
+    "name": "Pixelate",
+    "fx": {
+     "effect": "pixelate",
+     "pxW": 96,
+     "pxSnap": true,
+     "pxSample": "peak",
+     "pxAlpha": "cut",
+     "pxThr": 0.3,
+     "pxGain": 1.5
+    }
+   },
+   {
+    "id": "lr_room_reveal_2",
+    "type": "emitter",
+    "name": "Ring sparks",
+    "blend": "add",
+    "em": {
+     "bursts": [
+      {
+       "t": 0,
+       "n": 26
+      }
+     ],
+     "shape": "ring",
+     "sx": 26,
+     "sy": 6,
+     "dir": "out",
+     "speed": 330,
+     "speedRnd": 0.3,
+     "seed": 2
+    },
+    "pt": {
+     "life": 0.62,
+     "lifeRnd": 0.25,
+     "sprite": {
+      "kind": "shape",
+      "id": "star",
+      "p": {
+       "n": 4,
+       "inr": 0.3
+      }
+     },
+     "size": 30,
+     "sizeRnd": 0.4,
+     "sizeOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 0.3
+       },
+       {
+        "t": 0.2,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0
+       }
+      ]
+     },
+     "opacityOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 1
+       },
+       {
+        "t": 0.7,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0
+       }
+      ]
+     },
+     "grad": {
+      "stops": [
+       {
+        "t": 0,
+        "c": [
+         255,
+         255,
+         255
+        ]
+       },
+       {
+        "t": 0.4,
+        "c": [
+         255,
+         243,
+         176
+        ]
+       },
+       {
+        "t": 1,
+        "c": [
+         255,
+         143,
+         163
+        ]
+       }
+      ]
+     },
+     "spin": 120,
+     "spinRnd": 1,
+     "drag": 2.4
+    }
+   },
+   {
+    "id": "lr_room_reveal_3",
+    "type": "emitter",
+    "name": "Motes",
+    "blend": "add",
+    "start": 0.05,
+    "end": 0.4,
+    "em": {
+     "shape": "box",
+     "sx": 150,
+     "sy": 90,
+     "dir": "dir",
+     "angle": -90,
+     "spread": 20,
+     "speed": 60,
+     "speedRnd": 0.5,
+     "rate": 70,
+     "bursts": [],
+     "seed": 5
+    },
+    "pt": {
+     "life": 0.6,
+     "lifeRnd": 0.3,
+     "sprite": {
+      "kind": "shape",
+      "id": "dot",
+      "p": {}
+     },
+     "size": 11,
+     "sizeRnd": 0.5,
+     "sizeOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 0
+       },
+       {
+        "t": 0.4,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0
+       }
+      ]
+     },
+     "opacityOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 0
+       },
+       {
+        "t": 0.4,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0
+       }
+      ]
+     },
+     "grad": {
+      "stops": [
+       {
+        "t": 0,
+        "c": [
+         255,
+         243,
+         176
+        ]
+       },
+       {
+        "t": 1,
+        "c": [
+         255,
+         209,
+         102
+        ]
+       }
+      ]
+     },
+     "gravY": -90,
+     "drag": 0.5,
+     "spin": 0
+    }
+   },
+   {
+    "id": "lr_room_reveal_4",
+    "type": "sprite",
+    "name": "Ring",
+    "blend": "add",
+    "start": 0,
+    "end": 0.6,
+    "opacity": {
+     "keys": [
+      {
+       "t": 0,
+       "v": 0.9,
+       "i": {
+        "m": "ease"
+       },
+       "o": {
+        "m": "ease"
+       }
+      },
+      {
+       "t": 0.55,
+       "v": 0,
+       "i": {
+        "m": "ease"
+       },
+       "o": {
+        "m": "ease"
+       }
+      }
+     ]
+    },
+    "sp": {
+     "sprite": {
+      "kind": "shape",
+      "id": "ring",
+      "p": {
+       "th": 0.07
+      }
+     },
+     "size": 200,
+     "scale": {
+      "keys": [
+       {
+        "t": 0,
+        "v": 0.15,
+        "i": {
+         "m": "ease"
+        },
+        "o": {
+         "m": "ease"
+        }
+       },
+       {
+        "t": 0.55,
+        "v": 1.7,
+        "i": {
+         "m": "ease"
+        },
+        "o": {
+         "m": "ease"
+        }
+       }
+      ]
+     },
+     "color": [
+      255,
+      240,
+      243
+     ]
+    }
+   },
+   {
+    "id": "lr_room_reveal_5",
+    "type": "sprite",
+    "name": "Flash",
+    "blend": "add",
+    "start": 0,
+    "end": 0.3,
+    "opacity": {
+     "keys": [
+      {
+       "t": 0,
+       "v": 0.9,
+       "i": {
+        "m": "ease"
+       },
+       "o": {
+        "m": "ease"
+       }
+      },
+      {
+       "t": 0.28,
+       "v": 0,
+       "i": {
+        "m": "ease"
+       },
+       "o": {
+        "m": "ease"
+       }
+      }
+     ]
+    },
+    "sp": {
+     "sprite": {
+      "kind": "shape",
+      "id": "soft",
+      "p": {}
+     },
+     "size": 260,
+     "scale": {
+      "keys": [
+       {
+        "t": 0,
+        "v": 0.3,
+        "i": {
+         "m": "ease"
+        },
+        "o": {
+         "m": "ease"
+        }
+       },
+       {
+        "t": 0.16,
+        "v": 1.2,
+        "i": {
+         "m": "ease"
+        },
+        "o": {
+         "m": "ease"
+        }
+       }
+      ]
+     },
+     "color": [
+      255,
+      233,
+      201
+     ]
+    }
+   }
+  ],
+  "textures": []
+ },
+ "tex": {}
+}

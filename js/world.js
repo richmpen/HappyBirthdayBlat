@@ -19,7 +19,7 @@ let W, S, T;                       // конфиг мира, масштаб, р�
 let box, mapCv, playerEl, hintEl, bannerEl, nameEl;
 let ents = [], doors = [], darkEls = {};
 let cam = { x: 0, y: 0 }, bounds = { w: 0, h: 0 };
-let near = null, target = null, talking = false, transit = null, lockCool = 0, pan = null;
+let near = null, target = null, talking = false, transit = null, lockCool = 0, pan = null, palOpen = false;
 const P = { x: 0, y: 0, dir: 'down', t: 0, room: '', placed: false };
 const tex = new Map();             // путь → Image (текстуры стен/полов)
 
@@ -147,6 +147,7 @@ function render() {
     const zone = G.el('div', 'zone zone--edit wroom', `<span>${G.esc(r.name)}</span>`);
     Object.assign(zone.style, { left: q.x + 'px', top: q.y + 'px', width: q.w + 'px', height: q.h + 'px' });
     zone.dataset.edit = `world.rooms.${id}`;
+    zone.dataset.nodrag = 1;
     box.appendChild(zone);
 
     (r.props || []).forEach((p, i) => {
@@ -181,6 +182,7 @@ function render() {
     const k = doorGeo(d), locked = doorLocked(d);
     const e = G.el('div', 'wdoor wdoor--' + k.kind + (locked ? ' is-locked' : ''));
     e.dataset.edit = `world.doors.${i}`;
+    e.dataset.nodrag = 1;
     if (k.kind === 'top') {
       Object.assign(e.style, { left: k.x + 'px', top: (k.wallY - 48) + 'px', zIndex: Math.round(k.wallY) + 9 });
       e.innerHTML =
@@ -214,7 +216,7 @@ function render() {
 
   paintRoom(false);
   draw();
-  snapCam();
+  applyCam();
 }
 
 function paintRoom(announce) {
@@ -318,7 +320,7 @@ function tryTopDoors(vy) {
     const k = dr.k;
     if (k.kind !== 'top' || Math.abs(P.x - k.cx) > 11) continue;
     const A = geo(R(dr.d.a)), other = P.room === dr.d.a ? dr.d.b : dr.d.a;
-    const goingUp = P.room === dr.d.a && vy < 0 && P.y <= A.fy + 4;
+    const goingUp = P.room === dr.d.a && vy < 0 && P.y <= A.fy + 8;
     const goingDown = P.room === dr.d.b && vy > 0 && P.y >= k.edgeY - 5;
     if (!goingUp && !goingDown) continue;
     if (dr.locked) { bump(dr); return true; }
@@ -408,7 +410,7 @@ G.scenes.world = {
 
   refresh() {
     W = G.cfg.world;
-    render();
+    render();          // камера остаётся на месте — удобно править дальние комнаты
   },
   onEdit() { paintRoom(false); },
 
@@ -448,16 +450,17 @@ G.scenes.world = {
       if (vx || vy) {
         const len = Math.hypot(vx, vy), sp = (G.cfg.player.speed || 80) * dt;
         const nx = P.x + vx / len * sp, ny = P.y + vy / len * sp;
-        let moved = false;
-        if (free(nx, P.y)) { P.x = nx; moved = true; }
-        if (free(P.x, ny)) { P.y = ny; moved = true; }
+        const okX = !!vx && free(nx, P.y);
+        if (okX) P.x = nx;
+        const okY = !!vy && free(P.x, ny);
+        if (okY) P.y = ny;
         P.dir = Math.abs(vx) > Math.abs(vy) ? (vx < 0 ? 'left' : 'right') : (vy < 0 ? 'up' : 'down');
         P.t += dt;
-        if (!tryTopDoors(vy) && !moved) {
-          if (target) target.ttl -= dt * 4;
-          for (const dr of doors) {                        // упёрлись в закрытую боковую дверь
+        if (!tryTopDoors(vy)) {
+          if (!okX && !okY && target) target.ttl -= dt * 4;
+          if (vx && !okX) for (const dr of doors) {        // упёрлись в закрытую боковую дверь
             const k = dr.k;
-            if (k.kind === 'side' && dr.locked && Math.abs(P.x - k.x) < 12 && P.y > k.y && P.y < k.y + 2 * T + 4 && Math.sign(vx) === Math.sign(k.x - P.x)) bump(dr);
+            if (k.kind === 'side' && dr.locked && Math.abs(P.x - k.x) < 14 && P.y > k.y - 4 && P.y < k.y + 2 * T + 8 && Math.sign(vx) === Math.sign(k.x - P.x)) bump(dr);
           }
         }
         const rid = roomAt(P.x, P.y);
@@ -498,13 +501,68 @@ G.scenes.world = {
       cam.y = G.clamp(pan.cy - (ev.clientY - pan.sy) / G.k, -200, Math.max(0, bounds.h * S - G.VH) + 200);
       applyCam();
     };
-    const up = () => { removeEventListener('pointermove', move); removeEventListener('pointerup', up); };
-    addEventListener('pointermove', move); addEventListener('pointerup', up);
+    const up = () => { removeEventListener('pointermove', move, true); removeEventListener('pointerup', up, true); };
+    addEventListener('pointermove', move, true); addEventListener('pointerup', up, true);
   },
   /** центр экрана в координатах арта и комната под ним */
   center() {
     const x = Math.round((cam.x + G.VW / 2) / S), y = Math.round((cam.y + G.VH / 2) / S);
     return { x, y, room: roomAt(x, y) || P.room };
+  },
+
+  /* инструменты в панели редактора: добавить / удалить / настроить предмет */
+  selectTools: true,
+  editorTools(boxEl) {
+    const m = /^world\.rooms\.(\w+)\.props\.(\d+)$/.exec(G.editor.sel || '');
+    const prop = m && R(m[1])?.props[+m[2]];
+    const open = palOpen;
+    boxEl.innerHTML =
+      `<p class="ed__note">Все предметы в комнатах — отдельные картинки: их можно двигать, заменять и удалять.
+        Пустое место тянет камеру. Размер и текстуры комнаты — в её настройках ниже.</p>
+       <div class="ed__row"><button class="ed__btn ed__btn--main" id="wAdd">➕ Добавить предмет</button><button class="ed__btn" id="wUp">⬆ Своя картинка…</button></div>
+       <div class="ed__pal" id="wPal" hidden></div>
+       <div class="ed__label">Выбранный предмет</div>
+       <div class="ed__row ed__row--wrap">
+         <button class="ed__btn${prop?.solid ? ' is-on' : ''}" id="wSolid">Преграда</button>
+         <button class="ed__btn${prop?.flat ? ' is-on' : ''}" id="wFlat">На полу</button>
+         <button class="ed__btn${prop?.flip ? ' is-on' : ''}" id="wFlip">Отразить</button>
+         <button class="ed__btn" id="wDup">Дублировать</button>
+         <button class="ed__btn" id="wDel" style="color:#b3261e">🗑 Удалить</button>
+       </div>`;
+    const q = s => boxEl.querySelector(s);
+    ['#wSolid', '#wFlat', '#wFlip', '#wDup', '#wDel'].forEach(s => { q(s).disabled = !prop; });
+    const done = sel => { G.refresh(); if (sel !== undefined) G.editor.select(sel); G.editor.structural(); };
+    const add = img => {
+      const c = this.center(), list = (R(c.room).props ||= []);
+      list.push({ img, x: c.x, y: c.y, solid: true });
+      done(`world.rooms.${c.room}.props.${list.length - 1}`);
+    };
+    const flag = k => () => { if (!prop) return; if (prop[k]) delete prop[k]; else prop[k] = true; done(); };
+    q('#wSolid').onclick = flag('solid'); q('#wFlat').onclick = flag('flat'); q('#wFlip').onclick = flag('flip');
+    q('#wDup').onclick = () => { const list = R(m[1]).props; list.push(Object.assign(G.clone(prop), { x: prop.x + 12, y: prop.y + 8 })); done(`world.rooms.${m[1]}.props.${list.length - 1}`); };
+    q('#wDel').onclick = () => { R(m[1]).props.splice(+m[2], 1); done(null); };
+    q('#wUp').onclick = () => G.editor.pickFile('image/*', f => add(G.editor.stashFile(f)));
+    const fillPal = async () => {
+      const pal = q('#wPal');
+      try {
+        const man = await (await fetch('assets/world/manifest.json', { cache: 'no-store' })).json();
+        const names = { furniture: 'Мебель', items: 'Мелочи и окна', doors: 'Двери' };
+        pal.innerHTML = '';
+        for (const grp of Object.keys(names)) {
+          pal.appendChild(G.el('div', 'ed__label', names[grp]));
+          const grid = G.el('div', 'ed__palgrid');
+          Object.keys(man).filter(k => man[k] === grp).forEach(path => {
+            const b = G.el('button', 'ed__palitem', `<img class="px" loading="lazy" src="${G.asset(path)}" alt="">`);
+            b.title = path.split('/').pop().replace('.png', '');
+            b.onclick = () => add(path);
+            grid.appendChild(b);
+          });
+          pal.appendChild(grid);
+        }
+      } catch { pal.textContent = 'Не удалось загрузить список спрайтов'; }
+    };
+    q('#wAdd').onclick = () => { const pal = q('#wPal'); pal.hidden = !pal.hidden; palOpen = !pal.hidden; if (palOpen && !pal.childElementCount) fillPal(); };
+    if (open) { q('#wPal').hidden = false; fillPal(); }
   },
 
   editRoots: () => [

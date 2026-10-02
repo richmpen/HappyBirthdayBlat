@@ -1,0 +1,462 @@
+{
+ "app": "arcadia-effects",
+ "v": 1,
+ "doc": {
+  "id": "fx_cherry_firework_pink",
+  "name": "Cherry Firework Pink",
+  "comp": {
+   "w": 512,
+   "h": 512,
+   "dur": 1.45
+  },
+  "exp": {
+   "cols": 5,
+   "rows": 4,
+   "frames": 20,
+   "pixelArt": true
+  },
+  "layers": [
+   {
+    "id": "lr_firework_pink_1",
+    "type": "postfx",
+    "name": "Pixelate",
+    "fx": {
+     "effect": "pixelate",
+     "pxW": 128,
+     "pxSnap": true,
+     "pxSample": "peak",
+     "pxAlpha": "cut",
+     "pxThr": 0.26,
+     "pxGain": 1.7
+    }
+   },
+   {
+    "id": "lr_firework_pink_2",
+    "type": "emitter",
+    "name": "Crackle",
+    "blend": "add",
+    "start": 0.32,
+    "end": 0.8,
+    "em": {
+     "shape": "circle",
+     "sx": 150,
+     "sy": 150,
+     "speed": 30,
+     "speedRnd": 1,
+     "rate": 0,
+     "bursts": [
+      {
+       "t": 0,
+       "n": 16
+      },
+      {
+       "t": 0.12,
+       "n": 14
+      },
+      {
+       "t": 0.26,
+       "n": 10
+      }
+     ],
+     "seed": 12
+    },
+    "pt": {
+     "life": 0.22,
+     "lifeRnd": 0.4,
+     "sprite": {
+      "kind": "shape",
+      "id": "spark",
+      "p": {}
+     },
+     "size": 34,
+     "sizeRnd": 0.5,
+     "sizeOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 0
+       },
+       {
+        "t": 0.4,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0
+       }
+      ]
+     },
+     "opacityOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 0
+       },
+       {
+        "t": 0.4,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0
+       }
+      ]
+     },
+     "grad": {
+      "stops": [
+       {
+        "t": 0,
+        "c": [
+         255,
+         255,
+         255
+        ]
+       },
+       {
+        "t": 1,
+        "c": [
+         255,
+         179,
+         193
+        ]
+       }
+      ]
+     },
+     "spin": 0,
+     "drag": 0
+    }
+   },
+   {
+    "id": "lr_firework_pink_3",
+    "type": "emitter",
+    "name": "Burst",
+    "blend": "add",
+    "em": {
+     "bursts": [
+      {
+       "t": 0,
+       "n": 64
+      }
+     ],
+     "dir": "omni",
+     "speed": 540,
+     "speedRnd": 0.28,
+     "seed": 9,
+     "sub": {
+      "on": true,
+      "emit": "life",
+      "rate": 34,
+      "startAt": 0.04,
+      "dir": "back",
+      "spread": 8,
+      "speed": 6,
+      "speedRnd": 0.5,
+      "inherit": 0,
+      "budget": 1500,
+      "pt": {
+       "life": 0.34,
+       "lifeRnd": 0.3,
+       "sprite": {
+        "kind": "shape",
+        "id": "dot",
+        "p": {}
+       },
+       "size": 9,
+       "sizeRnd": 0.3,
+       "sizeOL": {
+        "pts": [
+         {
+          "t": 0,
+          "v": 1
+         },
+         {
+          "t": 1,
+          "v": 0.2
+         }
+        ]
+       },
+       "opacityOL": {
+        "pts": [
+         {
+          "t": 0,
+          "v": 0.9
+         },
+         {
+          "t": 1,
+          "v": 0
+         }
+        ]
+       },
+       "grad": {
+        "stops": [
+         {
+          "t": 0,
+          "c": [
+           255,
+           179,
+           193
+          ]
+         },
+         {
+          "t": 1,
+          "c": [
+           199,
+           125,
+           255
+          ]
+         }
+        ]
+       },
+       "spin": 0,
+       "gravY": 60,
+       "drag": 0.5
+      }
+     }
+    },
+    "pt": {
+     "life": 1.05,
+     "lifeRnd": 0.2,
+     "sprite": {
+      "kind": "shape",
+      "id": "dot",
+      "p": {}
+     },
+     "size": 16,
+     "sizeRnd": 0.3,
+     "sizeOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 1
+       },
+       {
+        "t": 0.6,
+        "v": 0.8
+       },
+       {
+        "t": 1,
+        "v": 0.2
+       }
+      ]
+     },
+     "opacityOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 1
+       },
+       {
+        "t": 0.6,
+        "v": 1
+       },
+       {
+        "t": 0.78,
+        "v": 0.35
+       },
+       {
+        "t": 0.88,
+        "v": 0.95
+       },
+       {
+        "t": 1,
+        "v": 0
+       }
+      ]
+     },
+     "grad": {
+      "stops": [
+       {
+        "t": 0,
+        "c": [
+         255,
+         255,
+         255
+        ]
+       },
+       {
+        "t": 0.25,
+        "c": [
+         255,
+         179,
+         193
+        ]
+       },
+       {
+        "t": 1,
+        "c": [
+         199,
+         125,
+         255
+        ]
+       }
+      ]
+     },
+     "spin": 0,
+     "gravY": 170,
+     "drag": 2.7
+    }
+   },
+   {
+    "id": "lr_firework_pink_4",
+    "type": "emitter",
+    "name": "Inner ring",
+    "blend": "add",
+    "em": {
+     "bursts": [
+      {
+       "t": 0,
+       "n": 22
+      }
+     ],
+     "shape": "ring",
+     "sx": 6,
+     "sy": 2,
+     "dir": "out",
+     "speed": 250,
+     "speedRnd": 0.1,
+     "seed": 16
+    },
+    "pt": {
+     "life": 0.8,
+     "lifeRnd": 0.15,
+     "sprite": {
+      "kind": "shape",
+      "id": "dot",
+      "p": {}
+     },
+     "size": 13,
+     "sizeOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0.2
+       }
+      ]
+     },
+     "opacityOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 1
+       },
+       {
+        "t": 0.7,
+        "v": 0.9
+       },
+       {
+        "t": 1,
+        "v": 0
+       }
+      ]
+     },
+     "grad": {
+      "stops": [
+       {
+        "t": 0,
+        "c": [
+         255,
+         255,
+         255
+        ]
+       },
+       {
+        "t": 0.4,
+        "c": [
+         255,
+         179,
+         193
+        ]
+       },
+       {
+        "t": 1,
+        "c": [
+         199,
+         125,
+         255
+        ]
+       }
+      ]
+     },
+     "spin": 0,
+     "gravY": 120,
+     "drag": 2.4
+    }
+   },
+   {
+    "id": "lr_firework_pink_5",
+    "type": "sprite",
+    "name": "Flash",
+    "blend": "add",
+    "start": 0,
+    "end": 0.2,
+    "opacity": {
+     "keys": [
+      {
+       "t": 0,
+       "v": 0.7,
+       "i": {
+        "m": "ease"
+       },
+       "o": {
+        "m": "ease"
+       }
+      },
+      {
+       "t": 0.18,
+       "v": 0,
+       "i": {
+        "m": "ease"
+       },
+       "o": {
+        "m": "ease"
+       }
+      }
+     ]
+    },
+    "sp": {
+     "sprite": {
+      "kind": "shape",
+      "id": "soft",
+      "p": {}
+     },
+     "size": 150,
+     "scale": {
+      "keys": [
+       {
+        "t": 0,
+        "v": 0.3,
+        "i": {
+         "m": "ease"
+        },
+        "o": {
+         "m": "ease"
+        }
+       },
+       {
+        "t": 0.1,
+        "v": 1,
+        "i": {
+         "m": "ease"
+        },
+        "o": {
+         "m": "ease"
+        }
+       }
+      ]
+     },
+     "color": [
+      255,
+      179,
+      193
+     ]
+    }
+   }
+  ],
+  "textures": []
+ },
+ "tex": {}
+}

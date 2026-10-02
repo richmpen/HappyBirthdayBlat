@@ -7,6 +7,12 @@
     "newGameButton": "Начать заново",
     "finaleButton": "К празднику!",
     "controls": "WASD или стрелки — ходить · E — действие",
+    "cherry": "assets/ui/cherry.png",
+    "girls": [
+      "assets/sprites/anya.png",
+      "assets/sprites/liza.png",
+      "assets/sprites/sonya.png"
+    ],
     "music": ""
   },
   "github": {
@@ -16,7 +22,6 @@
   },
   "texts": {
     "doorLocked": "Персонаж не дома",
-    "hintDoor": "войти",
     "hintTalk": "поговорить",
     "cutsceneContinue": "Нажми E, чтобы продолжить",
     "replayQuestion": "Хочешь сыграть ещё раз?",
@@ -28,8 +33,8 @@
     "img": "assets/sprites/hero.png",
     "cols": 3,
     "rows": 4,
-    "w": 72,
-    "speed": 220,
+    "w": 24,
+    "speed": 88,
     "fps": 8,
     "rowDown": 0,
     "rowLeft": 1,
@@ -42,354 +47,1042 @@
     "dressup",
     "rhythm"
   ],
-  "rooms": {
-    "hub": {
-      "name": "Главная комната",
-      "bg": "assets/rooms/hub.png",
-      "music": "",
-      "walk": {
-        "x": 40,
-        "y": 310,
-        "w": 880,
-        "h": 210
+  "world": {
+    "scale": 2,
+    "tile": 16,
+    "wallH": 4,
+    "dark": 0.94,
+    "voidColor": "#170b10",
+    "frame": "#4b2a10",
+    "frame2": "#633919",
+    "start": {
+      "room": "hub",
+      "x": 416,
+      "y": 290
+    },
+    "rooms": {
+      "hub": {
+        "name": "Гостиная",
+        "x": 16,
+        "y": 11,
+        "w": 20,
+        "h": 13,
+        "wall": "assets/world/walls/olive.png",
+        "floor": "assets/world/floors/wood.png",
+        "music": "",
+        "props": [
+          {
+            "img": "assets/world/furniture/rug_big_c.png",
+            "x": 416,
+            "y": 356,
+            "flat": true
+          },
+          {
+            "img": "assets/world/furniture/sofa_pillows_c.png",
+            "x": 416,
+            "y": 322,
+            "solid": true,
+            "foot": 14
+          },
+          {
+            "img": "assets/world/furniture/table_coffee_b.png",
+            "x": 416,
+            "y": 350,
+            "solid": true,
+            "foot": 10
+          },
+          {
+            "img": "assets/world/furniture/armchair_c.png",
+            "x": 362,
+            "y": 352,
+            "solid": true,
+            "foot": 16
+          },
+          {
+            "img": "assets/world/furniture/armchair_wide_c.png",
+            "x": 472,
+            "y": 352,
+            "solid": true,
+            "foot": 16
+          },
+          {
+            "img": "assets/world/furniture/bookcase.png",
+            "x": 296,
+            "y": 246,
+            "solid": true
+          },
+          {
+            "img": "assets/world/furniture/clock_b.png",
+            "x": 340,
+            "y": 246,
+            "solid": true
+          },
+          {
+            "img": "assets/world/furniture/floor_lamp_b.png",
+            "x": 366,
+            "y": 250,
+            "solid": true
+          },
+          {
+            "img": "assets/world/furniture/dresser_b.png",
+            "x": 470,
+            "y": 246,
+            "solid": true
+          },
+          {
+            "img": "assets/world/furniture/plant_b.png",
+            "x": 494,
+            "y": 248,
+            "solid": true
+          },
+          {
+            "img": "assets/world/furniture/bookcase_dark_b.png",
+            "x": 536,
+            "y": 246,
+            "solid": true
+          },
+          {
+            "img": "assets/world/items/item_08.png",
+            "x": 318,
+            "y": 204
+          },
+          {
+            "img": "assets/world/items/item_09.png",
+            "x": 470,
+            "y": 206
+          },
+          {
+            "img": "assets/world/items/item_13.png",
+            "x": 505,
+            "y": 208
+          },
+          {
+            "img": "assets/world/items/window_03.png",
+            "x": 372,
+            "y": 216
+          },
+          {
+            "img": "assets/world/items/window_15.png",
+            "x": 448,
+            "y": 216
+          },
+          {
+            "img": "assets/world/items/item_23.png",
+            "x": 470,
+            "y": 226,
+            "lift": 40
+          },
+          {
+            "img": "assets/world/items/item_21.png",
+            "x": 409,
+            "y": 338,
+            "lift": 40
+          },
+          {
+            "img": "assets/world/items/item_49.png",
+            "x": 422,
+            "y": 340,
+            "lift": 40
+          },
+          {
+            "img": "assets/world/furniture/table_round_b.png",
+            "x": 300,
+            "y": 352,
+            "solid": true
+          },
+          {
+            "img": "assets/world/furniture/stool_c.png",
+            "x": 282,
+            "y": 366,
+            "solid": true
+          },
+          {
+            "img": "assets/world/furniture/stool_c.png",
+            "x": 320,
+            "y": 370,
+            "solid": true
+          },
+          {
+            "img": "assets/world/furniture/nightstand_b.png",
+            "x": 548,
+            "y": 368,
+            "solid": true
+          },
+          {
+            "img": "assets/world/furniture/table_lamp_b.png",
+            "x": 548,
+            "y": 350,
+            "lift": 30
+          },
+          {
+            "img": "assets/world/furniture/plant.png",
+            "x": 274,
+            "y": 262,
+            "solid": true
+          },
+          {
+            "img": "assets/world/furniture/rug_runner_h_b.png",
+            "x": 416,
+            "y": 262,
+            "flat": true
+          }
+        ]
       },
-      "spawn": {
-        "x": 480,
-        "y": 440
-      },
-      "doors": [
-        {
-          "to": "kitchen",
-          "img": "assets/sprites/door.png",
-          "x": 220,
-          "y": 300,
-          "w": 96,
-          "label": "Кухня",
-          "lockedText": "Ани нет дома"
+      "kitchen": {
+        "name": "Кухня",
+        "x": 0,
+        "y": 11,
+        "w": 16,
+        "h": 13,
+        "wall": "assets/world/walls/cream.png",
+        "floor": "assets/world/floors/checker_cherry.png",
+        "music": "",
+        "props": [
+          {
+            "img": "assets/world/furniture/fridge_b.png",
+            "x": 24,
+            "y": 250,
+            "solid": true
+          },
+          {
+            "img": "assets/world/furniture/stove_b.png",
+            "x": 58,
+            "y": 246,
+            "solid": true
+          },
+          {
+            "img": "assets/world/furniture/counter_b.png",
+            "x": 116,
+            "y": 248,
+            "solid": true
+          },
+          {
+            "img": "assets/world/furniture/cupboard.png",
+            "x": 170,
+            "y": 246,
+            "solid": true
+          },
+          {
+            "img": "assets/world/furniture/wall_shelf.png",
+            "x": 196,
+            "y": 214
+          },
+          {
+            "img": "assets/world/items/item_53.png",
+            "x": 180,
+            "y": 204
+          },
+          {
+            "img": "assets/world/items/item_54.png",
+            "x": 190,
+            "y": 204
+          },
+          {
+            "img": "assets/world/items/item_55.png",
+            "x": 200,
+            "y": 204
+          },
+          {
+            "img": "assets/world/items/item_56.png",
+            "x": 210,
+            "y": 204
+          },
+          {
+            "img": "assets/world/furniture/utensils.png",
+            "x": 60,
+            "y": 200
+          },
+          {
+            "img": "assets/world/items/window_07.png",
+            "x": 120,
+            "y": 210
+          },
+          {
+            "img": "assets/world/items/item_13.png",
+            "x": 228,
+            "y": 206
+          },
+          {
+            "img": "assets/world/items/item_37.png",
+            "x": 60,
+            "y": 214,
+            "lift": 40
+          },
+          {
+            "img": "assets/world/items/item_60.png",
+            "x": 98,
+            "y": 216,
+            "lift": 40
+          },
+          {
+            "img": "assets/world/items/item_58.png",
+            "x": 134,
+            "y": 218,
+            "lift": 40
+          },
+          {
+            "img": "assets/world/furniture/table_long_c.png",
+            "x": 110,
+            "y": 340,
+            "solid": true,
+            "foot": 18
+          },
+          {
+            "img": "assets/world/furniture/chair_white_back.png",
+            "x": 96,
+            "y": 356,
+            "solid": true
+          },
+          {
+            "img": "assets/world/furniture/chair_white_back.png",
+            "x": 124,
+            "y": 356,
+            "solid": true
+          },
+          {
+            "img": "assets/world/furniture/chair_white_front.png",
+            "x": 110,
+            "y": 318
+          },
+          {
+            "img": "assets/world/items/item_33.png",
+            "x": 98,
+            "y": 322,
+            "lift": 40
+          },
+          {
+            "img": "assets/world/items/item_35.png",
+            "x": 122,
+            "y": 322,
+            "lift": 40
+          },
+          {
+            "img": "assets/world/items/item_25.png",
+            "x": 110,
+            "y": 316,
+            "lift": 40
+          },
+          {
+            "img": "assets/world/furniture/plant_b.png",
+            "x": 236,
+            "y": 262,
+            "solid": true
+          },
+          {
+            "img": "assets/world/furniture/rug_oval_c.png",
+            "x": 190,
+            "y": 300,
+            "flat": true
+          },
+          {
+            "img": "assets/world/furniture/pet_bed_c.png",
+            "x": 30,
+            "y": 370,
+            "flat": true
+          },
+          {
+            "img": "assets/world/furniture/stool.png",
+            "x": 216,
+            "y": 366,
+            "solid": true
+          }
+        ],
+        "npc": {
+          "name": "Аня",
+          "img": "assets/sprites/anya.png",
+          "x": 168,
+          "y": 302,
+          "dialog": [
+            "Привет! Как хорошо, что ты зашла!",
+            "У кое-кого сегодня день рождения… а праздничного торта ещё нет!",
+            "> Давай испечём вместе! Какой будем делать?",
+            "Самый вишнёвый на свете — «Красный бархат»! Рецепт у меня есть, но времени мало.",
+            "Надевай фартук — начинаем!"
+          ],
+          "dialogAfter": [
+            "Торт получился просто чудесный!",
+            "Загляни теперь к Лизе — она поможет с нарядом."
+          ]
         },
-        {
-          "to": "dressup",
-          "img": "assets/sprites/door.png",
-          "x": 480,
-          "y": 300,
-          "w": 96,
-          "label": "Гардеробная",
-          "lockedText": "Лизы пока нет дома"
+        "cutscene": {
+          "img": "assets/cutscenes/kitchen.png",
+          "text": "«Красный бархат» готов! Осталось дождаться праздника…"
+        }
+      },
+      "dressup": {
+        "name": "Гардеробная",
+        "x": 18,
+        "y": 0,
+        "w": 16,
+        "h": 11,
+        "wall": "assets/world/walls/rose.png",
+        "floor": "assets/world/floors/wood_red.png",
+        "music": "",
+        "props": [
+          {
+            "img": "assets/world/furniture/wardrobe.png",
+            "x": 308,
+            "y": 70,
+            "solid": true
+          },
+          {
+            "img": "assets/world/furniture/wardrobe_b.png",
+            "x": 326,
+            "y": 70,
+            "solid": true
+          },
+          {
+            "img": "assets/world/furniture/cupboard_b.png",
+            "x": 350,
+            "y": 70,
+            "solid": true
+          },
+          {
+            "img": "assets/world/furniture/mirror.png",
+            "x": 382,
+            "y": 68,
+            "solid": true
+          },
+          {
+            "img": "assets/world/furniture/dresser.png",
+            "x": 468,
+            "y": 70,
+            "solid": true
+          },
+          {
+            "img": "assets/world/furniture/coat_rack_b.png",
+            "x": 500,
+            "y": 72,
+            "solid": true
+          },
+          {
+            "img": "assets/world/furniture/cabinet_tall.png",
+            "x": 526,
+            "y": 70,
+            "solid": true
+          },
+          {
+            "img": "assets/world/items/item_31.png",
+            "x": 440,
+            "y": 34
+          },
+          {
+            "img": "assets/world/items/window_19.png",
+            "x": 428,
+            "y": 40
+          },
+          {
+            "img": "assets/world/items/item_08.png",
+            "x": 356,
+            "y": 30
+          },
+          {
+            "img": "assets/world/items/item_12.png",
+            "x": 468,
+            "y": 48,
+            "lift": 40
+          },
+          {
+            "img": "assets/world/items/item_27.png",
+            "x": 350,
+            "y": 50,
+            "lift": 40
+          },
+          {
+            "img": "assets/world/furniture/rug_tall_c.png",
+            "x": 366,
+            "y": 150,
+            "flat": true
+          },
+          {
+            "img": "assets/world/furniture/armchair_c.png",
+            "x": 508,
+            "y": 136,
+            "solid": true,
+            "foot": 16
+          },
+          {
+            "img": "assets/world/furniture/ironing_board_b.png",
+            "x": 318,
+            "y": 136,
+            "solid": true
+          },
+          {
+            "img": "assets/world/furniture/nightstand.png",
+            "x": 524,
+            "y": 164,
+            "solid": true
+          },
+          {
+            "img": "assets/world/furniture/table_lamp_b.png",
+            "x": 524,
+            "y": 146,
+            "lift": 30
+          },
+          {
+            "img": "assets/world/furniture/plant_b.png",
+            "x": 300,
+            "y": 164,
+            "solid": true
+          },
+          {
+            "img": "assets/world/furniture/stool_c.png",
+            "x": 466,
+            "y": 150,
+            "solid": true
+          }
+        ],
+        "npc": {
+          "name": "Лиза",
+          "img": "assets/sprites/liza.png",
+          "x": 420,
+          "y": 118,
+          "dialog": [
+            "О, это ты! Проходи скорее.",
+            "На праздник нельзя идти в чём попало — нужен самый красивый наряд!",
+            "Мой шкаф в твоём распоряжении. Выбирай всё, что нравится!"
+          ],
+          "dialogAfter": [
+            "Выглядишь потрясающе!",
+            "Соня уже ждёт тебя с музыкой."
+          ]
         },
-        {
-          "to": "rhythm",
-          "img": "assets/sprites/door.png",
-          "x": 740,
-          "y": 300,
-          "w": 96,
-          "label": "Музыкальная",
-          "lockedText": "Сони пока нет дома"
+        "cutscene": {
+          "img": "assets/cutscenes/dressup.png",
+          "text": "Наряд выбран. Зеркало в восторге!"
         }
-      ],
-      "props": []
-    },
-    "kitchen": {
-      "name": "Кухня",
-      "bg": "assets/rooms/kitchen.png",
-      "music": "",
-      "walk": {
-        "x": 40,
-        "y": 310,
-        "w": 880,
-        "h": 210
       },
-      "spawn": {
-        "x": 150,
-        "y": 360
-      },
-      "doors": [
-        {
-          "to": "hub",
-          "img": "assets/sprites/door.png",
-          "x": 150,
-          "y": 300,
-          "w": 96,
-          "label": "Выход",
-          "lockedText": ""
-        }
-      ],
-      "props": [],
-      "npc": {
-        "name": "Аня",
-        "img": "assets/sprites/anya.png",
-        "x": 620,
-        "y": 390,
-        "w": 72,
-        "dialog": [
-          "Привет! Как хорошо, что ты зашла!",
-          "У кое-кого сегодня день рождения… а праздничного торта ещё нет!",
-          "> Давай испечём вместе!",
-          "Ура! Тогда надевай фартук — начинаем!"
+      "rhythm": {
+        "name": "Музыкальная",
+        "x": 36,
+        "y": 11,
+        "w": 16,
+        "h": 13,
+        "wall": "assets/world/walls/plum.png",
+        "floor": "assets/world/floors/checker_plum.png",
+        "music": "",
+        "props": [
+          {
+            "img": "assets/world/furniture/record_box_b.png",
+            "x": 604,
+            "y": 246,
+            "solid": true
+          },
+          {
+            "img": "assets/world/furniture/phonograph_b.png",
+            "x": 622,
+            "y": 246,
+            "solid": true
+          },
+          {
+            "img": "assets/world/furniture/bookcase_dark.png",
+            "x": 672,
+            "y": 246,
+            "solid": true
+          },
+          {
+            "img": "assets/world/furniture/fireplace_b.png",
+            "x": 730,
+            "y": 246,
+            "solid": true
+          },
+          {
+            "img": "assets/world/furniture/floor_lamp_b.png",
+            "x": 768,
+            "y": 250,
+            "solid": true
+          },
+          {
+            "img": "assets/world/furniture/cabinet_narrow_b.png",
+            "x": 800,
+            "y": 246,
+            "solid": true
+          },
+          {
+            "img": "assets/world/items/item_09.png",
+            "x": 646,
+            "y": 204
+          },
+          {
+            "img": "assets/world/items/window_05.png",
+            "x": 770,
+            "y": 214
+          },
+          {
+            "img": "assets/world/items/item_13.png",
+            "x": 705,
+            "y": 202
+          },
+          {
+            "img": "assets/world/furniture/rug_big_c.png",
+            "x": 704,
+            "y": 348,
+            "flat": true
+          },
+          {
+            "img": "assets/world/furniture/sofa_side_c.png",
+            "x": 812,
+            "y": 350,
+            "solid": true,
+            "foot": 46
+          },
+          {
+            "img": "assets/world/furniture/table_round.png",
+            "x": 620,
+            "y": 360,
+            "solid": true
+          },
+          {
+            "img": "assets/world/furniture/stool_b.png",
+            "x": 600,
+            "y": 372,
+            "solid": true
+          },
+          {
+            "img": "assets/world/furniture/stool_b.png",
+            "x": 642,
+            "y": 372,
+            "solid": true
+          },
+          {
+            "img": "assets/world/items/item_45.png",
+            "x": 617,
+            "y": 346,
+            "lift": 40
+          },
+          {
+            "img": "assets/world/items/item_47.png",
+            "x": 624,
+            "y": 348,
+            "lift": 40
+          },
+          {
+            "img": "assets/world/furniture/plant.png",
+            "x": 590,
+            "y": 262,
+            "solid": true
+          },
+          {
+            "img": "assets/world/furniture/floor_lamp_b.png",
+            "x": 792,
+            "y": 372,
+            "solid": true
+          }
         ],
-        "dialogAfter": [
-          "Торт получился просто чудесный!",
-          "Загляни теперь к Лизе — она поможет с нарядом."
-        ]
-      },
-      "cutscene": {
-        "img": "assets/cutscenes/kitchen.png",
-        "text": "Торт готов! Осталось дождаться праздника…"
+        "npc": {
+          "name": "Соня",
+          "img": "assets/sprites/sonya.png",
+          "x": 704,
+          "y": 316,
+          "dialog": [
+            "Привет-привет! Слышишь? Это музыка для нашего праздника!",
+            "Только танцевать одной скучно. Помоги мне попасть в ритм!",
+            "Жми S, D, K и L, когда значки долетают до круга. Длинные — держи до конца!"
+          ],
+          "dialogAfter": [
+            "Вот это был танец!",
+            "Теперь всё готово к празднику…"
+          ]
+        },
+        "cutscene": {
+          "img": "assets/cutscenes/rhythm.png",
+          "text": "Танцпол покорён!"
+        }
       }
     },
-    "dressup": {
-      "name": "Гардеробная",
-      "bg": "assets/rooms/wardrobe.png",
-      "music": "",
-      "walk": {
-        "x": 40,
-        "y": 310,
-        "w": 880,
-        "h": 210
+    "doors": [
+      {
+        "a": "hub",
+        "b": "kitchen",
+        "side": "left",
+        "at": 7,
+        "img": "assets/world/doors/door_side.png",
+        "lockedText": "Ани нет дома"
       },
-      "spawn": {
-        "x": 150,
-        "y": 360
+      {
+        "a": "hub",
+        "b": "dressup",
+        "side": "top",
+        "at": 9,
+        "frame": "assets/world/doors/door1_frame.png",
+        "closed": "assets/world/doors/door1_closed.png",
+        "open": "assets/world/doors/door1_open.png",
+        "lockedText": "Лизы пока нет дома"
       },
-      "doors": [
-        {
-          "to": "hub",
-          "img": "assets/sprites/door.png",
-          "x": 150,
-          "y": 300,
-          "w": 96,
-          "label": "Выход",
-          "lockedText": ""
-        }
-      ],
-      "props": [],
-      "npc": {
-        "name": "Лиза",
-        "img": "assets/sprites/liza.png",
-        "x": 520,
-        "y": 400,
-        "w": 72,
-        "dialog": [
-          "О, это ты! Проходи скорее.",
-          "На праздник нельзя идти в чём попало — нужен самый красивый наряд!",
-          "Мой шкаф в твоём распоряжении. Выбирай всё, что нравится!"
-        ],
-        "dialogAfter": [
-          "Выглядишь потрясающе!",
-          "Соня уже ждёт тебя с музыкой."
-        ]
-      },
-      "cutscene": {
-        "img": "assets/cutscenes/dressup.png",
-        "text": "Наряд выбран. Зеркало в восторге!"
+      {
+        "a": "hub",
+        "b": "rhythm",
+        "side": "right",
+        "at": 7,
+        "img": "assets/world/doors/door_side.png",
+        "lockedText": "Сони пока нет дома"
       }
-    },
-    "rhythm": {
-      "name": "Музыкальная",
-      "bg": "assets/rooms/music.png",
-      "music": "",
-      "walk": {
-        "x": 40,
-        "y": 310,
-        "w": 880,
-        "h": 210
-      },
-      "spawn": {
-        "x": 150,
-        "y": 360
-      },
-      "doors": [
-        {
-          "to": "hub",
-          "img": "assets/sprites/door.png",
-          "x": 150,
-          "y": 300,
-          "w": 96,
-          "label": "Выход",
-          "lockedText": ""
-        }
-      ],
-      "props": [],
-      "npc": {
-        "name": "Соня",
-        "img": "assets/sprites/sonya.png",
-        "x": 620,
-        "y": 400,
-        "w": 72,
-        "dialog": [
-          "Привет-привет! Слышишь? Это музыка для нашего праздника!",
-          "Только танцевать одной скучно. Помоги мне попасть в ритм!",
-          "Жми S, D, K и L, когда вишенки долетают до линии."
-        ],
-        "dialogAfter": [
-          "Вот это был танец!",
-          "Теперь всё готово к празднику…"
-        ]
-      },
-      "cutscene": {
-        "img": "assets/cutscenes/rhythm.png",
-        "text": "Танцпол покорён!"
-      }
-    }
+    ]
   },
   "kitchen": {
     "bg": "assets/kitchen/bg.png",
     "music": "",
-    "texts": {
-      "wrong": "Сейчас нужно другое!",
-      "miss": "Мимо! Попробуй ещё",
-      "hit": "Отлично!",
-      "exit": "← Выйти",
-      "finish": "Торт готов!"
+    "scale": 1.5,
+    "timeLimit": 480,
+    "recipe": {
+      "name": "Красный бархат",
+      "note": "вишнёво-красные коржи и сливочный крем"
     },
-    "add": {
-      "title": "Шаг 1 · Ингредиенты",
-      "hint": "Перетащи в миску: {name}",
-      "bowl": {
-        "img": "assets/kitchen/bowl.png",
-        "imgFull": "assets/kitchen/bowl_full.png",
-        "x": 480,
-        "y": 500,
-        "w": 300
+    "steps": [
+      "gather",
+      "measure",
+      "eggs",
+      "whisk",
+      "bake",
+      "stack",
+      "frost",
+      "decor"
+    ],
+    "texts": {
+      "exit": "Выйти",
+      "loading": "Готовим кухню…",
+      "stepOf": "Шаг {n} из {total}",
+      "great": "Отлично!",
+      "perfect": "Идеально!",
+      "done": "Торт готов!",
+      "finish": "Торт готов!",
+      "ingredientsTitle": "Продукты",
+      "stepsTitle": "Что делаем",
+      "timeUp": "Время вышло!",
+      "timeUpNote": "Ничего страшного — попробуем ещё раз?",
+      "retry": "Ещё попытка"
+    },
+    "ingredients": [
+      {
+        "id": "flour",
+        "name": "Мука",
+        "amount": "250 г",
+        "img": "assets/kitchen/flour.png"
       },
-      "ingredients": [
+      {
+        "id": "cocoa",
+        "name": "Какао",
+        "amount": "2 ст. л.",
+        "img": "assets/kitchen/cocoa.png"
+      },
+      {
+        "id": "sugar",
+        "name": "Сахар",
+        "amount": "200 г",
+        "img": "assets/kitchen/sugar.png"
+      },
+      {
+        "id": "butter",
+        "name": "Масло",
+        "amount": "120 г",
+        "img": "assets/kitchen/butter.png"
+      },
+      {
+        "id": "eggs",
+        "name": "Яйца",
+        "amount": "3 шт.",
+        "img": "assets/kitchen/eggs.png"
+      },
+      {
+        "id": "buttermilk",
+        "name": "Кефир",
+        "amount": "240 мл",
+        "img": "assets/kitchen/buttermilk.png"
+      },
+      {
+        "id": "dye",
+        "name": "Краситель",
+        "amount": "1 ч. л.",
+        "img": "assets/kitchen/dye.png"
+      },
+      {
+        "id": "vanilla",
+        "name": "Ваниль",
+        "amount": "щепотка",
+        "img": "assets/kitchen/vanilla.png"
+      },
+      {
+        "id": "creamcheese",
+        "name": "Сливочный сыр",
+        "amount": "300 г",
+        "img": "assets/kitchen/creamcheese.png"
+      },
+      {
+        "id": "powder",
+        "name": "Сахарная пудра",
+        "amount": "100 г",
+        "img": "assets/kitchen/powder.png"
+      }
+    ],
+    "decoys": [
+      {
+        "name": "Рыба",
+        "img": "assets/kitchen/fish.png"
+      },
+      {
+        "name": "Лук",
+        "img": "assets/kitchen/onion.png"
+      },
+      {
+        "name": "Кетчуп",
+        "img": "assets/kitchen/ketchup.png"
+      },
+      {
+        "name": "Перец чили",
+        "img": "assets/kitchen/chili.png"
+      },
+      {
+        "name": "Сыр",
+        "img": "assets/kitchen/cheese.png"
+      },
+      {
+        "name": "Огурцы",
+        "img": "assets/kitchen/pickles.png"
+      },
+      {
+        "name": "Чеснок",
+        "img": "assets/kitchen/garlic.png"
+      },
+      {
+        "name": "Горчица",
+        "img": "assets/kitchen/mustard.png"
+      }
+    ],
+    "gather": {
+      "title": "Собери продукты",
+      "hint": "Нажимай только на то, что есть в рецепте справа",
+      "wrong": "{name}? Это не для торта!",
+      "rows": 3,
+      "shelfInset": 16,
+      "cupboard": {
+        "img": "assets/kitchen/cupboard.png",
+        "x": 262,
+        "y": 274
+      },
+      "tray": {
+        "img": "assets/kitchen/tray.png",
+        "x": 262,
+        "y": 322
+      }
+    },
+    "measure": {
+      "title": "Отмерь",
+      "hint": "Держи мышку или пробел — сыпется. Отпусти в зелёной зоне!",
+      "ok": "Ровно столько!",
+      "over": "Перебор! Отсыпаем обратно…",
+      "cup": {
+        "img": "assets/kitchen/cup.png",
+        "x": 262,
+        "y": 296,
+        "fill": {
+          "x": 10,
+          "y": 8,
+          "w": 52,
+          "h": 83,
+          "taper": 5
+        }
+      },
+      "items": [
         {
-          "name": "Мука",
-          "img": "assets/kitchen/flour.png",
-          "x": 130,
-          "y": 168,
-          "w": 96
+          "ingredient": "flour",
+          "color": "#fff3e2",
+          "target": 0.62,
+          "tolerance": 0.075,
+          "speed": 0.36
         },
         {
-          "name": "Сахар",
-          "img": "assets/kitchen/sugar.png",
-          "x": 300,
-          "y": 168,
-          "w": 84
+          "ingredient": "sugar",
+          "color": "#eaf6fd",
+          "target": 0.45,
+          "tolerance": 0.065,
+          "speed": 0.5
         },
         {
-          "name": "Яйцо",
-          "img": "assets/kitchen/egg.png",
-          "x": 470,
-          "y": 168,
-          "w": 66
-        },
-        {
-          "name": "Масло",
-          "img": "assets/kitchen/butter.png",
-          "x": 640,
-          "y": 168,
-          "w": 102
-        },
-        {
-          "name": "Молоко",
-          "img": "assets/kitchen/milk.png",
-          "x": 820,
-          "y": 168,
-          "w": 72
+          "ingredient": "buttermilk",
+          "color": "#fdfdf3",
+          "target": 0.72,
+          "tolerance": 0.055,
+          "speed": 0.62
         }
       ]
     },
-    "mix": {
-      "title": "Шаг 2 · Замешиваем",
-      "hint": "Зажми мышку и води венчиком по кругу в миске",
+    "eggs": {
+      "title": "Разбей яйца",
+      "hint": "Жми, когда кольцо совпадёт с зелёным кругом",
+      "shellText": "Ой, скорлупа! Вылови её",
+      "count": 3,
+      "radius": 36,
+      "tolerance": 8,
+      "period": 1.25,
+      "shells": 2,
+      "color": "#fbe9cf",
+      "egg": {
+        "img": "assets/kitchen/egg.png",
+        "x": 262,
+        "y": 136
+      },
       "bowl": {
-        "img": "assets/kitchen/bowl_full.png",
-        "imgDone": "assets/kitchen/bowl_batter.png",
-        "x": 480,
-        "y": 500,
-        "w": 340
+        "img": "assets/kitchen/bowl_top.png",
+        "x": 262,
+        "y": 334
+      },
+      "left": "assets/kitchen/egg_left.png",
+      "right": "assets/kitchen/egg_right.png",
+      "yolk": "assets/kitchen/yolk.png",
+      "shell": "assets/kitchen/shell.png"
+    },
+    "whisk": {
+      "title": "Взбей тесто",
+      "hint": "Зажми мышку и води по кругу. Держи стрелку в зелёной зоне!",
+      "gaugeLabel": "темп",
+      "tooFast": "Слишком быстро — брызги!",
+      "dyeText": "Капни краситель! (клик или пробел)",
+      "seconds": 9,
+      "speedMin": 0.9,
+      "speedMax": 2.2,
+      "dyeAt": [
+        0.3,
+        0.65
+      ],
+      "colorFrom": "#f6e7cf",
+      "colorTo": "#b3122f",
+      "bowl": {
+        "img": "assets/kitchen/bowl_top.png",
+        "x": 262,
+        "y": 326
       },
       "whisk": {
-        "img": "assets/kitchen/whisk.png",
-        "w": 70
+        "img": "assets/kitchen/whisk.png"
       },
-      "turns": 6
+      "dye": {
+        "img": "assets/kitchen/dye.png",
+        "x": 92,
+        "y": 260
+      },
+      "drop": "assets/kitchen/drop.png"
     },
     "bake": {
-      "title": "Шаг 3 · Выпекаем",
-      "hint": "Жми пробел или кликай, когда стрелка в зелёной зоне",
+      "title": "Выпекай",
+      "hint": "Держи мышку или пробел — жар растёт. Удержи стрелку в зелёном!",
+      "gaugeLabel": "жар",
+      "tooHot": "Горячо! Убавь жар",
+      "seconds": 9,
+      "zone": 0.26,
+      "rise": 0.75,
+      "fall": 0.5,
+      "drift": 0.8,
       "oven": {
         "img": "assets/kitchen/oven.png",
-        "x": 480,
-        "y": 410,
-        "w": 330
+        "x": 262,
+        "y": 320
       },
-      "bar": {
-        "x": 230,
-        "y": 440,
-        "w": 500,
-        "h": 36
+      "window": {
+        "x": 28,
+        "y": 60,
+        "w": 194,
+        "h": 113
       },
-      "hits": 3,
-      "speed": 1.1,
-      "zone": 0.24
+      "inside": "assets/kitchen/oven_inside.png",
+      "cake": {
+        "img": "assets/kitchen/pan_cake.png"
+      }
+    },
+    "stack": {
+      "title": "Собери торт",
+      "hint": "Клик или пробел — корж падает. Отпусти ровно над тортом!",
+      "missText": "Мимо! Берём новый корж",
+      "layers": 3,
+      "top": 96,
+      "swing": 150,
+      "speed": 1.7,
+      "okDist": 30,
+      "perfectDist": 9,
+      "plate": {
+        "img": "assets/kitchen/plate.png",
+        "x": 262,
+        "y": 322
+      },
+      "sponge": "assets/kitchen/sponge.png",
+      "cream": "assets/kitchen/cream_layer.png"
+    },
+    "frost": {
+      "title": "Покрой кремом",
+      "hint": "Зажми мышку и «закрась» торт кремом целиком",
+      "need": 0.9,
+      "brush": 15,
+      "cake": {
+        "img": "assets/kitchen/cake_naked.png",
+        "imgDone": "assets/kitchen/cake_frosted.png",
+        "x": 262,
+        "y": 326
+      },
+      "spatula": "assets/kitchen/spatula.png"
     },
     "decor": {
-      "title": "Шаг 4 · Украшаем",
-      "hint": "Перетаскивай украшения на торт. Минимум: {min}",
+      "title": "Укрась",
+      "hint": "Перетаскивай украшения на торт. Нужно минимум {min}:",
+      "min": 6,
       "cake": {
         "img": "assets/kitchen/cake_frosted.png",
-        "x": 380,
-        "y": 510,
-        "w": 400
+        "x": 262,
+        "y": 326
       },
-      "min": 5,
       "items": [
         {
-          "name": "Крем",
-          "img": "assets/kitchen/cream.png",
-          "x": 750,
-          "y": 170,
-          "w": 72
-        },
-        {
           "name": "Вишенка",
-          "img": "assets/ui/cherry.png",
-          "x": 870,
-          "y": 170,
-          "w": 64
+          "img": "assets/kitchen/d_cherry.png",
+          "x": 60,
+          "y": 120
         },
         {
-          "name": "Клубника",
-          "img": "assets/kitchen/strawberry.png",
-          "x": 750,
-          "y": 270,
-          "w": 60
+          "name": "Крем",
+          "img": "assets/kitchen/d_swirl.png",
+          "x": 104,
+          "y": 120
         },
         {
-          "name": "Свечка",
-          "img": "assets/kitchen/candle.png",
-          "x": 870,
-          "y": 280,
-          "w": 36
-        },
-        {
-          "name": "Шоколад",
-          "img": "assets/kitchen/chocolate.png",
-          "x": 750,
-          "y": 360,
-          "w": 68
+          "name": "Крошка",
+          "img": "assets/kitchen/d_crumbs.png",
+          "x": 60,
+          "y": 160
         },
         {
           "name": "Сердечко",
-          "img": "assets/kitchen/heart.png",
-          "x": 870,
-          "y": 370,
-          "w": 60
+          "img": "assets/kitchen/d_heart.png",
+          "x": 104,
+          "y": 164
+        },
+        {
+          "name": "Клубника",
+          "img": "assets/kitchen/d_berry.png",
+          "x": 60,
+          "y": 206
+        },
+        {
+          "name": "Розочка",
+          "img": "assets/kitchen/d_rose.png",
+          "x": 104,
+          "y": 206
         },
         {
           "name": "Звёздочка",
-          "img": "assets/kitchen/star.png",
-          "x": 810,
-          "y": 460,
-          "w": 56
+          "img": "assets/kitchen/d_star.png",
+          "x": 60,
+          "y": 246
+        },
+        {
+          "name": "Свечка",
+          "img": "assets/kitchen/d_candle.png",
+          "x": 104,
+          "y": 252
         }
       ]
     }
   },
   "dressup": {
-    "title": "CHERRY",
-    "tag": "примерочная Лизы",
+    "title": "Cherry",
+    "title2": "Closet",
+    "tag": "наряды · туфельки · блеск",
     "texts": {
       "wardrobe": "Гардероб",
       "random": "Рандом",
@@ -468,7 +1161,7 @@
       }
     ],
     "settings": {
-      "cardSize": 92
+      "cardSize": 86
     },
     "defaultOutfit": {
       "hair": [
@@ -1321,54 +2014,88 @@
     "layout": {}
   },
   "rhythm": {
-    "bg": "assets/rhythm/bg.png",
+    "bg": "",
+    "stage": {
+      "top": "#ffd6e6",
+      "mid": "#ffc2dc",
+      "bottom": "#e9c7ff",
+      "star": "#ffd95e",
+      "curtain": "#ff8fbd",
+      "curtainFold": "#f4699f",
+      "valance": "#ff6fa8",
+      "podiumA": "#ffffff",
+      "podiumB": "#d9c4ff",
+      "podiumSide": "#b99cf0",
+      "speaker": "#ff9ec4",
+      "speakerCone": "#ff5c9a"
+    },
     "texts": {
       "title": "Выбери песню",
       "soon": "скоро…",
       "loading": "Слушаем песню…",
       "score": "Счёт",
-      "combo": "Комбо",
+      "combo": "комбо",
       "record": "Рекорд",
       "newRecord": "Новый рекорд!",
       "perfect": "Идеально!",
-      "good": "Хорошо",
+      "good": "Хорошо!",
       "miss": "Мимо",
       "again": "Ещё раз",
       "toSongs": "К песням",
       "next": "Дальше",
-      "exit": "← Выйти",
+      "exit": "Выйти",
       "paused": "Пауза",
       "resume": "Продолжить",
       "quit": "К песням",
-      "play": "Играть"
+      "play": "Играть",
+      "keysHint": "длинные ноты — держи"
     },
     "difficulties": [
       {
         "id": "easy",
         "name": "Легко",
-        "gap": 0.5,
-        "perSec": 1.1,
+        "grid": 1,
+        "keep": [
+          0.86,
+          0,
+          0
+        ],
+        "minGap": 0.4,
+        "hold": 0.5,
+        "slowBeat": 0.44,
         "approach": 1.9,
-        "perfect": 0.09,
-        "good": 0.18
+        "perfect": 0.095,
+        "good": 0.19
       },
       {
         "id": "normal",
         "name": "Нормально",
-        "gap": 0.3,
-        "perSec": 2,
-        "approach": 1.6,
-        "perfect": 0.07,
-        "good": 0.14
+        "grid": 2,
+        "keep": [
+          0.95,
+          0.4,
+          0
+        ],
+        "minGap": 0.22,
+        "hold": 0.4,
+        "approach": 1.55,
+        "perfect": 0.075,
+        "good": 0.15
       },
       {
         "id": "hard",
         "name": "Сложно",
-        "gap": 0.17,
-        "perSec": 3.4,
-        "approach": 1.25,
-        "perfect": 0.055,
-        "good": 0.115
+        "grid": 4,
+        "keep": [
+          1,
+          0.75,
+          0.28
+        ],
+        "minGap": 0.12,
+        "hold": 0.3,
+        "approach": 1.2,
+        "perfect": 0.058,
+        "good": 0.12
       }
     ],
     "keys": [
@@ -1379,42 +2106,51 @@
     ],
     "lanes": [
       {
-        "color": "#ff4d6d",
-        "img": "assets/rhythm/note1.png"
+        "color": "#58c6ff",
+        "icon": "left",
+        "img": ""
       },
       {
-        "color": "#ff8fab",
-        "img": "assets/rhythm/note2.png"
+        "color": "#b388ff",
+        "icon": "down",
+        "img": ""
       },
       {
-        "color": "#ffd166",
-        "img": "assets/rhythm/note3.png"
+        "color": "#4fd9a8",
+        "icon": "up",
+        "img": ""
       },
       {
-        "color": "#c77dff",
-        "img": "assets/rhythm/note4.png"
+        "color": "#ff5c9a",
+        "icon": "right",
+        "img": ""
       }
     ],
     "highway": {
-      "x": 110,
-      "y": 0,
-      "w": 420,
-      "h": 540
+      "x": 96,
+      "y": 60,
+      "w": 400,
+      "h": 420
     },
-    "hitLine": 450,
-    "noteSize": 64,
+    "hitLine": 430,
+    "noteSize": 62,
     "offsetMs": 0,
+    "detectLag": -0.01,
+    "holdSlack": 0.16,
+    "comboEvery": 25,
+    "auraCombo": 15,
     "volume": 1,
     "hud": {
-      "x": 760,
-      "y": 150
+      "x": 296,
+      "y": 128
     },
     "dancer": {
-      "img": "assets/rhythm/sonya_dance.png",
+      "img": "assets/rhythm/sonya_dance.svg",
       "cols": 3,
-      "x": 760,
-      "y": 500,
-      "w": 240
+      "x": 752,
+      "y": 470,
+      "w": 250,
+      "pixel": false
     },
     "songs": [
       {
@@ -1447,6 +2183,7 @@
     "music": "",
     "musicVolume": 0.7,
     "fireworks": true,
+    "fireworkEvery": 0.55,
     "girls": [
       {
         "name": "Аня",
@@ -1477,12 +2214,9 @@
       "w": 200
     },
     "flame": {
-      "img": "assets/finale/flame.png",
-      "cols": 3,
       "x": 479,
-      "y": 257,
-      "w": 22,
-      "fps": 8
+      "y": 262,
+      "scale": 1.5
     },
     "dialog": [
       {
@@ -1505,5 +2239,228 @@
     "endTitle": "С Днём Рождения!",
     "endText": "мы тебя очень любим 🍒",
     "backButton": "В главное меню"
+  },
+  "fx": {
+    "hitPerfect": {
+      "img": "assets/fx/hit_perfect.png",
+      "cols": 4,
+      "rows": 3,
+      "frames": 12,
+      "fps": 24,
+      "w": 160,
+      "h": 160,
+      "pixel": false,
+      "blend": "normal",
+      "loop": false,
+      "scale": 1
+    },
+    "hitGood": {
+      "img": "assets/fx/hit_good.png",
+      "cols": 4,
+      "rows": 2,
+      "frames": 8,
+      "fps": 22.22,
+      "w": 128,
+      "h": 128,
+      "pixel": false,
+      "blend": "normal",
+      "loop": false,
+      "scale": 1
+    },
+    "holdLoop": {
+      "img": "assets/fx/hold_loop.png",
+      "cols": 4,
+      "rows": 3,
+      "frames": 12,
+      "fps": 24,
+      "w": 96,
+      "h": 128,
+      "pixel": false,
+      "blend": "normal",
+      "loop": true,
+      "scale": 1
+    },
+    "comboBurst": {
+      "img": "assets/fx/combo_burst.png",
+      "cols": 4,
+      "rows": 4,
+      "frames": 16,
+      "fps": 16.84,
+      "w": 192,
+      "h": 192,
+      "pixel": false,
+      "blend": "normal",
+      "loop": false,
+      "scale": 1
+    },
+    "confetti": {
+      "img": "assets/fx/confetti.png",
+      "cols": 6,
+      "rows": 4,
+      "frames": 24,
+      "fps": 12.63,
+      "w": 256,
+      "h": 192,
+      "pixel": false,
+      "blend": "normal",
+      "loop": false,
+      "scale": 1
+    },
+    "heartPop": {
+      "img": "assets/fx/heart_pop.png",
+      "cols": 4,
+      "rows": 3,
+      "frames": 12,
+      "fps": 16,
+      "w": 128,
+      "h": 128,
+      "pixel": false,
+      "blend": "normal",
+      "loop": false,
+      "scale": 1
+    },
+    "twinkle": {
+      "img": "assets/fx/twinkle.png",
+      "cols": 6,
+      "rows": 4,
+      "frames": 24,
+      "fps": 12,
+      "w": 256,
+      "h": 144,
+      "pixel": false,
+      "blend": "add",
+      "loop": true,
+      "scale": 1
+    },
+    "twinkleCherry": {
+      "img": "assets/fx/twinkle_cherry.png",
+      "cols": 6,
+      "rows": 4,
+      "frames": 24,
+      "fps": 12,
+      "w": 256,
+      "h": 144,
+      "pixel": false,
+      "blend": "normal",
+      "loop": true,
+      "scale": 1
+    },
+    "roomReveal": {
+      "img": "assets/fx/room_reveal.png",
+      "cols": 4,
+      "rows": 3,
+      "frames": 12,
+      "fps": 12.63,
+      "w": 96,
+      "h": 72,
+      "pixel": true,
+      "blend": "add",
+      "loop": false,
+      "scale": 1.6
+    },
+    "popStar": {
+      "img": "assets/fx/pop_star.png",
+      "cols": 4,
+      "rows": 2,
+      "frames": 8,
+      "fps": 16,
+      "w": 64,
+      "h": 64,
+      "pixel": true,
+      "blend": "normal",
+      "loop": false,
+      "scale": 1
+    },
+    "puff": {
+      "img": "assets/fx/puff.png",
+      "cols": 4,
+      "rows": 2,
+      "frames": 8,
+      "fps": 12.31,
+      "w": 64,
+      "h": 64,
+      "pixel": true,
+      "blend": "normal",
+      "loop": false,
+      "scale": 1
+    },
+    "splash": {
+      "img": "assets/fx/splash.png",
+      "cols": 4,
+      "rows": 2,
+      "frames": 8,
+      "fps": 13.33,
+      "w": 64,
+      "h": 64,
+      "pixel": true,
+      "blend": "normal",
+      "loop": false,
+      "scale": 1
+    },
+    "steam": {
+      "img": "assets/fx/steam.png",
+      "cols": 4,
+      "rows": 3,
+      "frames": 12,
+      "fps": 8,
+      "w": 32,
+      "h": 64,
+      "pixel": true,
+      "blend": "normal",
+      "loop": true,
+      "scale": 1
+    },
+    "flame": {
+      "img": "assets/fx/flame.png",
+      "cols": 4,
+      "rows": 2,
+      "frames": 8,
+      "fps": 10,
+      "w": 24,
+      "h": 36,
+      "pixel": true,
+      "blend": "normal",
+      "loop": true,
+      "scale": 1
+    },
+    "fireworkRed": {
+      "img": "assets/fx/firework_red.png",
+      "cols": 5,
+      "rows": 4,
+      "frames": 20,
+      "fps": 13.79,
+      "w": 128,
+      "h": 128,
+      "pixel": true,
+      "blend": "add",
+      "loop": false,
+      "scale": 1
+    },
+    "fireworkGold": {
+      "img": "assets/fx/firework_gold.png",
+      "cols": 5,
+      "rows": 4,
+      "frames": 20,
+      "fps": 13.79,
+      "w": 128,
+      "h": 128,
+      "pixel": true,
+      "blend": "add",
+      "loop": false,
+      "scale": 1
+    },
+    "fireworkPink": {
+      "img": "assets/fx/firework_pink.png",
+      "cols": 5,
+      "rows": 4,
+      "frames": 20,
+      "fps": 13.79,
+      "w": 128,
+      "h": 128,
+      "pixel": true,
+      "blend": "add",
+      "loop": false,
+      "scale": 1
+    }
   }
 }

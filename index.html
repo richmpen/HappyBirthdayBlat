@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
-<meta name="theme-color" content="#5c0a1e">
+<meta name="theme-color" content="#7a1420">
 <meta name="description" content="Вишнёвое приключение ко дню рождения 🍒">
 <title>С Днём Рождения! 🍒</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600;700&family=Nunito:ital,wght@0,400;0,700;0,800;1,700&family=Tiny5&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&family=M+PLUS+Rounded+1c:wght@500;700;800;900&family=Nunito:wght@400;700;800&family=Yeseva+One&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/game.css">
 <link rel="stylesheet" href="css/dressup.css">
 <link rel="stylesheet" href="css/editor.css">
@@ -21,7 +21,7 @@
 <div id="shell">
   <div id="view">
     <section class="scene" id="sc-title" hidden></section>
-    <section class="scene" id="sc-room" hidden></section>
+    <section class="scene" id="sc-world" hidden></section>
     <section class="scene" id="sc-kitchen" hidden></section>
     <section class="scene" id="sc-rhythm" hidden></section>
     <section class="scene" id="sc-cutscene" hidden></section>
@@ -41,31 +41,22 @@
 <!-- ══════════ ОДЕВАШКА (на всё окно) ══════════ -->
 <section class="du" id="sc-dressup" hidden>
   <div class="decor" aria-hidden="true">
-    <div class="decor__grid"></div>
+    <svg class="orbit orbit--a" viewBox="0 0 300 300"><use href="#du-planet"/></svg>
+    <svg class="orbit orbit--b" viewBox="0 0 300 300"><use href="#du-planet"/></svg>
     <svg class="berry berry--a" viewBox="0 0 100 120"><use href="#cherry-outline"/></svg>
     <svg class="berry berry--b" viewBox="0 0 100 120"><use href="#cherry-outline"/></svg>
-    <svg class="berry berry--c" viewBox="0 0 100 120"><use href="#cherry-outline"/></svg>
     <span class="spark spark--1">✦</span>
-    <span class="spark spark--2">✧</span>
+    <span class="spark spark--2">✦</span>
     <span class="spark spark--3">✦</span>
-    <span class="spark spark--4">✧</span>
+    <span class="spark spark--4">✦</span>
     <span class="spark spark--5">✦</span>
-    <span class="spark spark--6">✧</span>
-    <div class="floaties">
-      <span style="--l:6%;  --dur:19s; --dl:-2s;  --sz:22px">🍒</span>
-      <span style="--l:17%; --dur:24s; --dl:-9s;  --sz:14px">✦</span>
-      <span style="--l:29%; --dur:21s; --dl:-14s; --sz:18px">🎀</span>
-      <span style="--l:41%; --dur:26s; --dl:-5s;  --sz:13px">♥</span>
-      <span style="--l:55%; --dur:18s; --dl:-11s; --sz:20px">🍒</span>
-      <span style="--l:68%; --dur:23s; --dl:-3s;  --sz:15px">🌹</span>
-      <span style="--l:79%; --dur:27s; --dl:-16s; --sz:24px">🍒</span>
-      <span style="--l:91%; --dur:20s; --dl:-7s;  --sz:16px">✧</span>
-    </div>
+    <span class="spark spark--6">✦</span>
+    <div class="floaties" id="duTwinkle"></div>
   </div>
 
   <svg width="0" height="0" aria-hidden="true" style="position:absolute">
     <symbol id="cherry-outline" viewBox="0 0 100 120">
-      <g fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+      <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="30" cy="88" r="22"/>
         <circle cx="72" cy="94" r="20"/>
         <path d="M30 66C34 40 46 22 62 10"/>
@@ -75,22 +66,43 @@
         <path d="M63 88c2-5 5-8 9-9"/>
       </g>
     </symbol>
+    <symbol id="du-planet" viewBox="0 0 300 300">
+      <g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+        <ellipse cx="150" cy="150" rx="140" ry="42" transform="rotate(-18 150 150)"/>
+        <ellipse cx="150" cy="150" rx="118" ry="30" transform="rotate(-18 150 150)" stroke-dasharray="3 9"/>
+      </g>
+    </symbol>
+    <!-- логотип: вишенки-планета -->
+    <symbol id="du-logo" viewBox="0 0 120 100">
+      <g stroke="#2a1215" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M46 58C50 34 60 20 76 10" fill="none"/>
+        <path d="M78 60C80 40 80 24 76 10" fill="none"/>
+        <path d="M76 10c9-7 22-6 30 2-9 9-22 10-30-2z" fill="#2a1215"/>
+        <circle cx="44" cy="70" r="20" fill="#7a1420"/>
+        <circle cx="78" cy="72" r="19" fill="#8f1a28"/>
+        <path d="M8 84C30 60 84 44 114 52" fill="none" stroke-width="5" stroke="#2a1215"/>
+        <path d="M8 84C30 60 84 44 114 52" fill="none" stroke-width="2" stroke="#f8f1e7"/>
+      </g>
+      <path d="M36 62l2 5 5 2-5 2-2 5-2-5-5-2 5-2z" fill="#f8f1e7"/>
+      <path d="M74 64l1.6 4 4 1.6-4 1.6-1.6 4-1.6-4-4-1.6 4-1.6z" fill="#f8f1e7"/>
+    </symbol>
   </svg>
 
   <div class="app" id="app">
     <header class="topbar">
       <div class="brand">
+        <svg class="brand__mark" viewBox="0 0 120 100"><use href="#du-logo"/></svg>
         <div class="brand__logo">
-          <span class="brand__word"><span id="duTitle">CHERRY</span><span class="brand__heart">🍒</span></span>
+          <span class="brand__word"><span id="duTitle">Cherry</span> <i id="duTitle2">Closet</i></span>
           <span class="brand__tag" id="duTag"></span>
         </div>
       </div>
       <nav class="tools" aria-label="Инструменты">
-        <button class="tool" id="btnExit" title="Вернуться в комнату"><span>🚪</span><b data-t="exit">Выйти</b></button>
-        <button class="tool" id="btnRandom" title="Случайный образ (R)"><span>🎲</span><b data-t="random">Рандом</b></button>
-        <button class="tool" id="btnClear" title="Снять всё (C)"><span>🧺</span><b data-t="clear">Снять всё</b></button>
-        <button class="tool" id="btnShot" title="Скачать картинку"><span>📸</span><b data-t="shot">Фото</b></button>
-        <button class="tool tool--icon" id="btnSound" title="Звук" aria-pressed="true"><span id="soundIcon">🔔</span></button>
+        <button class="tool" id="btnExit" title="Вернуться в комнату"><span>←</span><b data-t="exit">Выйти</b></button>
+        <button class="tool" id="btnRandom" title="Случайный образ (R)"><span>✦</span><b data-t="random">Рандом</b></button>
+        <button class="tool" id="btnClear" title="Снять всё (C)"><span>✕</span><b data-t="clear">Снять всё</b></button>
+        <button class="tool" id="btnShot" title="Скачать картинку"><span>◉</span><b data-t="shot">Фото</b></button>
+        <button class="tool tool--icon" id="btnSound" title="Звук" aria-pressed="true"><span id="soundIcon">♪</span></button>
         <button class="tool tool--done" id="btnDone" title="Наряд готов!"><span>✓</span><b data-t="done">Готово</b></button>
       </nav>
     </header>
@@ -102,7 +114,7 @@
           <span class="doll__corner doll__corner--tr">✦</span>
           <span class="doll__corner doll__corner--bl">✦</span>
           <span class="doll__corner doll__corner--br">✦</span>
-          <span class="doll__mascot" aria-hidden="true">🍒</span>
+          <svg class="doll__ring" viewBox="0 0 300 300" aria-hidden="true"><use href="#du-planet"/></svg>
           <div class="stage" id="stage">
             <div class="stage__inner" id="stageInner">
               <img class="layer layer--base" id="baseImg" alt="Персонаж" draggable="false">
@@ -124,12 +136,15 @@
       </aside>
     </main>
 
-    <button class="fab" id="fab" aria-label="Открыть гардероб"><span>👗</span><b data-t="wardrobe">Гардероб</b></button>
+    <button class="fab" id="fab" aria-label="Открыть гардероб"><span>✦</span><b data-t="wardrobe">Гардероб</b></button>
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <canvas id="shotCanvas" hidden></canvas>
 </section>
+
+<!-- эффекты поверх всего (атласы Arcadia Effector) -->
+<div id="fxLayer"></div>
 
 <!-- ══════════ РЕДАКТОР (F10) ══════════ -->
 <aside id="editor" hidden></aside>
@@ -139,7 +154,7 @@
 <div id="boot">🍒</div>
 
 <script src="js/core.js"></script>
-<script src="js/rooms.js"></script>
+<script src="js/world.js"></script>
 <script src="js/kitchen.js"></script>
 <script src="js/dressup.js"></script>
 <script src="js/rhythm.js"></script>

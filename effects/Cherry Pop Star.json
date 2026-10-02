@@ -1,0 +1,285 @@
+{
+ "app": "arcadia-effects",
+ "v": 1,
+ "doc": {
+  "id": "fx_cherry_pop_star",
+  "name": "Cherry Pop Star",
+  "comp": {
+   "w": 256,
+   "h": 256,
+   "dur": 0.5
+  },
+  "exp": {
+   "cols": 4,
+   "rows": 2,
+   "frames": 8,
+   "pixelArt": true
+  },
+  "layers": [
+   {
+    "id": "lr_pop_star_1",
+    "type": "postfx",
+    "name": "Pixelate",
+    "fx": {
+     "effect": "pixelate",
+     "pxW": 64,
+     "pxSnap": true,
+     "pxSample": "peak",
+     "pxAlpha": "cut",
+     "pxThr": 0.4,
+     "pxGain": 1.5,
+     "pxOut": 0.9,
+     "pxOutCol": [
+      74,
+      13,
+      31
+     ]
+    }
+   },
+   {
+    "id": "lr_pop_star_2",
+    "type": "emitter",
+    "name": "Stars",
+    "blend": "normal",
+    "em": {
+     "bursts": [
+      {
+       "t": 0,
+       "n": 8
+      }
+     ],
+     "shape": "ring",
+     "sx": 14,
+     "sy": 4,
+     "dir": "out",
+     "speed": 330,
+     "speedRnd": 0.25,
+     "seed": 3
+    },
+    "pt": {
+     "life": 0.42,
+     "lifeRnd": 0.2,
+     "sprite": {
+      "kind": "shape",
+      "id": "star",
+      "p": {
+       "n": 5,
+       "inr": 0.45
+      }
+     },
+     "size": 38,
+     "sizeRnd": 0.3,
+     "sizeOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 0.3
+       },
+       {
+        "t": 0.2,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0
+       }
+      ]
+     },
+     "opacityOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 1
+       },
+       {
+        "t": 0.8,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0
+       }
+      ]
+     },
+     "grad": {
+      "stops": [
+       {
+        "t": 0,
+        "c": [
+         255,
+         243,
+         176
+        ]
+       },
+       {
+        "t": 1,
+        "c": [
+         255,
+         209,
+         102
+        ]
+       }
+      ]
+     },
+     "spin": 140,
+     "spinRnd": 1,
+     "drag": 3.2
+    }
+   },
+   {
+    "id": "lr_pop_star_3",
+    "type": "emitter",
+    "name": "Dots",
+    "blend": "normal",
+    "em": {
+     "bursts": [
+      {
+       "t": 0,
+       "n": 10
+      }
+     ],
+     "dir": "omni",
+     "speed": 260,
+     "speedRnd": 0.5,
+     "seed": 7
+    },
+    "pt": {
+     "life": 0.4,
+     "lifeRnd": 0.3,
+     "sprite": {
+      "kind": "shape",
+      "id": "square",
+      "p": {}
+     },
+     "size": 14,
+     "sizeRnd": 0.4,
+     "sizeOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0.3
+       }
+      ]
+     },
+     "opacityOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 1
+       },
+       {
+        "t": 0.8,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0
+       }
+      ]
+     },
+     "grad": {
+      "stops": [
+       {
+        "t": 0,
+        "c": [
+         255,
+         143,
+         163
+        ]
+       },
+       {
+        "t": 1,
+        "c": [
+         255,
+         77,
+         109
+        ]
+       }
+      ]
+     },
+     "gravY": 380,
+     "drag": 2.2,
+     "spin": 0,
+     "rotRnd": 0
+    }
+   },
+   {
+    "id": "lr_pop_star_4",
+    "type": "sprite",
+    "name": "Ring",
+    "blend": "normal",
+    "start": 0,
+    "end": 0.3,
+    "opacity": {
+     "keys": [
+      {
+       "t": 0,
+       "v": 1,
+       "i": {
+        "m": "ease"
+       },
+       "o": {
+        "m": "ease"
+       }
+      },
+      {
+       "t": 0.28,
+       "v": 0,
+       "i": {
+        "m": "ease"
+       },
+       "o": {
+        "m": "ease"
+       }
+      }
+     ]
+    },
+    "sp": {
+     "sprite": {
+      "kind": "shape",
+      "id": "ring",
+      "p": {
+       "th": 0.16
+      }
+     },
+     "size": 130,
+     "scale": {
+      "keys": [
+       {
+        "t": 0,
+        "v": 0.3,
+        "i": {
+         "m": "ease"
+        },
+        "o": {
+         "m": "ease"
+        }
+       },
+       {
+        "t": 0.28,
+        "v": 1.2,
+        "i": {
+         "m": "ease"
+        },
+        "o": {
+         "m": "ease"
+        }
+       }
+      ]
+     },
+     "color": [
+      255,
+      255,
+      255
+     ]
+    }
+   }
+  ],
+  "textures": []
+ },
+ "tex": {}
+}

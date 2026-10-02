@@ -226,59 +226,22 @@ function rebuildAll() {
 }
 
 /* ============================================================
-   ЭФФЕКТЫ (только десктоп — на телефоне отключены)
+   ЭФФЕКТЫ — атласы Arcadia Effector (см. data/game.json → fx)
    ============================================================ */
-const GLYPHS = ['♥', '🍒', '✦', '🎀', '✧', '🌹', '❣'];
-
-function burst(n = 8) {
-  if (noFx()) return;
+function burst() {
+  if (calm()) return;
   const r = stage.getBoundingClientRect();
-  for (let i = 0; i < n; i++) {
-    const s = document.createElement('span');
-    s.className = 'heart';
-    s.textContent = GLYPHS[(Math.random() * GLYPHS.length) | 0];
-    s.style.left = (r.left + r.width * rnd(.18, .82)) + 'px';
-    s.style.top  = (r.top  + r.height * rnd(.22, .62)) + 'px';
-    s.style.setProperty('--dx', rnd(-55, 55) + 'px');
-    s.style.setProperty('--rot', rnd(-35, 35) + 'deg');
-    s.style.fontSize = rnd(15, 26) + 'px';
-    s.style.animationDelay = (i * 42) + 'ms';
-    root.appendChild(s);
-    setTimeout(() => s.remove(), 1300 + i * 42);
-  }
+  G.fx.screen('heartPop', r.left + r.width * rnd(.3, .7), r.top + r.height * rnd(.3, .6), { scale: Math.max(1.2, r.height / 380) });
 }
 
 function sparkleAt(cx, cy) {
-  if (noFx() || !cx) return;
-  for (let i = 0; i < 6; i++) {
-    const s = document.createElement('span');
-    s.className = 'sparkle';
-    s.textContent = i % 3 === 0 ? '🍒' : '✦';
-    const a = (Math.PI * 2 * i) / 6 + rnd(-.4, .4), d = rnd(26, 54);
-    s.style.left = cx + 'px'; s.style.top = cy + 'px';
-    s.style.setProperty('--tx', Math.cos(a) * d + 'px');
-    s.style.setProperty('--ty', Math.sin(a) * d + 'px');
-    s.style.fontSize = rnd(10, 17) + 'px';
-    root.appendChild(s);
-    setTimeout(() => s.remove(), 800);
-  }
+  if (calm() || !cx) return;
+  G.fx.screen('heartPop', cx, cy, { scale: .6 });
 }
 
-function berryRain(n = 26) {
-  if (noFx()) return;
-  for (let i = 0; i < n; i++) {
-    const s = document.createElement('span');
-    s.className = 'rain';
-    s.textContent = ['🍒', '✦', '🎀', '♥', '🌹'][(Math.random() * 5) | 0];
-    s.style.left = rnd(0, 100) + 'vw';
-    s.style.fontSize = rnd(14, 32) + 'px';
-    s.style.animationDelay = rnd(0, .55) + 's';
-    s.style.animationDuration = rnd(1.9, 3.2) + 's';
-    s.style.setProperty('--sway', rnd(-70, 70) + 'px');
-    s.style.setProperty('--spin', rnd(-420, 420) + 'deg');
-    root.appendChild(s);
-    setTimeout(() => s.remove(), 4200);
-  }
+function berryRain() {
+  if (calm()) return;
+  G.fx.screen('confetti', innerWidth / 2, innerHeight / 2, { scale: Math.max(1.6, innerWidth / 560) });
 }
 
 /* ============================================================
@@ -414,7 +377,7 @@ function randomize() {
     el.classList.add('is-new');
   });
   sndWow(); berryRain(); burst(10);
-  toast('Новый образ! 🎲');
+  toast('Новый образ! ✦');
 }
 
 function clearAll() {
@@ -423,7 +386,7 @@ function clearAll() {
   rebuildAll();
   pick(null);
   sndOff();
-  toast('Всё снято 🧺');
+  toast('Всё снято');
 }
 
 async function screenshot() {
@@ -478,7 +441,7 @@ async function screenshot() {
       a.download = 'cherry-look.png';
       a.click();
       setTimeout(() => URL.revokeObjectURL(a.href), 4000);
-      toast('Картинка сохранена 📸');
+      toast('Картинка сохранена ✦');
       sndOn(); berryRain(14);
     }, 'image/png');
   } catch {
@@ -981,10 +944,11 @@ function applyTexts() {
   const T = D().texts;
   $$('[data-t]').forEach(e => { if (T[e.dataset.t] != null) e.textContent = T[e.dataset.t]; });
   $('#duTitle').textContent = D().title;
+  $('#duTitle2').textContent = D().title2 || '';
   $('#duTag').textContent = D().tag;
 }
 function paintSound() {
-  $('#soundIcon').textContent = G.soundOn ? '🔔' : '🔕';
+  $('#soundIcon').textContent = G.soundOn ? '♪' : '∅';
   $('#btnSound').classList.toggle('is-muted', !G.soundOn);
   $('#btnSound').setAttribute('aria-pressed', String(G.soundOn));
 }
@@ -995,7 +959,7 @@ function init() {
   $('#btnClear').onclick  = clearAll;
   $('#btnShot').onclick   = screenshot;
   $('#btnDone').onclick   = finish;
-  $('#btnExit').onclick   = () => G.go('room', { id: 'dressup', at: 'npc' });
+  $('#btnExit').onclick   = () => G.go('world', { room: 'dressup' });
   $('#btnSound').onclick  = () => {
     G.soundOn = !G.soundOn;
     G.writeLS('cherry.sound', G.soundOn);
@@ -1017,6 +981,9 @@ function init() {
   baseImg.decoding = 'async';
   baseImg.dataset.cat = 'base';
   baseImg.dataset.n = 0;
+  // мерцающие искры на фоне
+  const tw = G.fx.el('twinkleCherry', { loop: true, scale: 4 });
+  if (tw) { tw.style.left = '50%'; tw.style.top = '50%'; $('#duTwinkle').appendChild(tw); }
 }
 
 G.scenes.dressup = {
@@ -1034,7 +1001,7 @@ G.scenes.dressup = {
     setTimeout(fitStage, 320);
     if (innerWidth <= 760) sheet.close();
     setTimeout(() => { if (G.sceneId === 'dressup') { toast(D().texts.hello); berryRain(12); } }, 700);
-    G.music(G.cfg.rooms.dressup?.music);
+    G.music(G.cfg.world.rooms.dressup?.music);
   },
   leave() { setBeta(false); },
   refresh() {
@@ -1077,7 +1044,7 @@ G.scenes.dressup = {
   },
 
   editRoots: () => [{ path: 'dressup', label: 'Одевашка: тексты и категории' },
-                    { path: 'rooms.dressup.cutscene', label: 'Катсцена после игры' }],
+                    { path: 'world.rooms.dressup.cutscene', label: 'Катсцена после игры' }],
   editorTools
 };
 

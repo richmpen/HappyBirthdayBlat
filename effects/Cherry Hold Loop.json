@@ -1,0 +1,237 @@
+{
+ "app": "arcadia-effects",
+ "v": 1,
+ "doc": {
+  "id": "fx_cherry_hold_loop",
+  "name": "Cherry Hold Loop",
+  "comp": {
+   "w": 192,
+   "h": 256,
+   "dur": 2.5
+  },
+  "exp": {
+   "cols": 4,
+   "rows": 3,
+   "frames": 12,
+   "cellW": 96,
+   "cellH": 128,
+   "t0": 1.5,
+   "t1": 2
+  },
+  "layers": [
+   {
+    "id": "lr_hold_loop_1",
+    "type": "emitter",
+    "name": "Rising stars",
+    "blend": "normal",
+    "em": {
+     "y": 96,
+     "shape": "box",
+     "sx": 30,
+     "sy": 4,
+     "dir": "dir",
+     "angle": -90,
+     "spread": 28,
+     "speed": 250,
+     "speedRnd": 0.4,
+     "rate": 18,
+     "bursts": [],
+     "seed": 2
+    },
+    "pt": {
+     "life": 0.5,
+     "lifeRnd": 0.3,
+     "sprite": {
+      "kind": "shape",
+      "id": "star",
+      "p": {
+       "n": 4,
+       "inr": 0.32
+      }
+     },
+     "size": 26,
+     "sizeRnd": 0.5,
+     "sizeOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 0.3
+       },
+       {
+        "t": 0.2,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0
+       }
+      ]
+     },
+     "opacityOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 1
+       },
+       {
+        "t": 0.6,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0
+       }
+      ]
+     },
+     "grad": {
+      "stops": [
+       {
+        "t": 0,
+        "c": [
+         255,
+         255,
+         255
+        ]
+       },
+       {
+        "t": 0.5,
+        "c": [
+         255,
+         243,
+         176
+        ]
+       },
+       {
+        "t": 1,
+        "c": [
+         255,
+         143,
+         163
+        ]
+       }
+      ]
+     },
+     "spin": 120,
+     "spinRnd": 1,
+     "drag": 1.4,
+     "turbAmp": 120,
+     "turbFreq": 3
+    }
+   },
+   {
+    "id": "lr_hold_loop_2",
+    "type": "emitter",
+    "name": "Bubbles",
+    "blend": "normal",
+    "em": {
+     "y": 100,
+     "shape": "box",
+     "sx": 34,
+     "sy": 4,
+     "dir": "dir",
+     "angle": -90,
+     "spread": 40,
+     "speed": 300,
+     "speedRnd": 0.5,
+     "rate": 34,
+     "bursts": [],
+     "seed": 6
+    },
+    "pt": {
+     "life": 0.42,
+     "lifeRnd": 0.4,
+     "sprite": {
+      "kind": "shape",
+      "id": "dot",
+      "p": {}
+     },
+     "size": 9,
+     "sizeRnd": 0.6,
+     "sizeOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0.2
+       }
+      ]
+     },
+     "opacityOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 1
+       },
+       {
+        "t": 0.55,
+        "v": 0.85
+       },
+       {
+        "t": 1,
+        "v": 0
+       }
+      ]
+     },
+     "grad": {
+      "stops": [
+       {
+        "t": 0,
+        "c": [
+         255,
+         255,
+         255
+        ]
+       },
+       {
+        "t": 0.4,
+        "c": [
+         255,
+         204,
+         213
+        ]
+       },
+       {
+        "t": 1,
+        "c": [
+         255,
+         77,
+         109
+        ]
+       }
+      ]
+     },
+     "drag": 1.8,
+     "spin": 0
+    }
+   },
+   {
+    "id": "lr_hold_loop_3",
+    "type": "sprite",
+    "name": "Base glow",
+    "blend": "screen",
+    "opacity": 0.75,
+    "sp": {
+     "sprite": {
+      "kind": "shape",
+      "id": "soft",
+      "p": {}
+     },
+     "size": 150,
+     "y": 96,
+     "aspect": 1.6,
+     "color": [
+      255,
+      209,
+      220
+     ],
+     "glow": 0.4
+    }
+   }
+  ],
+  "textures": []
+ },
+ "tex": {}
+}

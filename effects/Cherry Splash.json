@@ -1,0 +1,278 @@
+{
+ "app": "arcadia-effects",
+ "v": 1,
+ "doc": {
+  "id": "fx_cherry_splash",
+  "name": "Cherry Splash",
+  "comp": {
+   "w": 256,
+   "h": 256,
+   "dur": 0.6
+  },
+  "exp": {
+   "cols": 4,
+   "rows": 2,
+   "frames": 8,
+   "pixelArt": true
+  },
+  "layers": [
+   {
+    "id": "lr_splash_1",
+    "type": "postfx",
+    "name": "Pixelate",
+    "fx": {
+     "effect": "pixelate",
+     "pxW": 64,
+     "pxSnap": true,
+     "pxSample": "peak",
+     "pxAlpha": "cut",
+     "pxThr": 0.4,
+     "pxGain": 1.5,
+     "pxOut": 0.9,
+     "pxOutCol": [
+      74,
+      13,
+      31
+     ]
+    }
+   },
+   {
+    "id": "lr_splash_2",
+    "type": "emitter",
+    "name": "Drops",
+    "blend": "normal",
+    "em": {
+     "y": 40,
+     "bursts": [
+      {
+       "t": 0,
+       "n": 13
+      }
+     ],
+     "dir": "dir",
+     "angle": -90,
+     "spread": 80,
+     "speed": 430,
+     "speedRnd": 0.4,
+     "seed": 4,
+     "sub": {
+      "on": true,
+      "emit": "life",
+      "rate": 16,
+      "startAt": 0.1,
+      "dir": "back",
+      "spread": 10,
+      "speed": 5,
+      "budget": 200,
+      "pt": {
+       "life": 0.16,
+       "sprite": {
+        "kind": "shape",
+        "id": "dot",
+        "p": {}
+       },
+       "size": 9,
+       "sizeOL": {
+        "pts": [
+         {
+          "t": 0,
+          "v": 1
+         },
+         {
+          "t": 1,
+          "v": 0.2
+         }
+        ]
+       },
+       "opacityOL": {
+        "pts": [
+         {
+          "t": 0,
+          "v": 1
+         },
+         {
+          "t": 0.8,
+          "v": 1
+         },
+         {
+          "t": 1,
+          "v": 0
+         }
+        ]
+       },
+       "grad": {
+        "stops": [
+         {
+          "t": 0,
+          "c": [
+           217,
+           4,
+           41
+          ]
+         },
+         {
+          "t": 1,
+          "c": [
+           164,
+           19,
+           60
+          ]
+         }
+        ]
+       },
+       "spin": 0,
+       "drag": 0
+      }
+     }
+    },
+    "pt": {
+     "life": 0.55,
+     "lifeRnd": 0.2,
+     "sprite": {
+      "kind": "shape",
+      "id": "dot",
+      "p": {}
+     },
+     "size": 20,
+     "sizeRnd": 0.4,
+     "sizeOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 0.6
+       },
+       {
+        "t": 0.2,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0.5
+       }
+      ]
+     },
+     "opacityOL": {
+      "pts": [
+       {
+        "t": 0,
+        "v": 1
+       },
+       {
+        "t": 0.85,
+        "v": 1
+       },
+       {
+        "t": 1,
+        "v": 0
+       }
+      ]
+     },
+     "grad": {
+      "stops": [
+       {
+        "t": 0,
+        "c": [
+         255,
+         77,
+         109
+        ]
+       },
+       {
+        "t": 0.5,
+        "c": [
+         217,
+         4,
+         41
+        ]
+       },
+       {
+        "t": 1,
+        "c": [
+         164,
+         19,
+         60
+        ]
+       }
+      ]
+     },
+     "gravY": 1000,
+     "drag": 0.8,
+     "spin": 0
+    }
+   },
+   {
+    "id": "lr_splash_3",
+    "type": "sprite",
+    "name": "Base",
+    "blend": "normal",
+    "start": 0,
+    "end": 0.2,
+    "opacity": {
+     "keys": [
+      {
+       "t": 0,
+       "v": 1,
+       "i": {
+        "m": "ease"
+       },
+       "o": {
+        "m": "ease"
+       }
+      },
+      {
+       "t": 0.18,
+       "v": 0,
+       "i": {
+        "m": "ease"
+       },
+       "o": {
+        "m": "ease"
+       }
+      }
+     ]
+    },
+    "sp": {
+     "sprite": {
+      "kind": "shape",
+      "id": "soft",
+      "p": {}
+     },
+     "size": 90,
+     "y": 44,
+     "aspect": 2.2,
+     "scale": {
+      "keys": [
+       {
+        "t": 0,
+        "v": 0.5,
+        "i": {
+         "m": "ease"
+        },
+        "o": {
+         "m": "ease"
+        }
+       },
+       {
+        "t": 0.18,
+        "v": 1.2,
+        "i": {
+         "m": "ease"
+        },
+        "o": {
+         "m": "ease"
+        }
+       }
+      ]
+     },
+     "color": [
+      255,
+      143,
+      163
+     ]
+    }
+   }
+  ],
+  "textures": []
+ },
+ "tex": {}
+}
