@@ -132,9 +132,26 @@ G.jump = spec => {
   return G.go(G.scenes[a] ? a : 'title');
 };
 
+/* ---------------- свежая ли версия? ---------------- */
+/** GitHub Pages разрешает браузеру держать страницу в кэше до 10 минут. Спрашиваем сервер напрямую:
+    если там уже новая сборка — перезагружаемся на неё (адрес с ?v=… браузер из кэша не возьмёт). */
+async function selfUpdate() {
+  try {
+    const html = await (await fetch('index.html?t=' + Date.now(), { cache: 'no-store' })).text();
+    const m = /window\.BUILD = '([^']+)'/.exec(html);
+    if (!m || m[1] === window.BUILD) return false;
+    const u = new URL(location.href);
+    if (u.searchParams.get('v') === m[1]) return false;
+    u.searchParams.set('v', m[1]);
+    location.replace(u.href);
+    return true;
+  } catch { return false; }
+}
+
 /* ---------------- запуск ---------------- */
 (async () => {
   const boot = $('#boot');
+  if (await selfUpdate()) return;
   try {
     await G.loadConfig();
   } catch (e) {
