@@ -245,3 +245,10 @@
 .ed__palitem{ display:grid; place-items:center; height:56px; padding:3px; border:2px solid var(--p200); border-radius:9px; background:#fff; cursor:pointer; }
 .ed__palitem:hover{ border-color:var(--p500); background:var(--p100); }
 .ed__palitem img{ max-width:100%; max-height:46px; }
+
+/* переключатель из двух кнопок */
+.ed__seg{ display:grid; grid-template-columns:1fr 1fr; gap:0; border:2px solid var(--p500); border-radius:12px; overflow:hidden; }
+.ed__seg button{ padding:10px 6px 11px; border:0; background:#fff; color:var(--p600); font-weight:800; font-size:12px; cursor:pointer; transition:background .15s, color .15s; }
+.ed__seg button + button{ border-left:2px solid var(--p500); }
+.ed__seg button.is-on{ background:linear-gradient(150deg, var(--p400), var(--p600)); color:#fff; }
+.ed__ver{ font-size:10px; font-weight:700; opacity:.7; letter-spacing:.04em; }

@@ -434,7 +434,7 @@ function buildGithub() {
 function build() {
   built = true;
   panel.innerHTML = `
-    <div class="ed__head"><b>🍒 Редактор</b><span id="edScene"></span><button id="edClose" title="Закрыть (F10)">✕</button></div>
+    <div class="ed__head"><b>🍒 Редактор</b><span id="edScene"></span><i class="ed__ver" title="Версия игры. Если после обновления сайта она старая — нажми Ctrl+F5">${esc(window.BUILD || '')}</i><button id="edClose" title="Закрыть (F10)">✕</button></div>
     <div class="ed__save">
       <div class="ed__state" id="edState"></div>
       <div class="ed__row">

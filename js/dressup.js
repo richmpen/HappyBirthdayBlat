@@ -477,8 +477,11 @@ function setBeta(on) {
   betaOn = on;
   app.classList.toggle('is-beta', on);
   guides.classList.toggle('is-on', on && (F('#bGuides')?.checked ?? true));
-  if (!on) { pick(null); dim = 1; moveAll = false; stage.classList.remove('is-moveall'); $$('.layer', inner).forEach(el => el.style.opacity = ''); }
+  moveAll = on;
+  stage.classList.toggle('is-moveall', on);
+  if (!on) { pick(null); dim = 1; $$('.layer', inner).forEach(el => el.style.opacity = ''); }
   paintWorn();
+  syncFit();
   setTimeout(fitStage, 60);
 }
 
@@ -488,12 +491,14 @@ function pick(sel) {
     el && el.classList.remove('is-picked');
   }
   picked = sel;
+  if (sel && moveAll) { moveAll = false; }
   if (sel) {
     const el = layerEls.get(key(sel.cat, sel.n));
     el && el.classList.add('is-picked');
     if (!isBase(sel.cat) && activeTab !== sel.cat) { activeTab = sel.cat; buildTabs(); paintShelf(true); }
   }
   syncFields();
+  syncFit();
 }
 
 function syncFields() {
@@ -607,7 +612,13 @@ function syncFit() {
   const f = FIT();
   [['#fitX', f.x ?? 0, 1], ['#fitY', f.y ?? 0, 1], ['#fitZ', f.zoom ?? 1, 3], ['#fitT', f.cropTop ?? 0, 3], ['#fitB', f.cropBottom ?? 1, 3], ['#fitS', f.sideMargin ?? 60, 0]]
     .forEach(([q, v, d]) => { const el = F(q); if (el && el !== document.activeElement) el.value = round(v, d); });
-  F('#bMoveAll')?.classList.toggle('bbtn--main', moveAll);
+  F('#segAll')?.classList.toggle('is-on', moveAll);
+  F('#segItem')?.classList.toggle('is-on', !moveAll);
+  const note = F('#segNote');
+  if (note) note.textContent = moveAll
+    ? 'Тяни персонажа прямо в рамке — двигается всё целиком, тело вместе с одеждой. Колесо мыши — крупнее/мельче.'
+    : 'Кликни по вещи на персонаже (или в «Надето») и тяни её. Колесо — масштаб вещи, Shift+колесо — поворот.';
+  stage.classList.toggle('is-moveall', betaOn && moveAll);
 }
 function fitChanged() { fitStage(); syncFit(); G.editor?.changed(); }
 
@@ -813,11 +824,13 @@ function deleteItem() {
 /* панель в редакторе */
 function editorTools(box) {
   box.innerHTML = `
-    <div class="ed__label">Персонаж в рамке</div>
-    <div class="beta__btns">
-      <button class="bbtn" id="bMoveAll" style="grid-column:1/-1">✥ Двигать персонажа мышкой</button>
+    <div class="ed__label">Что двигаем мышкой</div>
+    <div class="ed__seg">
+      <button id="segAll">✥ Персонаж целиком</button>
+      <button id="segItem">👗 Отдельная вещь</button>
     </div>
-    <p class="ed__note">Включи кнопку и тяни персонажа по рамке; колесо — крупнее/мельче. Двигается всё целиком — тело вместе с одеждой.</p>
+    <p class="ed__note" id="segNote"></p>
+    <div class="ed__label">Персонаж в рамке</div>
     <div class="beta__rows">
       <label class="brow"><span>Сдвиг X, %</span><input type="number" id="fitX" step="0.5"></label>
       <label class="brow"><span>Сдвиг Y, %</span><input type="number" id="fitY" step="0.5"></label>
@@ -829,7 +842,7 @@ function editorTools(box) {
     <div class="beta__btns"><button class="bbtn" id="bFitReset" style="grid-column:1/-1">↺ Персонаж по центру, масштаб 1</button></div>
     <div class="ed__label">Отдельная вещь</div>
     <div class="beta__sel" id="betaSel"></div>
-    <p class="ed__note">Кликни по вещи на персонаже (или в «Надето») и тяни мышкой. Колесо — масштаб, Shift+колесо — поворот. Вещи одного размера с телом уже стоят правильно — двигать их не обязательно.</p>
+    <p class="ed__note">Вещи одного размера с телом уже стоят правильно — двигать их не обязательно.</p>
     <div class="beta__rows">
       <label class="brow"><span>X</span><input type="number" id="fx" step="1"></label>
       <label class="brow"><span>Y</span><input type="number" id="fy" step="1"></label>
@@ -897,7 +910,8 @@ function editorTools(box) {
   bind('#ftr', 'tr', v => clamp(v, -180, 180), afterIcon);
 
   // персонаж целиком
-  F('#bMoveAll').onclick = () => { moveAll = !moveAll; if (moveAll) pick(null); stage.classList.toggle('is-moveall', moveAll); syncFit(); };
+  F('#segAll').onclick = () => { moveAll = true; pick(null); syncFit(); };
+  F('#segItem').onclick = () => { moveAll = false; syncFit(); };
   const fitBind = (q, key, lo, hi) => F(q).addEventListener('input', () => {
     const v = parseFloat(F(q).value);
     if (Number.isNaN(v)) return;
