@@ -477,8 +477,7 @@ function setBeta(on) {
   betaOn = on;
   app.classList.toggle('is-beta', on);
   guides.classList.toggle('is-on', on && (F('#bGuides')?.checked ?? true));
-  moveAll = on;
-  stage.classList.toggle('is-moveall', on);
+  moveAll = false;                    // сразу двигаются вещи; весь персонаж — переключателем в панели
   if (!on) { pick(null); dim = 1; $$('.layer', inner).forEach(el => el.style.opacity = ''); }
   paintWorn();
   syncFit();
@@ -617,7 +616,7 @@ function syncFit() {
   const note = F('#segNote');
   if (note) note.textContent = moveAll
     ? 'Тяни персонажа прямо в рамке — двигается всё целиком, тело вместе с одеждой. Колесо мыши — крупнее/мельче.'
-    : 'Кликни по вещи на персонаже (или в «Надето») и тяни её. Колесо — масштаб вещи, Shift+колесо — поворот.';
+    : 'Кликни по вещи на персонаже (или в «Надето») и тяни её. Колесо — масштаб вещи, Shift+колесо — поворот. Потом «Сохранить» наверху.';
   stage.classList.toggle('is-moveall', betaOn && moveAll);
 }
 function fitChanged() { fitStage(); syncFit(); G.editor?.changed(); }
@@ -826,20 +825,10 @@ function editorTools(box) {
   box.innerHTML = `
     <div class="ed__label">Что двигаем мышкой</div>
     <div class="ed__seg">
+      <button id="segItem">👗 Вещи по одной</button>
       <button id="segAll">✥ Персонаж целиком</button>
-      <button id="segItem">👗 Отдельная вещь</button>
     </div>
     <p class="ed__note" id="segNote"></p>
-    <div class="ed__label">Персонаж в рамке</div>
-    <div class="beta__rows">
-      <label class="brow"><span>Сдвиг X, %</span><input type="number" id="fitX" step="0.5"></label>
-      <label class="brow"><span>Сдвиг Y, %</span><input type="number" id="fitY" step="0.5"></label>
-      <label class="brow"><span>Масштаб</span><input type="number" id="fitZ" step="0.02" min="0.3" max="3"></label>
-      <label class="brow"><span>Верх рамки</span><input type="number" id="fitT" step="0.005" min="0" max="0.4"></label>
-      <label class="brow"><span>Низ рамки</span><input type="number" id="fitB" step="0.005" min="0.4" max="1"></label>
-      <label class="brow"><span>Поля, px</span><input type="number" id="fitS" step="2" min="-80" max="200" title="Запас по бокам от персонажа: меньше — рамка уже"></label>
-    </div>
-    <div class="beta__btns"><button class="bbtn" id="bFitReset" style="grid-column:1/-1">↺ Персонаж по центру, масштаб 1</button></div>
     <div class="ed__label">Отдельная вещь</div>
     <div class="beta__sel" id="betaSel"></div>
     <p class="ed__note">Вещи одного размера с телом уже стоят правильно — двигать их не обязательно.</p>
@@ -870,6 +859,16 @@ function editorTools(box) {
       </div>
       <button class="bbtn" id="bIconReset">↺ Сбросить вид иконки</button>
     </div>
+    <div class="ed__label">Персонаж в рамке</div>
+    <div class="beta__rows">
+      <label class="brow"><span>Сдвиг X, %</span><input type="number" id="fitX" step="0.5"></label>
+      <label class="brow"><span>Сдвиг Y, %</span><input type="number" id="fitY" step="0.5"></label>
+      <label class="brow"><span>Масштаб</span><input type="number" id="fitZ" step="0.02" min="0.3" max="3"></label>
+      <label class="brow"><span>Верх рамки</span><input type="number" id="fitT" step="0.005" min="0" max="0.4"></label>
+      <label class="brow"><span>Низ рамки</span><input type="number" id="fitB" step="0.005" min="0.4" max="1"></label>
+      <label class="brow"><span>Поля, px</span><input type="number" id="fitS" step="2" min="-80" max="200" title="Запас по бокам от персонажа: меньше — рамка уже"></label>
+    </div>
+    <div class="beta__btns"><button class="bbtn" id="bFitReset" style="grid-column:1/-1">↺ Персонаж по центру, масштаб 1</button></div>
     <label class="bcheck"><input type="checkbox" id="bGuides" checked> Сетка и ось симметрии</label>
     <label class="brow brow--range"><span>Прозрачн.</span><input type="range" id="bOpacity" min="20" max="100" value="${Math.round(dim * 100)}"><i id="bOpacityV">${Math.round(dim * 100)}%</i></label>
     <label class="brow brow--range"><span>Карточки</span><input type="range" id="bCards" min="64" max="170" value="${D().settings.cardSize}"><i id="bCardsV">${D().settings.cardSize}px</i></label>

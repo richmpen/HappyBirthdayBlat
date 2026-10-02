@@ -252,3 +252,8 @@
 .ed__seg button + button{ border-left:2px solid var(--p500); }
 .ed__seg button.is-on{ background:linear-gradient(150deg, var(--p400), var(--p600)); color:#fff; }
 .ed__ver{ font-size:10px; font-weight:700; opacity:.7; letter-spacing:.04em; }
+
+/* ---------- «как сохранить»: ключ GitHub спрятан в раскрывашку ---------- */
+.ed__more{ margin-top:8px; border:1px dashed var(--p300, #f3b6c6); border-radius:12px; padding:6px 10px; }
+.ed__more > summary{ cursor:pointer; font-weight:800; font-size:12px; color:var(--p600); padding:4px 0; }
+.ed__more[open] > summary{ margin-bottom:6px; }

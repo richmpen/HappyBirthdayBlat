@@ -20,6 +20,7 @@ const panel = $('#editor'), view = $('#view'), selBox = $('#edsel'), selH = $('#
 let sel = null;               // путь выбранного объекта в конфиге
 let drag = null;              // перетаскивание / изменение размера
 let built = false, local = false, busy = false;
+let localGit = null;                 // { name, branch } — start.bat сам отправляет правки на GitHub
 const opened = new Set();     // раскрытые группы настроек
 let fileInput = null, refreshT = 0, stateT = 0, noteT = 0;
 
@@ -160,7 +161,7 @@ function paintState() {
   el.classList.toggle('is-dirty', d);
   el.textContent = busy ? 'Сохраняю…'
     : d ? `Есть несохранённые правки${G.pending.size ? ` (новых файлов: ${G.pending.size})` : ''}. Их видишь только ты — нажми «Сохранить».`
-    : (local ? 'Всё сохранено в папке проекта.' : 'Всё совпадает с сайтом.');
+    : (localGit ? 'Правок нет. Всё, что сохранишь, само уйдёт на GitHub.' : local ? 'Всё сохранено в папке проекта.' : 'Всё совпадает с сайтом.');
   $('#edSave').disabled = busy;
 }
 function touch() { clearTimeout(stateT); stateT = setTimeout(paintState, 120); }
@@ -401,9 +402,19 @@ function buildNav() {
 
 function buildGithub() {
   const s = G.github.settings(), box = $('#edGhBox');
+  if (local) {
+    box.innerHTML = '<p class="ed__note ed__note--ok">' + (localGit
+      ? `Игра запущена с компьютера. «Сохранить» сам отправляет правки на GitHub (${esc(localGit.name)}) — ничего вводить не нужно.`
+      : 'Игра запущена с компьютера: «Сохранить» пишет прямо в папку проекта.') + '</p>';
+    return;
+  }
   box.innerHTML =
-    (local ? '<p class="ed__note ed__note--ok">Игра запущена с компьютера (start.bat): «Сохранить» пишет прямо в папку проекта, токен не нужен. Поля ниже нужны только на сайте.</p>' : '') +
-    `<label class="ed__f"><span class="ed__k">Владелец (логин GitHub)</span><input type="text" id="ghOwner" value="${esc(s.owner)}" spellcheck="false"></label>
+    `<p class="ed__note"><b>Проще всего — без всяких ключей:</b> открой папку игры на своём компьютере и запусти <b>start.bat</b>.
+       Откроется эта же игра, и там «Сохранить» сам отправляет правки на GitHub.</p>
+     <div class="ed__row"><button class="ed__btn" id="ghExport">⬇ Забрать мои правки файлом</button></div>
+     <p class="ed__note">Чтобы не потерять то, что уже подвигано здесь: скачай правки, а в игре из start.bat открой «Файл настроек» → «Загрузить».</p>
+     <details class="ed__more"><summary>Сохранять прямо с сайта (нужен ключ GitHub)</summary>
+     <label class="ed__f"><span class="ed__k">Владелец (логин GitHub)</span><input type="text" id="ghOwner" value="${esc(s.owner)}" spellcheck="false"></label>
      <label class="ed__f"><span class="ed__k">Репозиторий</span><input type="text" id="ghRepo" value="${esc(s.repo)}" spellcheck="false"></label>
      <label class="ed__f"><span class="ed__k">Ветка</span><input type="text" id="ghBranch" value="${esc(s.branch)}" spellcheck="false"></label>
      <label class="ed__f"><span class="ed__k">Токен доступа</span><input type="password" id="ghToken" value="${esc(s.token)}" autocomplete="off" placeholder="github_pat_…"></label>
@@ -413,7 +424,9 @@ function buildGithub() {
        <b>Владелец репозитория:</b> <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">создать Fine-grained token</a> →
        Repository access: <b>Only select repositories</b> → этот репозиторий → Permissions → <b>Contents: Read and write</b>.
        Такой токен умеет менять только этот сайт, поэтому его можно лично передать художникам.<br>
-       <b>Соавтор (Collaborator):</b> <a href="https://github.com/settings/tokens/new?scopes=public_repo&description=cherry-game" target="_blank" rel="noopener">создать classic-токен</a> с галочкой <b>public_repo</b>.</p>`;
+       <b>Соавтор (Collaborator):</b> <a href="https://github.com/settings/tokens/new?scopes=public_repo&description=cherry-game" target="_blank" rel="noopener">создать classic-токен</a> с галочкой <b>public_repo</b>.</p>
+     </details>`;
+  $('#ghExport').onclick = () => $('#edExport').click();
   const read = () => G.github.store({
     owner: $('#ghOwner').value.trim(), repo: $('#ghRepo').value.trim(),
     branch: $('#ghBranch').value.trim() || 'main', token: $('#ghToken').value.trim()
@@ -448,7 +461,7 @@ function build() {
       <details class="ed__sec" open><summary>📄 Настройки этой сцены</summary><div id="edRoots"></div></details>
       <details class="ed__sec"><summary>🚪 Перейти в другое место игры</summary><div id="edNavBox"></div></details>
       <details class="ed__sec"><summary>🗂 Все настройки игры</summary><div id="edAll"></div></details>
-      <details class="ed__sec" id="edGh"><summary>⚙ Доступ к GitHub (для сохранения)</summary><div id="edGhBox"></div></details>
+      <details class="ed__sec" id="edGh"><summary>⚙ Как сохранить на сайт</summary><div id="edGhBox"></div></details>
       <details class="ed__sec"><summary>📦 Файл настроек</summary>
         <p class="ed__note">Все настройки — один файл <code>data/game.json</code>. Его можно скачать про запас или загрузить обратно.</p>
         <div class="ed__row"><button class="ed__btn" id="edExport">⬇ Скачать</button><button class="ed__btn" id="edImport">⬆ Загрузить</button></div>
@@ -504,11 +517,11 @@ const toBase64 = blob => new Promise((res, rej) => {
 
 async function save() {
   if (busy) return;
-  if (!dirty()) { note('Сохранять нечего — правок нет'); return; }
+  if (!dirty() && !localGit) { note('Сохранять нечего — правок нет'); return; }
   if (!local && !G.github.ready()) {
     $('#edGh').open = true;
     $('#edGh').scrollIntoView({ behavior: 'smooth' });
-    note('Сначала заполни «Доступ к GitHub»: нужен токен', true);
+    note('С сайта напрямую сохранить нельзя. Запусти start.bat в папке игры — там «Сохранить» работает сам', true);
     return;
   }
   busy = true; paintState();
@@ -516,12 +529,25 @@ async function save() {
     // в репозиторий идут только файлы, на которые ещё ссылается конфиг
     const text = JSON.stringify(G.cfg);
     const files = [...G.pending].filter(([p]) => text.includes(JSON.stringify(p))).map(([path, f]) => ({ path, blob: f.blob }));
-    let result = G.cfg;
+    let result = G.cfg, sent = null;
     if (local) {
-      const body = { config: G.cfg, files: [] };
-      for (const f of files) body.files.push({ path: f.path, base64: await toBase64(f.blob) });
-      const r = await fetch('/__api/save', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-      if (!r.ok) throw new Error('локальный сервер ответил ' + r.status);
+      const post = async (url, body) => {
+        const r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body || {}) });
+        if (!r.ok) throw new Error('локальный сервер ответил ' + r.status);
+        return r.json();
+      };
+      const body = { files: [] };
+      if (dirty()) {
+        if (localGit) {                 // сначала забираем то, что сохранили другие, и сливаем со своим
+          $('#edState').textContent = 'Смотрю, нет ли новых правок на GitHub…';
+          const theirs = (await post('/__api/pull')).config;
+          if (theirs) result = merge3(G.base, G.cfg, theirs);
+        }
+        body.config = result;
+        for (const f of files) body.files.push({ path: f.path, base64: await toBase64(f.blob) });
+      }
+      $('#edState').textContent = localGit ? 'Отправляю на GitHub…' : 'Сохраняю…';
+      sent = await post('/__api/save', body);
     } else {
       const res = await G.github.commit({
         files,
@@ -537,7 +563,9 @@ async function save() {
     G.base = G.clone(result);
     busy = false;
     G.refresh(); rebuild(); paintState();
-    note(local ? 'Сохранено в папку проекта 🍒' : 'Сохранено! Сайт обновится у всех через 1–2 минуты 🍒');
+    if (sent?.error) note('На компьютере сохранено, но на GitHub не ушло: ' + sent.error + '. Нажми «Сохранить» ещё раз чуть позже.', true);
+    else if (sent?.upToDate && !sent.committed) note('Всё уже на GitHub — новых правок нет');
+    else note(local && !sent?.pushed ? 'Сохранено в папку проекта 🍒' : 'Сохранено на GitHub! Сайт обновится у всех через 1–2 минуты 🍒');
   } catch (e) {
     console.error(e);
     busy = false; paintState();
@@ -634,7 +662,7 @@ const api = G.editor = {
   init() {
     // игра запущена через tools/server.js → можно писать прямо на диск
     if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname))
-      fetch('/__api/ping').then(r => r.ok && r.json()).then(j => { if (j?.ok) { local = true; if (G.editing) { buildGithub(); paintState(); } } }).catch(() => {});
+      fetch('/__api/ping').then(r => r.ok && r.json()).then(j => { if (j?.ok) { local = true; localGit = j.git || null; if (G.editing) { buildGithub(); paintState(); } } }).catch(() => {});
     addEventListener('beforeunload', e => { if (dirty()) { e.preventDefault(); e.returnValue = ''; } });
     if (new URLSearchParams(location.search).has('edit')) this.toggle(true);
   },
