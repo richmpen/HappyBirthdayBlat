@@ -121,7 +121,7 @@ function fitStage() {
   const ratio = BASE().w / BASE().h;
   let h = (availH - PAD * 2) / v, w = h * ratio;
   if (w + PAD * 2 > availW) { w = availW - PAD * 2; h = w / ratio; }
-  const cardW = Math.round(Math.min(availW, w + side * 2)), cardH = Math.round(h * v + PAD * 2);
+  const cardW = Math.round(clamp(w + side * 2, 120, availW)), cardH = Math.round(h * v + PAD * 2);
   // персонаж внутри рамки: масштаб (от центра рамки) и сдвиг в процентах от его размера
   const z = clamp(fit.zoom ?? 1, .3, 3);
   stage.style.flex = '0 0 auto';
@@ -605,7 +605,7 @@ const FIT = () => (D().fit ||= {});
 
 function syncFit() {
   const f = FIT();
-  [['#fitX', f.x ?? 0, 1], ['#fitY', f.y ?? 0, 1], ['#fitZ', f.zoom ?? 1, 3], ['#fitT', f.cropTop ?? 0, 3], ['#fitB', f.cropBottom ?? 1, 3]]
+  [['#fitX', f.x ?? 0, 1], ['#fitY', f.y ?? 0, 1], ['#fitZ', f.zoom ?? 1, 3], ['#fitT', f.cropTop ?? 0, 3], ['#fitB', f.cropBottom ?? 1, 3], ['#fitS', f.sideMargin ?? 60, 0]]
     .forEach(([q, v, d]) => { const el = F(q); if (el && el !== document.activeElement) el.value = round(v, d); });
   F('#bMoveAll')?.classList.toggle('bbtn--main', moveAll);
 }
@@ -824,6 +824,7 @@ function editorTools(box) {
       <label class="brow"><span>Масштаб</span><input type="number" id="fitZ" step="0.02" min="0.3" max="3"></label>
       <label class="brow"><span>Верх рамки</span><input type="number" id="fitT" step="0.005" min="0" max="0.4"></label>
       <label class="brow"><span>Низ рамки</span><input type="number" id="fitB" step="0.005" min="0.4" max="1"></label>
+      <label class="brow"><span>Поля, px</span><input type="number" id="fitS" step="2" min="-80" max="200" title="Запас по бокам от персонажа: меньше — рамка уже"></label>
     </div>
     <div class="beta__btns"><button class="bbtn" id="bFitReset" style="grid-column:1/-1">↺ Персонаж по центру, масштаб 1</button></div>
     <div class="ed__label">Отдельная вещь</div>
@@ -904,7 +905,7 @@ function editorTools(box) {
     fitChanged();
   });
   fitBind('#fitX', 'x', -100, 100); fitBind('#fitY', 'y', -100, 100); fitBind('#fitZ', 'zoom', .3, 3);
-  fitBind('#fitT', 'cropTop', 0, .4); fitBind('#fitB', 'cropBottom', .4, 1);
+  fitBind('#fitT', 'cropTop', 0, .4); fitBind('#fitB', 'cropBottom', .4, 1); fitBind('#fitS', 'sideMargin', -80, 200);
   F('#bFitReset').onclick = () => { Object.assign(FIT(), { x: 0, y: 0, zoom: 1 }); fitChanged(); };
   syncFit();
 

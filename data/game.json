@@ -1097,7 +1097,7 @@
     "fit": {
       "cropTop": 0.02,
       "cropBottom": 0.955,
-      "sideMargin": 60,
+      "sideMargin": 14,
       "x": 0,
       "y": 0,
       "zoom": 1
