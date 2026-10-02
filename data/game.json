@@ -1094,6 +1094,14 @@
       "watermark": "🍒 с днём рождения!"
     },
     "minItems": 3,
+    "fit": {
+      "cropTop": 0.02,
+      "cropBottom": 0.955,
+      "sideMargin": 60,
+      "x": 0,
+      "y": 0,
+      "zoom": 1
+    },
     "base": {
       "w": 1033,
       "h": 1909,

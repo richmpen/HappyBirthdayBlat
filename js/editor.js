@@ -79,6 +79,8 @@ const LABELS = {
   comboEvery: 'Вспышка комбо каждые N', auraCombo: 'Аура танцовщицы с комбо', pixel: 'Пиксельная картинка (без сглаживания)', icon: 'Значок: left/down/up/right/heart/star/circle',
   fx: 'Эффекты (атласы Arcadia Effector)', blend: 'Смешивание: normal / add', loop: 'Зациклен', frames: 'Кадров', fireworkEvery: 'Пауза между залпами, с',
   cherry: 'Падающая вишенка', keysHint: 'Подсказка про клавиши',
+  zoom: 'Масштаб персонажа',
+  fit: 'Рамка и положение персонажа', cropTop: 'Обрезать пустое сверху (доля высоты, 0–1)', cropBottom: 'Низ рамки (доля высоты, 0–1)', sideMargin: 'Поля по бокам, px',
   fireworks: 'Салют', girls: 'Девочки', flame: 'Огонёк свечи', endTitle: 'Финальный заголовок', endText: 'Финальный текст', backButton: 'Кнопка «в меню»'
 };
 const TEMPLATES = {

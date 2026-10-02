@@ -804,8 +804,12 @@ body.editing .du{ right:var(--ed-w); }
     #ffffff;
   border:3px solid #fff;
   outline:2px solid var(--p200); outline-offset:-10px;
-  border-radius:min(46%, 340px) min(46%, 340px) var(--r-xl) var(--r-xl) / min(30%, 240px) min(30%, 240px) var(--r-xl) var(--r-xl);
+  /* верх — ровная полуокружность: радиус (--arch) равен половине ширины рамки, его ставит скрипт */
+  border-radius:var(--arch, 200px) var(--arch, 200px) var(--r-xl) var(--r-xl);
+  align-items:flex-start;
 }
+.du .doll{ justify-content:center; }
+.du .worn{ min-height:36px; }
 /* искорки внутри карточки — по дуге арки и у пола */
 .du .doll__card::before, .du .doll__card::after{
   content:''; position:absolute; inset:0; pointer-events:none;
@@ -859,12 +863,18 @@ body.editing .du{ right:var(--ed-w); }
 .du .du-twinkle{ left:50%; top:46%; opacity:.9; }
 
 @media (max-width:760px){
-  .du .doll__card{ border-radius:38% 38% var(--r-lg) var(--r-lg) / 20% 20% var(--r-lg) var(--r-lg); }
+  .du .doll__card{ border-radius:var(--arch, 160px) var(--arch, 160px) var(--r-lg) var(--r-lg); }
   .du .doll::before, .du .doll::after{ display:none; }
+  .du .worn{ min-height:0; }
 }
 @media (max-height:520px) and (orientation:landscape){
-  .du .doll__card{ border-radius:var(--r-lg); }
+  .du .doll__card{ border-radius:var(--arch, 120px) var(--arch, 120px) var(--r-lg) var(--r-lg); }
+  .du .worn{ min-height:0; }
 }
 @media (prefers-reduced-motion:reduce){
   .du .doll::before, .du .doll::after, .du .doll__card::before, .du .doll__card::after{ animation:none; }
 }
+
+/* режим «двигать всего персонажа» в редакторе */
+.du .stage.is-moveall{ cursor:move; outline:2px dashed var(--p400); outline-offset:-2px; }
+.du .stage.is-moveall .layer{ pointer-events:none; }

@@ -108,22 +108,34 @@ const sndWow = () => { [660, 880, 1100, 1320].forEach((f, i) => setTimeout(() =>
    РАЗМЕР СЦЕНЫ — держим точные пропорции тела
    ============================================================ */
 function fitStage() {
-  const card = stage.parentElement;
-  const cw = card.clientWidth - 26;
-  const ch = card.clientHeight - 26;
-  if (cw <= 0 || ch <= 0) return;
+  // Рамка облегает персонажа: пустые поля картинки сверху и снизу (dressup.fit) в рамку не входят.
+  // Сама сцена остаётся в размер тела — позиции вещей от этого не меняются.
+  if (!G.cfg) return;
+  const doll = $('.doll'), card = stage.parentElement, fit = D().fit || {};
+  const top = clamp(fit.cropTop ?? 0, 0, .4), bottom = clamp(fit.cropBottom ?? 1, top + .3, 1), v = bottom - top;
+  const cs = getComputedStyle(doll), PAD = 13, side = fit.sideMargin ?? 60;
+  const wornH = wornEl.offsetHeight ? wornEl.offsetHeight + 10 : 0;
+  const availH = doll.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) - wornH;
+  const availW = doll.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+  if (availW <= 0 || availH <= 60) return;
   const ratio = BASE().w / BASE().h;
-  let h = ch, w = h * ratio;
-  if (w > cw) { w = cw; h = w / ratio; }
-  stage.style.width = w + 'px';
-  stage.style.height = h + 'px';
-  const want = Math.round(h * ratio + 120);
-  if (card.dataset.mw !== String(want)) {
-    card.dataset.mw = String(want);
-    card.style.maxWidth = want + 'px';
-  }
+  let h = (availH - PAD * 2) / v, w = h * ratio;
+  if (w + PAD * 2 > availW) { w = availW - PAD * 2; h = w / ratio; }
+  const cardW = Math.round(Math.min(availW, w + side * 2)), cardH = Math.round(h * v + PAD * 2);
+  // персонаж внутри рамки: масштаб (от центра рамки) и сдвиг в процентах от его размера
+  const z = clamp(fit.zoom ?? 1, .3, 3);
+  stage.style.flex = '0 0 auto';
+  stage.style.width = (w * z) + 'px';
+  stage.style.height = (h * z) + 'px';
+  stage.style.marginTop = (PAD + v * h / 2 - (top + v / 2) * h * z + (fit.y ?? 0) / 100 * h) + 'px';
+  stage.style.left = ((fit.x ?? 0) / 100 * w) + 'px';
+  card.style.flex = '0 0 auto';
+  card.style.maxWidth = 'none';
+  card.style.width = cardW + 'px';
+  card.style.height = cardH + 'px';
+  card.style.setProperty('--arch', (cardW / 2) + 'px');   // радиус = половина ширины → ровная полуокружность
 }
-new ResizeObserver(fitStage).observe($('.doll__card'));
+new ResizeObserver(fitStage).observe($('.doll'));
 addEventListener('orientationchange', () => setTimeout(fitStage, 250));
 
 /* ============================================================
@@ -465,7 +477,7 @@ function setBeta(on) {
   betaOn = on;
   app.classList.toggle('is-beta', on);
   guides.classList.toggle('is-on', on && (F('#bGuides')?.checked ?? true));
-  if (!on) { pick(null); dim = 1; $$('.layer', inner).forEach(el => el.style.opacity = ''); }
+  if (!on) { pick(null); dim = 1; moveAll = false; stage.classList.remove('is-moveall'); $$('.layer', inner).forEach(el => el.style.opacity = ''); }
   paintWorn();
   setTimeout(fitStage, 60);
 }
@@ -588,9 +600,26 @@ const layerAt = (cxp, cyp) => onStage()
 /* --- перетаскивание / щипок --- */
 const ptrs = new Map();
 let drag = null;
+let moveAll = false;                 // режим «двигать всего персонажа в рамке»
+const FIT = () => (D().fit ||= {});
+
+function syncFit() {
+  const f = FIT();
+  [['#fitX', f.x ?? 0, 1], ['#fitY', f.y ?? 0, 1], ['#fitZ', f.zoom ?? 1, 3], ['#fitT', f.cropTop ?? 0, 3], ['#fitB', f.cropBottom ?? 1, 3]]
+    .forEach(([q, v, d]) => { const el = F(q); if (el && el !== document.activeElement) el.value = round(v, d); });
+  F('#bMoveAll')?.classList.toggle('bbtn--main', moveAll);
+}
+function fitChanged() { fitStage(); syncFit(); G.editor?.changed(); }
 
 stage.addEventListener('pointerdown', e => {
   if (!betaOn) return;
+  if (moveAll) {
+    const f = FIT(), r = stage.getBoundingClientRect(), z = clamp(f.zoom ?? 1, .3, 3);
+    drag = { mode: 'all', sx: e.clientX, sy: e.clientY, x0: f.x ?? 0, y0: f.y ?? 0, w: r.width / z, h: r.height / z };
+    stage.setPointerCapture(e.pointerId);
+    e.preventDefault();
+    return;
+  }
   ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
 
   if (ptrs.size === 1) {
@@ -610,6 +639,14 @@ stage.addEventListener('pointerdown', e => {
 });
 
 stage.addEventListener('pointermove', e => {
+  if (betaOn && drag && drag.mode === 'all') {
+    const f = FIT();
+    f.x = round(drag.x0 + (e.clientX - drag.sx) / drag.w * 100, 1);
+    f.y = round(drag.y0 + (e.clientY - drag.sy) / drag.h * 100, 1);
+    fitChanged();
+    e.preventDefault();
+    return;
+  }
   if (!betaOn || !drag || !picked || !ptrs.has(e.pointerId)) return;
   ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
   const r = stage.getBoundingClientRect();
@@ -647,6 +684,13 @@ stage.addEventListener('pointermove', e => {
 );
 
 stage.addEventListener('wheel', e => {
+  if (betaOn && moveAll) {
+    e.preventDefault();
+    const f = FIT();
+    f.zoom = round(clamp((f.zoom ?? 1) * (e.deltaY > 0 ? .97 : 1.03), .3, 3), 3);
+    fitChanged();
+    return;
+  }
   if (!betaOn || !picked) return;
   e.preventDefault();
   if (e.shiftKey) rotBy(e.deltaY > 0 ? 1.5 : -1.5);
@@ -769,6 +813,20 @@ function deleteItem() {
 /* панель в редакторе */
 function editorTools(box) {
   box.innerHTML = `
+    <div class="ed__label">Персонаж в рамке</div>
+    <div class="beta__btns">
+      <button class="bbtn" id="bMoveAll" style="grid-column:1/-1">✥ Двигать персонажа мышкой</button>
+    </div>
+    <p class="ed__note">Включи кнопку и тяни персонажа по рамке; колесо — крупнее/мельче. Двигается всё целиком — тело вместе с одеждой.</p>
+    <div class="beta__rows">
+      <label class="brow"><span>Сдвиг X, %</span><input type="number" id="fitX" step="0.5"></label>
+      <label class="brow"><span>Сдвиг Y, %</span><input type="number" id="fitY" step="0.5"></label>
+      <label class="brow"><span>Масштаб</span><input type="number" id="fitZ" step="0.02" min="0.3" max="3"></label>
+      <label class="brow"><span>Верх рамки</span><input type="number" id="fitT" step="0.005" min="0" max="0.4"></label>
+      <label class="brow"><span>Низ рамки</span><input type="number" id="fitB" step="0.005" min="0.4" max="1"></label>
+    </div>
+    <div class="beta__btns"><button class="bbtn" id="bFitReset" style="grid-column:1/-1">↺ Персонаж по центру, масштаб 1</button></div>
+    <div class="ed__label">Отдельная вещь</div>
     <div class="beta__sel" id="betaSel"></div>
     <p class="ed__note">Кликни по вещи на персонаже (или в «Надето») и тяни мышкой. Колесо — масштаб, Shift+колесо — поворот. Вещи одного размера с телом уже стоят правильно — двигать их не обязательно.</p>
     <div class="beta__rows">
@@ -836,6 +894,19 @@ function editorTools(box) {
   bind('#ftx', 'tx', v => clamp(v, -200, 200), afterIcon);
   bind('#fty', 'ty', v => clamp(v, -200, 200), afterIcon);
   bind('#ftr', 'tr', v => clamp(v, -180, 180), afterIcon);
+
+  // персонаж целиком
+  F('#bMoveAll').onclick = () => { moveAll = !moveAll; if (moveAll) pick(null); stage.classList.toggle('is-moveall', moveAll); syncFit(); };
+  const fitBind = (q, key, lo, hi) => F(q).addEventListener('input', () => {
+    const v = parseFloat(F(q).value);
+    if (Number.isNaN(v)) return;
+    FIT()[key] = clamp(v, lo, hi);
+    fitChanged();
+  });
+  fitBind('#fitX', 'x', -100, 100); fitBind('#fitY', 'y', -100, 100); fitBind('#fitZ', 'zoom', .3, 3);
+  fitBind('#fitT', 'cropTop', 0, .4); fitBind('#fitB', 'cropBottom', .4, 1);
+  F('#bFitReset').onclick = () => { Object.assign(FIT(), { x: 0, y: 0, zoom: 1 }); fitChanged(); };
+  syncFit();
 
   F('#bFlip').onclick = flip;
   F('#bZup').onclick  = () => zBy(1);
