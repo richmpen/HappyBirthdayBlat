@@ -789,3 +789,82 @@ body.editing .du{ right:var(--ed-w); }
   .du .topbar{ flex-wrap:nowrap; }
   .du .tools{ flex:0 1 auto; }
 }
+
+
+/* ============================================================
+   КАРТОЧКА ПЕРСОНАЖА: белая арка + желтовато-белые искорки
+   ============================================================ */
+.du{
+  --spark-star:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 0c1.2 7 4 10 12 12-8 2-10.8 5-12 12-1.2-7-4-10-12-12 8-2 10.8-5 12-12z' fill='%23fff3c4'/%3E%3C/svg%3E");
+  --spark-gold:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 0c1.2 7 4 10 12 12-8 2-10.8 5-12 12-1.2-7-4-10-12-12 8-2 10.8-5 12-12z' fill='%23ffdf8a'/%3E%3C/svg%3E");
+}
+.du .doll__card{
+  background:
+    radial-gradient(70% 30% at 50% 100%, #fff0f3 0%, rgba(255,240,243,0) 72%),
+    #ffffff;
+  border:3px solid #fff;
+  outline:2px solid var(--p200); outline-offset:-10px;
+  border-radius:min(46%, 340px) min(46%, 340px) var(--r-xl) var(--r-xl) / min(30%, 240px) min(30%, 240px) var(--r-xl) var(--r-xl);
+}
+/* искорки внутри карточки — по дуге арки и у пола */
+.du .doll__card::before, .du .doll__card::after{
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background-repeat:no-repeat;
+  filter:drop-shadow(0 0 5px rgba(255,214,110,.75));
+  animation:du-sparkBlink 3.6s ease-in-out infinite;
+}
+.du .doll__card::before{
+  background-image:var(--spark-gold), var(--spark-gold), var(--spark-gold), var(--spark-gold);
+  background-position:14% 30%, 86% 22%, 20% 78%, 82% 66%;
+  background-size:26px, 18px, 16px, 22px;
+}
+.du .doll__card::after{
+  background-image:var(--spark-gold), var(--spark-gold), var(--spark-gold);
+  background-position:50% 6%, 9% 54%, 90% 44%;
+  background-size:14px, 13px, 12px;
+  animation-delay:-1.8s;
+}
+.du .doll__corner{ color:#ffdf8a; text-shadow:0 0 8px rgba(255,214,110,.8); }
+.du .doll__corner--tl{ top:24%; left:10%; }
+.du .doll__corner--tr{ top:17%; right:12%; }
+.du .doll__corner--bl{ bottom:20px; left:22px; }
+.du .doll__corner--br{ bottom:64px; right:20px; }
+.du .stage{ z-index:1; }
+
+/* искорки вокруг арки, на вишнёвом фоне */
+.du .doll{ position:relative; }
+.du .doll::before, .du .doll::after{
+  content:''; position:absolute; inset:0; pointer-events:none; z-index:0;
+  background-repeat:no-repeat;
+  filter:drop-shadow(0 0 8px rgba(255,236,170,.85));
+  animation:du-sparkBlink 4.2s ease-in-out infinite;
+}
+.du .doll::before{
+  background-image:var(--spark-star), var(--spark-star), var(--spark-star), var(--spark-star), var(--spark-star);
+  background-position:7% 10%, 93% 16%, 3% 58%, 96% 62%, 12% 90%;
+  background-size:38px, 30px, 22px, 26px, 18px;
+}
+.du .doll::after{
+  background-image:var(--spark-star), var(--spark-star), var(--spark-star), var(--spark-star);
+  background-position:17% 30%, 85% 38%, 90% 88%, 22% 68%;
+  background-size:16px, 20px, 30px, 14px;
+  animation-delay:-2.1s;
+}
+.du .doll__card, .du .worn{ position:relative; z-index:1; }
+@keyframes du-sparkBlink{
+  0%,100%{ opacity:.45; transform:scale(.96); }
+  50%    { opacity:1;   transform:scale(1); }
+}
+.du .spark{ color:#fff3c4; text-shadow:0 0 16px rgba(255,236,170,.9); }
+.du .du-twinkle{ left:50%; top:46%; opacity:.9; }
+
+@media (max-width:760px){
+  .du .doll__card{ border-radius:38% 38% var(--r-lg) var(--r-lg) / 20% 20% var(--r-lg) var(--r-lg); }
+  .du .doll::before, .du .doll::after{ display:none; }
+}
+@media (max-height:520px) and (orientation:landscape){
+  .du .doll__card{ border-radius:var(--r-lg); }
+}
+@media (prefers-reduced-motion:reduce){
+  .du .doll::before, .du .doll::after, .du .doll__card::before, .du .doll__card::after{ animation:none; }
+}

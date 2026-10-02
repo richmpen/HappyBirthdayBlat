@@ -982,8 +982,8 @@ function init() {
   baseImg.dataset.cat = 'base';
   baseImg.dataset.n = 0;
   // мерцающие искры на фоне
-  const tw = $('#duTwinkle') && G.fx.el('twinkleCherry', { loop: true, scale: 4 });
-  if (tw) { tw.style.left = '50%'; tw.style.top = '50%'; $('#duTwinkle').appendChild(tw); }
+  const tw = G.fx.el('twinkle', { loop: true, scale: 4.5 });
+  if (tw) { tw.classList.add('du-twinkle'); $('.decor').appendChild(tw); }
 }
 
 G.scenes.dressup = {
