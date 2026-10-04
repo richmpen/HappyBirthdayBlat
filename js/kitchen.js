@@ -147,7 +147,7 @@ STEPS.measure = {
     const cs = size(m.cup.img, 82, 98);
     st.it = it; st.level = 0; st.mode = 'pour';
     st.src?.remove(); st.label?.remove();
-    st.src = put({ img: o.img, x: m.cup.x - cs.w / 2 - 6, y: m.cup.y - cs.h - 8 }, '', 'k-pour');
+    st.src = put({ img: it.img || o.img, x: m.cup.x - cs.w / 2 - 6, y: m.cup.y - cs.h - 8 }, '', 'k-pour');
     st.label = chip(`${o.name} · ${o.amount || ''}  (${st.k + 1}/${m.items.length})`, m.cup.x + cs.w / 2 + 14, m.cup.y - cs.h / 2 - 8);
     hint(m.hint);
   },
@@ -214,7 +214,7 @@ STEPS.eggs = {
   build() {
     const e = K.eggs;
     st = { n: 0, mode: 'aim', t: 0, yolks: [], shells: [], g: canvas(4) };
-    st.bowl = put(e.bowl, 'kitchen.eggs.bowl', 'k-front');
+    st.bowl = put(e.bowl, 'kitchen.eggs.bowl', 'k-back');
     st.ring = G.el('div', 'k-ring'); st.goal = G.el('div', 'k-ring k-ring--goal');
     layer.append(st.goal, st.ring);
     st.count = chip('', e.egg.x + 70, e.egg.y - 60);
@@ -222,7 +222,7 @@ STEPS.eggs = {
     this.paint();
   },
   center() { const e = K.eggs, s = size(e.egg.img, 48, 64); return { x: e.egg.x, y: e.egg.y - s.h / 2 }; },
-  bowlC() { const e = K.eggs, s = size(e.bowl.img, 208, 208); return { x: e.bowl.x, y: e.bowl.y - s.h / 2, r: s.w / 2 - 22 }; },
+  bowlC() { const e = K.eggs, s = size(e.bowl.img, 208, 208); return { x: e.bowl.x, y: e.bowl.y - s.h / 2, r: s.w / 2 - (e.bowl.rim ?? 22) }; },
   spawn() {
     const e = K.eggs, c = this.center();
     st.egg?.remove();
@@ -236,10 +236,12 @@ STEPS.eggs = {
   paint() {
     const g = st.g, b = this.bowlC();
     g.clearRect(0, 0, 640, 360);
-    g.fillStyle = K.eggs.color || '#fbe9cf';
-    g.beginPath(); g.arc(b.x, b.y, b.r, 0, 7); g.fill();
-    g.fillStyle = 'rgba(255,255,255,.5)';
-    g.beginPath(); g.arc(b.x - 20, b.y - 24, b.r * .32, 0, 7); g.fill();
+    if (K.eggs.color) {                                 // миска-«бублик»: дно рисуем сами; у новой миски оно уже нарисовано
+      g.fillStyle = K.eggs.color;
+      g.beginPath(); g.arc(b.x, b.y, b.r, 0, 7); g.fill();
+      g.fillStyle = 'rgba(255,255,255,.5)';
+      g.beginPath(); g.arc(b.x - 20, b.y - 24, b.r * .32, 0, 7); g.fill();
+    }
     const y = im(K.eggs.yolk);
     if (y) st.yolks.forEach(p => g.drawImage(y, Math.round(p.x - y.naturalWidth / 2), Math.round(p.y - y.naturalHeight / 2)));
   },
@@ -307,7 +309,7 @@ STEPS.whisk = {
   build() {
     const w = K.whisk;
     st = { g: canvas(4), ang: -1.2, rot: 0, acc: 0, rps: 0, progress: 0, dyes: 0, color: 0, down: false, last: null, cool: 0, ask: false, hum: 0 };
-    st.bowl = put(w.bowl, 'kitchen.whisk.bowl', 'k-front');
+    st.bowl = put(w.bowl, 'kitchen.whisk.bowl', 'k-back');
     st.whisk = put({ img: w.whisk.img, x: 0, y: 0 }, 'kitchen.whisk.whisk', 'k-whisk');
     st.dye = put(w.dye, 'kitchen.whisk.dye', 'k-dye');
     st.dyeTip = chip(w.dyeText, w.dye.x, w.dye.y + 6, 'k-chip--center k-chip--warn');
@@ -317,7 +319,7 @@ STEPS.whisk = {
     st.bar = bar(b.x - 110, b.y - b.r - 46, 220);
     this.place(); this.paint();
   },
-  c() { const w = K.whisk, s = size(w.bowl.img, 208, 208); return { x: w.bowl.x, y: w.bowl.y - s.h / 2, r: s.w / 2 - 22 }; },
+  c() { const w = K.whisk, s = size(w.bowl.img, 208, 208); return { x: w.bowl.x, y: w.bowl.y - s.h / 2, r: s.w / 2 - (w.bowl.rim ?? 22) }; },
   place() {
     const b = this.c(), R = b.r * .58;
     st.whisk.style.left = (b.x + Math.cos(st.ang) * R) + 'px';
@@ -326,8 +328,21 @@ STEPS.whisk = {
   },
   paint() {
     const w = K.whisk, g = st.g, b = this.c(), p = st.progress;
-    const col = mix(w.colorFrom, w.colorTo, st.color);
     g.clearRect(0, 0, 640, 360);
+    const stages = (w.stages || []).map(im).filter(i => i?.naturalWidth);
+    if (stages.length) {                                // тесто — картинки стадий, крутятся вместе с венчиком
+      const f = G.clamp(st.color, 0, 1) * (stages.length - 1), i0 = Math.floor(f), u = f - i0;
+      g.save();
+      g.translate(b.x, b.y); g.rotate(st.rot);
+      const draw = (s, a) => { g.globalAlpha = a; g.drawImage(s, -s.naturalWidth / 2, -s.naturalHeight / 2); };
+      draw(stages[i0], 1);
+      if (u > 0 && stages[i0 + 1]) draw(stages[i0 + 1], u);
+      g.restore();
+      this.yolks(b, p);
+      g.globalAlpha = 1;
+      return;
+    }
+    const col = mix(w.colorFrom, w.colorTo, st.color);
     g.save();
     g.beginPath(); g.arc(b.x, b.y, b.r, 0, 7); g.clip();
     g.fillStyle = col; g.fillRect(b.x - b.r, b.y - b.r, b.r * 2, b.r * 2);
@@ -347,13 +362,16 @@ STEPS.whisk = {
     };
     arm(0, 13, '#ffffff', .2 + .45 * (1 - p));
     arm(1.05, 9, 'rgba(60,10,20,1)', .1 + .1 * p);
-    if (p < .3) {                                       // желтки ещё видны
-      g.globalAlpha = 1 - p / .3; g.fillStyle = '#ffc233';
-      for (let k = 0; k < 3; k++) { const a = st.rot * .8 + k * 2.2; g.beginPath(); g.arc(b.x + Math.cos(a) * b.r * .45, b.y + Math.sin(a) * b.r * .4, 9, 0, 7); g.fill(); }
-    }
+    this.yolks(b, p);
     g.globalAlpha = .5; g.fillStyle = '#ffffff';
     g.beginPath(); g.arc(b.x - b.r * .35, b.y - b.r * .4, b.r * .16, 0, 7); g.fill();
     g.restore(); g.globalAlpha = 1;
+  },
+  yolks(b, p) {                                        // желтки ещё видны в начале
+    if (p >= .3) return;
+    const g = st.g;
+    g.globalAlpha = 1 - p / .3; g.fillStyle = '#ffc233';
+    for (let k = 0; k < 3; k++) { const a = st.rot * .8 + k * 2.2; g.beginPath(); g.arc(b.x + Math.cos(a) * b.r * .45, b.y + Math.sin(a) * b.r * .4, 9, 0, 7); g.fill(); }
   },
   down(e) {
     if (e.target.closest('.k-dye')) { this.addDye(); return; }

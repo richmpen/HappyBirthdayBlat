@@ -9,11 +9,12 @@
     "controls": "WASD или стрелки — ходить · E — действие",
     "cherry": "assets/ui/cherry.png",
     "girls": [
-      "assets/sprites/anya.png",
-      "assets/sprites/liza.png",
-      "assets/sprites/sonya.png"
+      "assets/sprites/girls/anya.png",
+      "assets/sprites/girls/liza.png",
+      "assets/sprites/girls/sonya.png"
     ],
-    "music": ""
+    "music": "",
+    "girlScale": 3
   },
   "github": {
     "owner": "",
@@ -30,17 +31,23 @@
     "heroName": "Я"
   },
   "player": {
-    "img": "assets/sprites/hero.png",
+    "img": "assets/sprites/lena_walk.png",
     "cols": 3,
     "rows": 4,
-    "w": 24,
+    "w": 34,
     "speed": 88,
     "fps": 8,
     "rowDown": 0,
-    "rowLeft": 1,
-    "rowRight": 2,
-    "rowUp": 3,
-    "idleFrame": 1
+    "rowLeft": 2,
+    "rowRight": 3,
+    "rowUp": 1,
+    "idleFrame": 0,
+    "walk": [
+      1,
+      0,
+      2,
+      0
+    ]
   },
   "order": [
     "kitchen",
@@ -389,7 +396,7 @@
         ],
         "npc": {
           "name": "Аня",
-          "img": "assets/sprites/anya.png",
+          "img": "assets/sprites/girls/anya.png",
           "x": 168,
           "y": 302,
           "dialog": [
@@ -534,7 +541,7 @@
         ],
         "npc": {
           "name": "Лиза",
-          "img": "assets/sprites/liza.png",
+          "img": "assets/sprites/girls/liza.png",
           "x": 420,
           "y": 118,
           "dialog": [
@@ -671,7 +678,7 @@
         ],
         "npc": {
           "name": "Соня",
-          "img": "assets/sprites/sonya.png",
+          "img": "assets/sprites/girls/sonya.png",
           "x": 704,
           "y": 316,
           "dialog": [
@@ -757,61 +764,85 @@
         "id": "flour",
         "name": "Мука",
         "amount": "250 г",
-        "img": "assets/kitchen/flour.png"
+        "img": "assets/kitchen/ing/flour.png"
       },
       {
         "id": "cocoa",
         "name": "Какао",
         "amount": "2 ст. л.",
-        "img": "assets/kitchen/cocoa.png"
+        "img": "assets/kitchen/ing/cocoa.png"
       },
       {
         "id": "sugar",
         "name": "Сахар",
         "amount": "200 г",
-        "img": "assets/kitchen/sugar.png"
+        "img": "assets/kitchen/ing/sugar.png"
+      },
+      {
+        "id": "bakingpowder",
+        "name": "Разрыхлитель",
+        "amount": "1 ч. л.",
+        "img": "assets/kitchen/ing/baking_powder.png"
+      },
+      {
+        "id": "soda",
+        "name": "Сода",
+        "amount": "½ ч. л.",
+        "img": "assets/kitchen/ing/soda.png"
+      },
+      {
+        "id": "salt",
+        "name": "Соль",
+        "amount": "щепотка",
+        "img": "assets/kitchen/ing/salt.png"
       },
       {
         "id": "butter",
         "name": "Масло",
         "amount": "120 г",
-        "img": "assets/kitchen/butter.png"
+        "img": "assets/kitchen/ing/butter.png"
       },
       {
         "id": "eggs",
         "name": "Яйца",
         "amount": "3 шт.",
-        "img": "assets/kitchen/eggs.png"
+        "img": "assets/kitchen/ing/eggs.png"
       },
       {
         "id": "buttermilk",
         "name": "Кефир",
         "amount": "240 мл",
-        "img": "assets/kitchen/buttermilk.png"
+        "img": "assets/kitchen/ing/buttermilk.png"
       },
       {
         "id": "dye",
         "name": "Краситель",
         "amount": "1 ч. л.",
-        "img": "assets/kitchen/dye.png"
+        "img": "assets/kitchen/ing/dye.png"
       },
       {
         "id": "vanilla",
         "name": "Ваниль",
         "amount": "щепотка",
-        "img": "assets/kitchen/vanilla.png"
+        "img": "assets/kitchen/ing/vanilla.png"
       },
       {
         "id": "creamcheese",
         "name": "Сливочный сыр",
         "amount": "300 г",
-        "img": "assets/kitchen/creamcheese.png"
+        "img": "assets/kitchen/ing/creamcheese.png"
+      },
+      {
+        "id": "cream",
+        "name": "Сливки",
+        "amount": "100 мл",
+        "img": "assets/kitchen/ing/cream.png"
       },
       {
         "id": "powder",
         "name": "Сахарная пудра",
         "amount": "100 г",
-        "img": "assets/kitchen/powder.png"
+        "img": "assets/kitchen/ing/powder.png"
       }
     ],
     "decoys": [
@@ -830,10 +861,6 @@
       {
         "name": "Перец чили",
         "img": "assets/kitchen/chili.png"
-      },
-      {
-        "name": "Сыр",
-        "img": "assets/kitchen/cheese.png"
       },
       {
         "name": "Огурцы",
@@ -891,6 +918,14 @@
           "speed": 0.36
         },
         {
+          "ingredient": "cocoa",
+          "img": "assets/kitchen/ing/cocoa_spoon.png",
+          "color": "#6b3a2a",
+          "target": 0.35,
+          "tolerance": 0.07,
+          "speed": 0.4
+        },
+        {
           "ingredient": "sugar",
           "color": "#eaf6fd",
           "target": 0.45,
@@ -903,6 +938,14 @@
           "target": 0.72,
           "tolerance": 0.055,
           "speed": 0.62
+        },
+        {
+          "ingredient": "powder",
+          "img": "assets/kitchen/ing/powder_spoon.png",
+          "color": "#fbf7f4",
+          "target": 0.5,
+          "tolerance": 0.07,
+          "speed": 0.5
         }
       ]
     },
@@ -915,20 +958,21 @@
       "tolerance": 8,
       "period": 1.25,
       "shells": 2,
-      "color": "#fbe9cf",
+      "color": "",
       "egg": {
-        "img": "assets/kitchen/egg.png",
+        "img": "assets/kitchen/ing/egg.png",
         "x": 262,
-        "y": 136
+        "y": 112
       },
       "bowl": {
-        "img": "assets/kitchen/bowl_top.png",
+        "img": "assets/kitchen/tools/bowl.png",
         "x": 262,
-        "y": 334
+        "y": 352,
+        "rim": 30
       },
-      "left": "assets/kitchen/egg_left.png",
-      "right": "assets/kitchen/egg_right.png",
-      "yolk": "assets/kitchen/yolk.png",
+      "left": "assets/kitchen/ing/egg_left.png",
+      "right": "assets/kitchen/ing/egg_right.png",
+      "yolk": "assets/kitchen/ing/yolk.png",
       "shell": "assets/kitchen/shell.png"
     },
     "whisk": {
@@ -947,19 +991,25 @@
       "colorFrom": "#f6e7cf",
       "colorTo": "#b3122f",
       "bowl": {
-        "img": "assets/kitchen/bowl_top.png",
+        "img": "assets/kitchen/tools/bowl.png",
         "x": 262,
-        "y": 326
+        "y": 352,
+        "rim": 30
       },
       "whisk": {
-        "img": "assets/kitchen/whisk.png"
+        "img": "assets/kitchen/tools/whisk.png"
       },
       "dye": {
-        "img": "assets/kitchen/dye.png",
+        "img": "assets/kitchen/ing/dye.png",
         "x": 92,
         "y": 260
       },
-      "drop": "assets/kitchen/drop.png"
+      "drop": "assets/kitchen/drop.png",
+      "stages": [
+        "assets/kitchen/tools/batter_1.png",
+        "assets/kitchen/tools/batter_2.png",
+        "assets/kitchen/tools/batter_3.png"
+      ]
     },
     "bake": {
       "title": "Выпекай",
@@ -2880,24 +2930,24 @@
     "girls": [
       {
         "name": "Аня",
-        "img": "assets/sprites/anya.png",
+        "img": "assets/sprites/girls/anya.png",
         "x": 270,
         "y": 392,
-        "w": 110
+        "w": 123
       },
       {
         "name": "Лиза",
-        "img": "assets/sprites/liza.png",
+        "img": "assets/sprites/girls/liza.png",
         "x": 480,
         "y": 262,
-        "w": 110
+        "w": 114
       },
       {
         "name": "Соня",
-        "img": "assets/sprites/sonya.png",
+        "img": "assets/sprites/girls/sonya.png",
         "x": 690,
         "y": 392,
-        "w": 110
+        "w": 114
       }
     ],
     "cake": {

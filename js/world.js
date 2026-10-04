@@ -255,7 +255,8 @@ function draw() {
   let col = pl.idleFrame ?? 0;
   if (P.t > 0) {
     const step = Math.floor(P.t * (pl.fps || 8));
-    col = pl.cols === 3 ? [0, 1, 2, 1][step % 4] : step % (pl.cols || 1);
+    const seq = pl.walk?.length ? pl.walk : pl.cols === 3 ? [0, 1, 2, 1] : null;   // порядок кадров шага
+    col = seq ? seq[step % seq.length] : step % (pl.cols || 1);
   }
   playerEl.setFrame(col, row);
 }
@@ -397,7 +398,7 @@ G.scenes.world = {
     if (want && (want !== P.room || p.at)) {
       const r = R(want), q = geo(r);
       P.room = want;
-      if (r.npc) { P.x = r.npc.x - 20; P.y = r.npc.y + 4; } else { P.x = q.x + q.w / 2; P.y = q.fy + (q.by - q.fy) / 2; }
+      if (r.npc) { P.x = r.npc.x - 36; P.y = r.npc.y + 6; }   // рядом с персонажем, не вплотную else { P.x = q.x + q.w / 2; P.y = q.fy + (q.by - q.fy) / 2; }
     }
     (G.progress.visited ||= {})[P.room] = true;
     P.t = 0;

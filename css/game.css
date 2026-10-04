@@ -273,7 +273,7 @@ kbd{
 .ttl__sub i{ font-style:normal; color:var(--gold); }
 .ttl__btns{ display:flex; flex-direction:column; align-items:center; gap:14px; }
 .ttl__girls{ position:absolute; left:0; right:0; bottom:26px; height:130px; z-index:2; pointer-events:none; }
-.ttl__girls img{ position:absolute; bottom:0; width:96px; animation:g-hop 1.5s ease-in-out infinite; filter:drop-shadow(0 6px 0 rgba(107,10,34,.3)); }
+.ttl__girls img{ position:absolute; bottom:0; width:96px; max-width:none; animation:g-hop 1.5s ease-in-out infinite; filter:drop-shadow(0 6px 0 rgba(107,10,34,.3)); }
 .ttl__girls img:nth-child(1){ left:150px; }
 .ttl__girls img:nth-child(2){ right:250px; }
 .ttl__girls img:nth-child(3){ right:130px; }

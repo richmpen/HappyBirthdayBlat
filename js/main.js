@@ -63,7 +63,9 @@ function renderTitle() {
   const row = G.el('div', 'ttl__girls');
   (M.girls || []).forEach((src, i) => {
     const im = new Image();
-    im.className = 'px'; im.alt = ''; im.draggable = false; im.src = G.asset(src);
+    im.className = 'px'; im.alt = ''; im.draggable = false;
+    im.onload = () => { im.style.width = im.naturalWidth * (M.girlScale || 3) + 'px'; };   // пиксель-арт — целое увеличение
+    im.src = G.asset(src);
     im.style.animationDelay = (i * .25) + 's';
     row.appendChild(im);
   });
