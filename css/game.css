@@ -65,6 +65,10 @@ button{ font:inherit; color:inherit; }
   pointer-events:none;
 }
 body.editing #shellHint, body[data-scene="dressup"] #shell{ display:none; }
+/* ритм-игра — неоновая, без вишнёвой рамки */
+body[data-scene="rhythm"] #shell{ background:radial-gradient(1200px 700px at 30% 20%, #10220a 0%, rgba(16,34,10,0) 70%), #030602; }
+body[data-scene="rhythm"] #view{ background:#000; border-radius:6px; box-shadow:0 0 0 3px #000, 0 0 0 5px #88e856, 0 0 46px 6px rgba(136,232,86,.35); }
+body[data-scene="rhythm"] #shellHint{ color:#88e856; }
 
 #fade{
   position:fixed; inset:0; z-index:4000;
@@ -510,90 +514,159 @@ body.editing .k-back, body.editing .k-front{ pointer-events:auto; }
 .k-spin{ font-size:40px; animation:g-bob .7s ease-in-out infinite; }
 
 /* ============================================================
-   РИТМ-ИГРА (не пиксельная)
+   РИТМ-ИГРА — неоновая сцена (макет из папки «ритм игра/»).
+   Всё внутри .rh-art — в пикселях макета (1672×941), слой
+   растягивается на экран через transform: scale.
    ============================================================ */
-#sc-rhythm{ background:#ffc2dc; }
-.rh-cv{ position:absolute; inset:0; width:100%; height:100%; touch-action:none; }
-.rm{
-  position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); z-index:20;
-  width:560px; padding:22px 28px 24px; text-align:center; color:var(--ink);
-  background:rgba(255,255,255,.94);
-  border:5px solid #fff; border-radius:40px; outline:4px solid #ff8fbd;
-  box-shadow:0 12px 0 rgba(214,72,138,.45), 0 30px 50px -10px rgba(120,20,80,.45);
-  animation:g-pop .3s var(--pop);
-}
-.rm--small{ width:420px; }
-.rm__h{ margin:0 0 14px; font-weight:900; font-size:30px; color:#ff5c9a; -webkit-text-stroke:0; }
-.rm__songs{ display:flex; flex-direction:column; gap:9px; }
-.rm__song{
-  display:grid; grid-template-columns:42px 1fr auto; align-items:center; gap:10px;
-  padding:9px 16px 11px; text-align:left; cursor:pointer;
-  font-family:var(--ui); color:var(--ink);
-  background:#fff5fa; border:3px solid #ffd3e6; border-radius:22px;
-  transition:transform .16s var(--pop), border-color .16s, background .16s;
-}
-.rm__song i{ display:grid; place-items:center; width:42px; height:42px; font-style:normal; font-size:20px; background:#fff; border:3px solid #ffd3e6; border-radius:50%; }
-.rm__song b{ display:block; font-weight:900; font-size:21px; line-height:1.1; }
-.rm__song small{ font-weight:700; font-size:14px; color:#c77aa0; }
-.rm__song em{ font-style:normal; font-weight:800; font-size:11px; letter-spacing:.08em; text-transform:uppercase; text-align:right; color:#c77aa0; }
-.rm__song em b{ font-size:20px; letter-spacing:0; color:#ff5c9a; }
-.rm__song:hover{ transform:translateY(-2px); }
-.rm__song.is-on{ border-color:#ff5c9a; background:#ffe3f0; box-shadow:0 5px 0 #ffb3d2; }
-.rm__song.is-on i{ border-color:#ff5c9a; background:#ff5c9a; color:#fff; }
-.rm__song.is-soon{ opacity:.55; }
-.rm__diffs{ display:flex; justify-content:center; gap:8px; margin:16px 0; }
-.rm__diff{
-  font-family:var(--ui); font-weight:800; font-size:16px; padding:7px 18px 9px; cursor:pointer;
-  background:#fff; color:#c77aa0; border:3px solid #ffd3e6; border-radius:999px;
-  transition:transform .16s var(--pop);
-}
-.rm__diff.is-on{ background:#b388ff; color:#fff; border-color:#fff; box-shadow:0 4px 0 #8a5fe0; transform:translateY(-2px); }
-.rm__actions{ display:flex; justify-content:center; align-items:center; gap:14px; flex-wrap:wrap; }
-.rm__keys{ display:flex; justify-content:center; align-items:center; gap:6px; margin-top:16px; font-weight:700; font-size:14px; color:#c77aa0; }
-.rm__keys kbd{ color:var(--c); border-color:var(--c); font-size:16px; }
-.rm__keys span{ margin-left:8px; }
-.rm__load{ height:18px; margin:4px 30px 14px; background:#ffe3f0; border:3px solid #ffb3d2; border-radius:99px; overflow:hidden; }
-.rm__load i{ display:block; width:0; height:100%; background:repeating-linear-gradient(115deg, #ff5c9a 0 10px, #ff8fbd 10px 20px); transition:width .2s; }
-.rm__spin{ font-size:40px; animation:g-bob .7s ease-in-out infinite; }
-.rm__sub{ font-weight:800; font-size:16px; color:#c77aa0; margin-bottom:4px; }
-.rm__lbl{ display:block; font-weight:900; font-size:15px; letter-spacing:.2em; text-transform:uppercase; color:#b388ff; }
-.rm__big{ font-weight:900; font-size:92px; line-height:1; color:#ff5c9a; text-shadow:0 6px 0 #ffd3e6; font-variant-numeric:tabular-nums; }
-.rm__newrec{ margin:8px 0 18px; font-weight:900; font-size:28px; color:#ffb72e; animation:g-pulse .7s ease-in-out infinite; }
-.rm__rec{ margin:8px 0 18px; font-weight:800; font-size:20px; color:#c77aa0; }
+@font-face{ font-family:'Game Of Squids'; src:url('../assets/fonts/game-of-squids.ttf') format('truetype'); font-display:swap; }
+@font-face{ font-family:'Glina Script'; src:url('../assets/fonts/glina-script.ttf') format('truetype'); font-display:swap; }
 
-.rh-top{ position:absolute; left:16px; right:16px; top:12px; z-index:10; display:flex; align-items:center; gap:14px; }
-.rh-pause{
-  flex:0 0 46px; height:46px; padding:0; font-size:15px; font-weight:900; letter-spacing:-2px; cursor:pointer;
-  color:#fff; background:#ff5c9a; border:4px solid #fff; border-radius:50%; box-shadow:0 4px 0 #d6488a;
+#sc-rhythm{
+  background:#000;
+  --rn:#88e856;                                  /* неон */
+  --rn2:#5cb232;                                 /* неон потемнее (счёт, прогресс) */
+  --rink:#061003;                                /* тёмный текст на неоне */
+  --rglow:rgba(136,232,86,.55);
+  --rsq:'Game Of Squids', 'Glina Script', sans-serif;
+  --rgl:'Glina Script', 'Game Of Squids', sans-serif;
 }
-.rh-prog{ position:relative; flex:1; height:22px; background:rgba(255,255,255,.75); border:4px solid #fff; border-radius:999px; box-shadow:0 4px 0 rgba(214,72,138,.3); }
-.rh-prog i{ display:block; width:0; height:100%; background:linear-gradient(90deg, #8fd3ff, #b388ff); border-radius:999px; }
-.rh-prog u{ position:absolute; left:0; top:50%; transform:translate(-50%,-55%); font-size:22px; text-decoration:none; }
-.rh-score{ flex:0 0 auto; min-width:150px; text-align:right; }
-.rh-score b{
-  font-weight:900; font-size:40px; line-height:1; color:#ff5c9a; font-variant-numeric:tabular-nums;
-  -webkit-text-stroke:9px #fff; paint-order:stroke fill; text-shadow:0 4px 0 rgba(214,72,138,.35);
+.rh-cv{ position:absolute; inset:0; width:100%; height:100%; touch-action:none; }
+.rh-art{ position:absolute; left:0; top:0; transform-origin:0 0; pointer-events:none; }
+.rh-art > *{ pointer-events:auto; }
+.rh-art .zone--edit{ border-width:3px; }
+.rh-art .zone > span{ scale:1.7; }
+.rh-pick{ display:none; }
+body.editing .rh-pick{ display:block; z-index:1; }
+body.editing .rh-art .rhp, body.editing .rh-art .rh-over{ pointer-events:none; opacity:.5; }
+
+/* ---------- панель (меню, загрузка, итог, пауза) ---------- */
+.rhp{
+  position:absolute; z-index:5; box-sizing:border-box;
+  display:flex; flex-direction:column; align-items:center;
+  padding:30px 30px 32px; text-align:center; color:var(--rn); font-family:var(--rgl);
+  background:linear-gradient(180deg, rgba(5,14,3,.93), rgba(0,0,0,.95));
+  border:3px solid var(--rn);
+  box-shadow:0 0 0 3px #000, 0 0 30px var(--rglow), inset 0 0 46px rgba(136,232,86,.12);
+  animation:g-pop .35s var(--pop) both;
 }
-.rh-hud{ z-index:9; text-align:center; pointer-events:none; }
-body.editing .rh-hud{ pointer-events:auto; }
-.rh-hud small{ display:none; }
-.rh-combo{
-  display:block; min-height:34px; white-space:nowrap;
-  font-style:normal; font-weight:900; font-size:26px; color:#b388ff;
-  -webkit-text-stroke:8px #fff; paint-order:stroke fill;
+.rhp::before{                                   /* неоновая звезда-вспышка в углу */
+  content:''; position:absolute; right:-52px; top:-64px; width:124px; height:146px; pointer-events:none;
+  background:url('../assets/rhythm/burst_b.webp') center/contain no-repeat;
+  filter:drop-shadow(0 0 10px var(--rglow));
+  animation:rh-wobble 2.4s ease-in-out infinite;
 }
-.rh-combo.is-pop{ animation:g-combo .25s var(--pop); }
+.rhp__h{
+  margin:0; font:400 66px/1.05 var(--rgl); color:#effee6;
+  text-shadow:0 0 6px var(--rn), 0 0 18px var(--rn), 0 0 38px var(--rglow);
+}
+.rhp__h::after{
+  content:''; display:block; width:400px; height:38px; margin:4px auto 0;
+  background:url('../assets/rhythm/bar_back.webp') center/100% 100% no-repeat;
+}
+.rhp__sub{ font:400 30px/1.15 var(--rsq); color:rgba(136,232,86,.8); }
+.rhp__lbl{ display:block; margin-top:6px; font:400 30px/1 var(--rgl); color:rgba(136,232,86,.7); }
+.rhp__actions{ display:flex; justify-content:center; align-items:center; gap:24px; flex-wrap:wrap; margin-top:auto; padding-top:18px; }
+.rhp__icon{ width:40px; margin-bottom:10px; filter:drop-shadow(0 0 10px var(--rn)); }
+
+/* ---------- кнопки ---------- */
+.rhb{
+  position:relative; padding:14px 38px 17px; cursor:pointer;
+  font:400 40px/1 var(--rgl); color:var(--rink);
+  background:var(--rn); border:0; border-radius:0;
+  transform:skewX(-10deg);
+  box-shadow:0 0 0 3px #000, 0 0 0 5px var(--rn), 0 0 26px var(--rglow);
+  transition:transform .16s var(--pop), filter .16s;
+}
+.rhb > span{ display:inline-block; transform:skewX(10deg); }
+.rhb:hover{ transform:skewX(-10deg) scale(1.06); filter:brightness(1.12); }
+.rhb:active{ transform:skewX(-10deg) scale(.95); }
+.rhb:disabled{ filter:grayscale(1) brightness(.55); cursor:default; transform:skewX(-10deg); animation:none; }
+.rhb--ghost{ color:var(--rn); background:rgba(0,0,0,.55); box-shadow:inset 0 0 0 3px var(--rn), 0 0 16px rgba(136,232,86,.3); }
+.rhb--big{ padding:16px 52px 20px; font-size:50px; animation:rh-glow 1.5s ease-in-out infinite; }
+
+/* ---------- меню песен ---------- */
+.rhm__songs{ display:flex; flex-direction:column; gap:14px; width:100%; margin-top:16px; }
+.rhs{
+  display:grid; grid-template-columns:52px 1fr auto; align-items:center; gap:16px;
+  width:100%; padding:12px 22px 14px; cursor:pointer; text-align:left;
+  font-family:var(--rgl); color:var(--rn);
+  background:rgba(136,232,86,.05); border:2px solid rgba(136,232,86,.4); border-radius:0;
+  transform:skewX(-8deg);
+  transition:transform .16s var(--pop), background .16s, box-shadow .16s;
+}
+.rhs > *{ transform:skewX(8deg); min-width:0; }
+.rhs i{ font:normal 36px/1 var(--rsq); color:rgba(136,232,86,.55); }
+.rhs b{ display:block; font:400 31px/1.15 var(--rsq); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.rhs small{ display:block; margin-top:3px; font:400 25px/1.1 var(--rgl); color:rgba(136,232,86,.62); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.rhs em{ display:flex; flex-direction:column; align-items:flex-end; gap:6px; font-style:normal; }
+.rhs em u{ display:flex; gap:4px; text-decoration:none; }
+.rhs em img{ width:24px; height:auto; }
+.rhs em b{ font-size:28px; }
+.rhs:hover{ transform:skewX(-8deg) translateX(6px); background:rgba(136,232,86,.12); }
+.rhs.is-on{ color:var(--rink); background:var(--rn); border-color:var(--rn); box-shadow:0 0 24px var(--rglow); }
+.rhs.is-on i, .rhs.is-on small{ color:rgba(6,16,3,.65); }
+.rhs.is-on em img{ filter:brightness(0); }
+.rhs.is-on em img.off{ opacity:.3; }
+.rhs.is-soon{ opacity:.4; }
+.rhm__diffs{ display:flex; justify-content:center; gap:12px; margin:22px 0 4px; }
+.rhd{
+  padding:9px 22px 12px; cursor:pointer; font:400 30px/1 var(--rgl); color:var(--rn);
+  background:transparent; border:2px solid rgba(136,232,86,.45); border-radius:0;
+  transform:skewX(-8deg); transition:transform .16s var(--pop), background .16s;
+}
+.rhd > span{ display:inline-block; transform:skewX(8deg); }
+.rhd:hover{ background:rgba(136,232,86,.12); }
+.rhd.is-on{ color:var(--rink); background:var(--rn); border-color:var(--rn); box-shadow:0 0 16px var(--rglow); }
+.rhm__keys{ display:flex; justify-content:center; align-items:center; gap:10px; margin-top:24px; font:400 26px/1 var(--rgl); color:rgba(136,232,86,.72); }
+.rhm__keys kbd{
+  all:unset; display:grid; place-items:center; width:48px; height:48px; box-sizing:border-box;
+  font:400 26px/1 var(--rsq); color:var(--rn); background:#000;
+  border:2px solid var(--rn); border-radius:50%;
+  box-shadow:0 0 10px rgba(136,232,86,.45), inset 0 0 8px rgba(136,232,86,.3);
+}
+.rhm__keys span{ margin-left:8px; }
+
+/* ---------- загрузка ---------- */
+.rhp--load{ justify-content:center; }
+.rhl__spin{ width:140px; margin:30px 0 10px; filter:drop-shadow(0 0 14px var(--rn)); animation:rh-spin 1.6s linear infinite; }
+.rhl__bar{ position:relative; width:440px; height:34px; margin-top:20px; background:url('../assets/rhythm/bar.webp') center/100% 100% no-repeat; }
+.rhl__bar u{ position:absolute; left:8px; right:8px; top:7px; bottom:7px; overflow:hidden; border-radius:12px 0 0 12px; }
+.rhl__bar i{ display:block; width:0; height:100%; background:var(--rn2); box-shadow:0 0 12px var(--rglow); transition:width .2s; }
+
+/* ---------- итог ---------- */
+.rhr__stars{ display:flex; gap:24px; margin:16px 0 4px; }
+.rhr__stars img{ width:92px; height:auto; animation:rh-star .55s var(--pop) both; }
+.rhr__stars img.on{ filter:drop-shadow(0 0 14px var(--rn)); }
+.rhr__big{ font:400 104px/1.05 var(--rsq); color:var(--rn); text-shadow:0 0 22px var(--rglow); font-variant-numeric:tabular-nums; }
+.rhr__rec{ margin:6px 0 4px; font:400 32px/1.2 var(--rgl); color:rgba(136,232,86,.72); }
+.rhr__rec b{ font:400 30px/1 var(--rsq); color:var(--rn); }
+.rhr__new{ margin:6px 0 4px; font:400 42px/1.2 var(--rgl); color:#effee6; text-shadow:0 0 16px var(--rn); animation:g-pulse .7s ease-in-out infinite; }
+.rhr__stats{ display:flex; flex-wrap:wrap; justify-content:center; gap:10px 26px; margin-top:10px; font:400 26px/1 var(--rgl); color:rgba(136,232,86,.72); }
+.rhr__stats b{ margin-left:8px; font:400 28px/1 var(--rsq); color:var(--rn); }
+
+/* ---------- пауза ---------- */
+.rh-over{ position:absolute; left:0; top:0; width:100%; height:100%; z-index:40; background:rgba(0,0,0,.66); }
+.rh-over[hidden]{ display:none; }
+.rhp--pause{ left:50%; top:50%; width:760px; transform:translate(-50%,-50%); }
+
+/* ---------- надписи во время игры ---------- */
 .rh-judge{
-  position:absolute; z-index:9; transform:translate(-50%,-50%); white-space:nowrap;
-  font-weight:900; font-size:40px; opacity:0; pointer-events:none;
-  -webkit-text-stroke:10px #fff; paint-order:stroke fill;
+  position:absolute; z-index:9; transform:translate(-50%,-50%); white-space:nowrap; opacity:0;
+  pointer-events:none !important;
+  font:400 76px/1 var(--rgl); color:var(--rn);
+  text-shadow:0 0 6px #fff, 0 0 18px var(--rn), 0 0 40px var(--rglow);
 }
-.rh-judge.is-on{ animation:g-judge .55s ease-out forwards; }
-.rh-judge--p{ color:#ff5c9a; }
-.rh-judge--g{ color:#ff9e2c; }
-.rh-judge--m{ color:#a99bc4; font-size:30px; }
-.rh-judge--c{ color:#b388ff; font-size:46px; }
-.rh-over{ position:absolute; inset:0; z-index:50; background:rgba(120,40,100,.45); }
+.rh-judge.is-on{ animation:g-judge .6s ease-out forwards; }
+.rh-judge--p{ color:#effee6; }
+.rh-judge--g{ color:var(--rn); }
+.rh-judge--m{ color:#7f8c79; font-size:58px; text-shadow:0 0 10px rgba(0,0,0,.9); }
+.rh-judge--c{ color:#fff; font-size:96px; }
+.rh-rec{ position:absolute; z-index:9; transform:translateX(-50%); white-space:nowrap; pointer-events:none !important; font:400 36px/1 var(--rsq); color:#ff6b6b; text-shadow:0 0 12px #ff2a2a; }
+
+@keyframes rh-glow{ 0%,100%{ box-shadow:0 0 0 3px #000, 0 0 0 5px var(--rn), 0 0 18px var(--rglow); } 50%{ box-shadow:0 0 0 3px #000, 0 0 0 5px var(--rn), 0 0 42px var(--rn); } }
+@keyframes rh-spin{ to{ rotate:360deg; } }
+@keyframes rh-wobble{ 0%,100%{ rotate:-8deg; scale:1; } 50%{ rotate:8deg; scale:1.1; } }
+@keyframes rh-star{ from{ opacity:0; scale:0; rotate:-90deg; } to{ opacity:1; scale:1; rotate:0deg; } }
 
 /* ============================================================
    ФИНАЛ

@@ -2394,21 +2394,8 @@
     }
   },
   "rhythm": {
-    "bg": "",
-    "stage": {
-      "top": "#ffd6e6",
-      "mid": "#ffc2dc",
-      "bottom": "#e9c7ff",
-      "star": "#ffd95e",
-      "curtain": "#ff8fbd",
-      "curtainFold": "#f4699f",
-      "valance": "#ff6fa8",
-      "podiumA": "#ffffff",
-      "podiumB": "#d9c4ff",
-      "podiumSide": "#b99cf0",
-      "speaker": "#ff9ec4",
-      "speakerCone": "#ff5c9a"
-    },
+    "artW": 1672,
+    "neon": "#88e856",
     "texts": {
       "title": "Выбери песню",
       "soon": "скоро…",
@@ -2486,74 +2473,400 @@
     ],
     "lanes": [
       {
-        "color": "#58c6ff",
+        "x": 277,
         "icon": "left",
+        "color": "#88e856",
         "img": ""
       },
       {
-        "color": "#b388ff",
+        "x": 443,
         "icon": "down",
+        "color": "#88e856",
         "img": ""
       },
       {
-        "color": "#4fd9a8",
+        "x": 598,
         "icon": "up",
+        "color": "#88e856",
         "img": ""
       },
       {
-        "color": "#ff5c9a",
+        "x": 764,
         "icon": "right",
+        "color": "#88e856",
         "img": ""
       }
     ],
     "highway": {
-      "x": 96,
-      "y": 60,
-      "w": 400,
-      "h": 420
+      "x": 185,
+      "y": 0,
+      "w": 680,
+      "h": 790
     },
-    "hitLine": 430,
-    "noteSize": 62,
+    "hitLine": 655,
+    "noteSize": 96,
+    "ring": "assets/rhythm/ring.webp",
+    "ringFill": "assets/rhythm/ring_fill.webp",
+    "ringSize": 124,
+    "burst": "assets/rhythm/burst_a.webp",
     "offsetMs": 0,
     "detectLag": -0.01,
     "holdSlack": 0.16,
     "comboEvery": 25,
-    "auraCombo": 15,
     "volume": 1,
-    "hud": {
-      "x": 296,
-      "y": 128
+    "back": [
+      {
+        "img": "assets/rhythm/bg.webp",
+        "x": 836,
+        "y": 941,
+        "w": 1672
+      },
+      {
+        "img": "assets/rhythm/glow.webp",
+        "x": 1236,
+        "y": 813,
+        "w": 912,
+        "anim": "glow"
+      },
+      {
+        "img": "assets/rhythm/checker.webp",
+        "x": 1289.5,
+        "y": 746,
+        "w": 767
+      },
+      {
+        "img": "assets/rhythm/beam_l.webp",
+        "x": 1170,
+        "y": 124,
+        "w": 268,
+        "pivot": [
+          0.948,
+          0.011
+        ],
+        "anim": "beam",
+        "phase": 0
+      },
+      {
+        "img": "assets/rhythm/beam_c.webp",
+        "x": 1265,
+        "y": 124,
+        "w": 263,
+        "pivot": [
+          0.513,
+          0.011
+        ],
+        "anim": "beam",
+        "phase": 2.1
+      },
+      {
+        "img": "assets/rhythm/beam_r.webp",
+        "x": 1330,
+        "y": 124,
+        "w": 230,
+        "pivot": [
+          0.055,
+          0.012
+        ],
+        "anim": "beam",
+        "phase": 4.2
+      },
+      {
+        "img": "assets/rhythm/spikes.webp",
+        "x": 1261,
+        "y": 731,
+        "w": 692
+      },
+      {
+        "img": "assets/rhythm/burst_a.webp",
+        "x": 1170.5,
+        "y": 471.5,
+        "w": 173,
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "anim": "pulse",
+        "phase": 0
+      },
+      {
+        "img": "assets/rhythm/burst_b.webp",
+        "x": 1399.5,
+        "y": 263.5,
+        "w": 159,
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "anim": "pulse",
+        "phase": 1.5
+      },
+      {
+        "img": "assets/rhythm/chain_a.webp",
+        "x": 1579.5,
+        "y": 134,
+        "w": 185,
+        "pivot": [
+          0.5,
+          0
+        ],
+        "anim": "sway",
+        "phase": 0
+      },
+      {
+        "img": "assets/rhythm/chain_b.webp",
+        "x": 78.5,
+        "y": 730,
+        "w": 157,
+        "pivot": [
+          0.5,
+          0
+        ],
+        "anim": "sway",
+        "phase": 2
+      },
+      {
+        "img": "assets/rhythm/podium.webp",
+        "x": 1279.5,
+        "y": 941,
+        "w": 765
+      }
+    ],
+    "band": [
+      {
+        "name": "Собака",
+        "frames": [
+          "assets/rhythm/band/dog_1.webp",
+          "assets/rhythm/band/dog_2.webp"
+        ],
+        "x": 1046.6,
+        "y": 772.4,
+        "w": 233.2,
+        "every": 1,
+        "bounce": 8
+      },
+      {
+        "name": "Лена",
+        "frames": [
+          "assets/rhythm/band/lena_1.webp",
+          "assets/rhythm/band/lena_2.webp",
+          "assets/rhythm/band/lena_3.webp"
+        ],
+        "x": 1263.9,
+        "y": 848,
+        "w": 351.4,
+        "every": 1,
+        "bounce": 6
+      },
+      {
+        "name": "Кошка",
+        "frames": [
+          "assets/rhythm/band/cat_1.webp",
+          "assets/rhythm/band/cat_2.webp"
+        ],
+        "x": 1473.4,
+        "y": 781,
+        "w": 203.8,
+        "every": 1,
+        "bounce": 8
+      }
+    ],
+    "front": [
+      {
+        "img": "assets/rhythm/panel.webp",
+        "x": 1348.5,
+        "y": 146,
+        "w": 647
+      },
+      {
+        "img": "assets/rhythm/frame.webp",
+        "x": 545,
+        "y": 886,
+        "w": 942
+      }
+    ],
+    "overlay": [
+      {
+        "img": "assets/rhythm/bar_back.webp",
+        "x": 520,
+        "y": 89,
+        "w": 562
+      },
+      {
+        "img": "assets/rhythm/bar.webp",
+        "x": 520,
+        "y": 74,
+        "w": 440
+      },
+      {
+        "img": "assets/rhythm/paw.webp",
+        "x": 729.5,
+        "y": 75,
+        "w": 37
+      },
+      {
+        "img": "assets/rhythm/pause_frame.webp",
+        "x": 69,
+        "y": 109,
+        "w": 138
+      },
+      {
+        "img": "assets/rhythm/pause_icon.webp",
+        "x": 77,
+        "y": 89,
+        "w": 30
+      },
+      {
+        "img": "assets/rhythm/sparkle_d.webp",
+        "x": 102,
+        "y": 151,
+        "w": 44,
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "anim": "twinkle",
+        "phase": 0
+      },
+      {
+        "img": "assets/rhythm/sparkle_a.webp",
+        "x": 39.5,
+        "y": 575,
+        "w": 23,
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "anim": "twinkle",
+        "phase": 1
+      },
+      {
+        "img": "assets/rhythm/sparkle_b.webp",
+        "x": 1502.5,
+        "y": 240.5,
+        "w": 29,
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "anim": "twinkle",
+        "phase": 2.3
+      },
+      {
+        "img": "assets/rhythm/sparkle_c.webp",
+        "x": 1061,
+        "y": 490,
+        "w": 28,
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "anim": "twinkle",
+        "phase": 3.1
+      },
+      {
+        "img": "assets/rhythm/star_tiny.webp",
+        "x": 98.5,
+        "y": 350.5,
+        "w": 21,
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "anim": "twinkle",
+        "phase": 0.7
+      }
+    ],
+    "phrases": [
+      {
+        "img": "assets/rhythm/phrase_dancefloor.webp",
+        "x": 1064.5,
+        "y": 186.5,
+        "w": 131
+      },
+      {
+        "img": "assets/rhythm/phrase_lena.webp",
+        "x": 76.5,
+        "y": 310,
+        "w": 71
+      }
+    ],
+    "phraseShow": 3.2,
+    "phraseGap": 4,
+    "progress": {
+      "x": 308,
+      "y": 46,
+      "w": 404,
+      "h": 20
     },
-    "dancer": {
-      "img": "assets/rhythm/sonya_dance.svg",
-      "cols": 3,
-      "x": 752,
-      "y": 470,
-      "w": 250,
-      "pixel": false
+    "pause": {
+      "x": 0,
+      "y": 22,
+      "w": 138,
+      "h": 87
+    },
+    "stars": [
+      {
+        "x": 1153,
+        "y": 64,
+        "w": 42,
+        "on": "assets/rhythm/star_on.webp",
+        "off": "assets/rhythm/star_off.webp"
+      },
+      {
+        "x": 1204,
+        "y": 65,
+        "w": 42,
+        "on": "assets/rhythm/star_on.webp",
+        "off": "assets/rhythm/star_off.webp"
+      },
+      {
+        "x": 1256,
+        "y": 65,
+        "w": 42,
+        "on": "assets/rhythm/star_on.webp",
+        "off": "assets/rhythm/star_off2.webp"
+      }
+    ],
+    "starAt": [
+      0.25,
+      0.5,
+      0.8
+    ],
+    "score": {
+      "x": 1290,
+      "y": 41,
+      "w": 340,
+      "h": 46,
+      "color": "#5cb232"
+    },
+    "menu": {
+      "x": 205,
+      "y": 108,
+      "w": 640,
+      "h": 660
     },
     "songs": [
       {
-        "id": "loser",
-        "title": "Loser",
-        "artist": "Tame Impala",
-        "src": "assets/audio/loser.mp3",
+        "id": "crazy",
+        "title": "Crazy = Genius",
+        "artist": "Panic! at the Disco",
+        "src": "assets/audio/crazy-equals-genius.mp3",
         "bpm": 0,
         "offset": 0
       },
       {
-        "id": "song2",
-        "title": "Песня 2",
-        "artist": "",
-        "src": "",
+        "id": "dance",
+        "title": "Dance, Dance",
+        "artist": "Fall Out Boy",
+        "src": "assets/audio/dance-dance.mp3",
         "bpm": 0,
         "offset": 0
       },
       {
-        "id": "song3",
-        "title": "Песня 3",
-        "artist": "",
-        "src": "",
+        "id": "tetyana",
+        "title": "Тетяна",
+        "artist": "schmalgauzen",
+        "src": "assets/audio/tetyana.mp3",
         "bpm": 0,
         "offset": 0
       }

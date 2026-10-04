@@ -82,7 +82,14 @@ const LABELS = {
   cherry: 'Падающая вишенка', keysHint: 'Подсказка про клавиши',
   zoom: 'Масштаб персонажа',
   fit: 'Рамка и положение персонажа', cropTop: 'Обрезать пустое сверху (доля высоты, 0–1)', cropBottom: 'Низ рамки (доля высоты, 0–1)', sideMargin: 'Поля по бокам, px',
-  fireworks: 'Салют', girls: 'Девочки', flame: 'Огонёк свечи', endTitle: 'Финальный заголовок', endText: 'Финальный текст', backButton: 'Кнопка «в меню»'
+  fireworks: 'Салют', girls: 'Девочки', flame: 'Огонёк свечи', endTitle: 'Финальный заголовок', endText: 'Финальный текст', backButton: 'Кнопка «в меню»',
+  artW: 'Ширина макета, px', neon: 'Неоновый цвет', back: 'Сцена: задний план', band: 'Персонажи (кадры меняются в такт)',
+  front: 'Сцена: перед персонажами', overlay: 'Сцена: поверх нот', phrases: 'Фразы во время игры', phraseShow: 'Фраза видна, с',
+  phraseGap: 'Пауза между фразами, с', frames: 'Кадры', every: 'Менять кадр каждые N долей', bounce: 'Подскок на долю, px',
+  anim: 'Анимация: beam / glow / pulse / sway / twinkle', pivot: 'Точка привязки [0–1, 0–1]', phase: 'Сдвиг анимации',
+  swing: 'Размах качания, °', alpha: 'Прозрачность (0–1)', ring: 'Кольцо кнопки', ringFill: 'Середина кнопки', ringSize: 'Размер кнопки',
+  burst: 'Вспышка попадания', keySize: 'Размер букв клавиш', progress: 'Полоска песни', pause: 'Кнопка паузы', stars: 'Звёзды',
+  starAt: 'Звёзды за долю идеального счёта', on: 'Звезда получена', off: 'Звезда пустая', menu: 'Меню (рамка)', maxRes: 'Макс. чёткость холста'
 };
 const TEMPLATES = {
   props: { img: '', x: 480, y: 420, w: 96 },
@@ -106,7 +113,7 @@ function kind(p, key, val) {
   if (/^#[0-9a-f]{6}$/i.test(val)) return 'color';
   return 'text';
 }
-const itemTitle = (v, i) => String(v.name || v.title || v.label || v.text || v.id || v.to || `№${i + 1}`).slice(0, 34);
+const itemTitle = (v, i) => String(v.name || v.title || v.label || v.text || v.id || v.to || (typeof v.img === 'string' && v.img.split('/').pop()) || `№${i + 1}`).slice(0, 34);
 
 /* ---------------- слияние правок двух людей ---------------- */
 const isObj = v => v && typeof v === 'object' && !Array.isArray(v);
