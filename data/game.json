@@ -1,20 +1,342 @@
 {
   "meta": {
     "title": "С Днём Рождения!",
-    "subtitle": "маленькое вишнёвое приключение",
+    "subtitle": "маленькое приключение",
     "startButton": "Начать",
     "continueButton": "Продолжить",
+    "finaleButton": "К празднику",
     "newGameButton": "Начать заново",
-    "finaleButton": "К празднику!",
-    "controls": "WASD или стрелки — ходить · E — действие",
-    "cherry": "assets/ui/cherry.png",
-    "girls": [
-      "assets/sprites/girls/anya.png",
-      "assets/sprites/girls/liza.png",
-      "assets/sprites/girls/sonya.png"
+    "galleryButton": "Галерея",
+    "hints": [
+      "WASD или стрелки — ходить",
+      "E — поговорить и действовать",
+      "мышкой тоже можно: кликай по полу"
     ],
     "music": "",
-    "girlScale": 3
+    "art": {
+      "w": 3492,
+      "h": 1640,
+      "color": "#6e0a1c",
+      "edgeTop": "assets/menu/edge_t.png",
+      "edgeBottom": "assets/menu/edge_b.png",
+      "frame": "assets/menu/frame.webp",
+      "flower": "assets/menu/flower.svg",
+      "btnDark": "assets/menu/btn_dark.svg",
+      "btnLight": "assets/menu/btn_light.svg",
+      "sparkleImg": "assets/menu/sparkle.webp",
+      "playImg": "assets/menu/play.webp",
+      "cherryImg": "assets/menu/cherry.webp",
+      "bellImg": "assets/menu/bell.webp",
+      "layers": [
+        {
+          "name": "bg",
+          "img": "assets/menu/bg.webp",
+          "x": 1746.0,
+          "y": 1640,
+          "w": 3492
+        },
+        {
+          "name": "gifts_blur",
+          "img": "assets/menu/gifts_blur.webp",
+          "x": 2789.5,
+          "y": 1644,
+          "w": 1409,
+          "anim": "drift"
+        },
+        {
+          "name": "glow_a",
+          "img": "assets/menu/glow_a.webp",
+          "x": 1672.0,
+          "y": 1240,
+          "w": 1288,
+          "anim": "glow"
+        },
+        {
+          "name": "glow_b",
+          "img": "assets/menu/glow_b.webp",
+          "x": 1804.0,
+          "y": 1552,
+          "w": 1308,
+          "anim": "glow",
+          "phase": 2.1
+        },
+        {
+          "name": "glow_c",
+          "img": "assets/menu/glow_c.webp",
+          "x": 1494.5,
+          "y": 1502,
+          "w": 1399,
+          "anim": "glow",
+          "phase": 3.7
+        },
+        {
+          "name": "garland_l",
+          "img": "assets/menu/garland_l.webp",
+          "x": 757.0,
+          "y": 261,
+          "w": 1466,
+          "anim": "sway"
+        },
+        {
+          "name": "garland_r",
+          "img": "assets/menu/garland_r.webp",
+          "x": 2664.0,
+          "y": 391,
+          "w": 1656,
+          "anim": "sway",
+          "phase": 1.6
+        },
+        {
+          "name": "gifts_l",
+          "img": "assets/menu/gifts_l.webp",
+          "x": 368.5,
+          "y": 1265,
+          "w": 737,
+          "alpha": 0.85
+        },
+        {
+          "name": "lena",
+          "img": "assets/menu/lena.webp",
+          "x": 870.5,
+          "y": 1508,
+          "w": 1561,
+          "anim": "breathe",
+          "enter": "left"
+        },
+        {
+          "name": "cloth",
+          "img": "assets/menu/cloth.webp",
+          "x": 1330.0,
+          "y": 1640,
+          "w": 2660
+        },
+        {
+          "name": "cake",
+          "img": "assets/menu/cake.webp",
+          "x": 502.0,
+          "y": 1640,
+          "w": 1004,
+          "enter": "up"
+        },
+        {
+          "name": "wine",
+          "img": "assets/menu/wine.webp",
+          "x": 1072.5,
+          "y": 1442,
+          "w": 217,
+          "anim": "slosh"
+        },
+        {
+          "name": "glass",
+          "img": "assets/menu/glass.webp",
+          "x": 1026.5,
+          "y": 1610,
+          "w": 261
+        },
+        {
+          "name": "bear",
+          "img": "assets/menu/bear.webp",
+          "x": 297.5,
+          "y": 1640,
+          "w": 593,
+          "anim": "peek"
+        },
+        {
+          "name": "lace",
+          "img": "assets/menu/lace.webp",
+          "x": 1954.0,
+          "y": 1201,
+          "w": 1134,
+          "anim": "float",
+          "enter": "pop"
+        },
+        {
+          "name": "title",
+          "img": "assets/menu/title.webp",
+          "x": 2037.5,
+          "y": 1099,
+          "w": 1173,
+          "anim": "float",
+          "enter": "pop",
+          "inDelay": 0.32
+        },
+        {
+          "name": "bow",
+          "img": "assets/menu/bow.webp",
+          "x": 2119.5,
+          "y": 1063,
+          "w": 355,
+          "anim": "swing",
+          "enter": "drop",
+          "inDelay": 0.5
+        },
+        {
+          "name": "gifts_r",
+          "img": "assets/menu/gifts_r.webp",
+          "x": 2420.5,
+          "y": 1640,
+          "w": 877,
+          "anim": "hop",
+          "enter": "up",
+          "inDelay": 0.2
+        },
+        {
+          "name": "subtitle",
+          "img": "assets/menu/subtitle.webp",
+          "x": 1621.0,
+          "y": 369,
+          "w": 560,
+          "anim": "float",
+          "enter": "fade",
+          "inDelay": 0.7,
+          "phase": 0.8
+        }
+      ],
+      "candles": [
+        {
+          "x": 423,
+          "y": 842,
+          "w": 40
+        },
+        {
+          "x": 524,
+          "y": 842,
+          "w": 40
+        }
+      ],
+      "sparkles": [
+        {
+          "x": 410,
+          "y": 270,
+          "w": 50
+        },
+        {
+          "x": 482,
+          "y": 322,
+          "w": 85
+        },
+        {
+          "x": 1388,
+          "y": 464,
+          "w": 50
+        },
+        {
+          "x": 1638,
+          "y": 1262,
+          "w": 80
+        },
+        {
+          "x": 2862,
+          "y": 270,
+          "w": 85
+        },
+        {
+          "x": 3042,
+          "y": 1350,
+          "w": 72
+        },
+        {
+          "x": 3116,
+          "y": 1410,
+          "w": 44
+        }
+      ],
+      "stars": [
+        {
+          "x": 160,
+          "y": 230,
+          "w": 30
+        },
+        {
+          "x": 640,
+          "y": 300,
+          "w": 22
+        },
+        {
+          "x": 1160,
+          "y": 330,
+          "w": 34
+        },
+        {
+          "x": 1270,
+          "y": 590,
+          "w": 24
+        },
+        {
+          "x": 1110,
+          "y": 800,
+          "w": 28
+        },
+        {
+          "x": 2330,
+          "y": 180,
+          "w": 26
+        },
+        {
+          "x": 2600,
+          "y": 560,
+          "w": 30
+        },
+        {
+          "x": 3360,
+          "y": 470,
+          "w": 34
+        },
+        {
+          "x": 3400,
+          "y": 880,
+          "w": 24
+        },
+        {
+          "x": 3250,
+          "y": 1160,
+          "w": 30
+        },
+        {
+          "x": 2560,
+          "y": 1130,
+          "w": 22
+        },
+        {
+          "x": 120,
+          "y": 700,
+          "w": 26
+        },
+        {
+          "x": 1900,
+          "y": 120,
+          "w": 22
+        },
+        {
+          "x": 2980,
+          "y": 980,
+          "w": 26
+        }
+      ],
+      "pill": {
+        "img": "assets/menu/pill.webp",
+        "x": 1712,
+        "y": 1507,
+        "w": 908
+      },
+      "buttons": {
+        "x": 2652,
+        "y": 761,
+        "w": 660,
+        "h": 198,
+        "gap": 29
+      },
+      "bell": {
+        "x": 3281,
+        "y": 185,
+        "w": 168
+      },
+      "gallery": {
+        "x": 3060,
+        "y": 185,
+        "w": 168
+      }
+    }
   },
   "github": {
     "owner": "",
@@ -24,7 +346,7 @@
   "texts": {
     "doorLocked": "Персонаж не дома",
     "hintTalk": "поговорить",
-    "cutsceneContinue": "Нажми E, чтобы продолжить",
+    "cutsceneContinue": "Нажми E или кликни, чтобы продолжить",
     "replayQuestion": "Хочешь сыграть ещё раз?",
     "playAgain": "Сыграть ещё раз",
     "notNow": "Не сейчас",
@@ -555,8 +877,9 @@
           ]
         },
         "cutscene": {
-          "img": "assets/cutscenes/dressup.png",
-          "text": "Наряд выбран. Зеркало в восторге!"
+          "video": "assets/cutscenes/dressup.mp4",
+          "img": "assets/gallery/dressup.webp",
+          "text": ""
         }
       },
       "rhythm": {
@@ -692,8 +1015,9 @@
           ]
         },
         "cutscene": {
-          "img": "assets/cutscenes/rhythm.png",
-          "text": "Танцпол покорён!"
+          "video": "assets/cutscenes/rhythm.mp4",
+          "img": "assets/gallery/rhythm.webp",
+          "text": ""
         }
       }
     },
@@ -2923,64 +3247,138 @@
     ]
   },
   "finale": {
-    "music": "",
+    "music": "assets/audio/finale.mp3",
     "musicVolume": 0.7,
-    "fireworks": true,
-    "fireworkEvery": 0.55,
+    "art": {
+      "w": 3492,
+      "h": 1640,
+      "color": "#952621",
+      "edgeTop": "assets/finale/edge_t.png",
+      "edgeBottom": "assets/finale/edge_b.png"
+    },
+    "bg": "assets/finale/bg.webp",
+    "spotlight": true,
+    "shadeColor": "rgba(29,10,6,.82)",
+    "lena": {
+      "img": "assets/finale/lena.webp",
+      "x": 1399.0,
+      "y": 1169,
+      "w": 550,
+      "name": "Лена"
+    },
     "girls": [
       {
-        "name": "Аня",
-        "img": "assets/sprites/girls/anya.png",
-        "x": 270,
-        "y": 392,
-        "w": 123
+        "img": "assets/finale/liza.webp",
+        "x": 706.0,
+        "y": 1332,
+        "w": 648,
+        "name": "Лиза"
       },
       {
-        "name": "Лиза",
-        "img": "assets/sprites/girls/liza.png",
-        "x": 480,
-        "y": 262,
-        "w": 114
+        "img": "assets/finale/anya.webp",
+        "x": 2113.5,
+        "y": 1190,
+        "w": 637,
+        "name": "Аня"
       },
       {
-        "name": "Соня",
-        "img": "assets/sprites/girls/sonya.png",
-        "x": 690,
-        "y": 392,
-        "w": 114
+        "img": "assets/finale/andrey.webp",
+        "x": 2762.5,
+        "y": 1584,
+        "w": 689,
+        "name": "Андрей",
+        "light": {
+          "dy": 560,
+          "r": 620
+        }
       }
     ],
-    "cake": {
-      "img": "assets/finale/cake.png",
-      "x": 480,
-      "y": 404,
-      "w": 200
-    },
-    "flame": {
-      "x": 479,
-      "y": 262,
-      "scale": 1.5
+    "balloons": [
+      {
+        "img": "assets/finale/balloon_5.webp",
+        "x": 3173.0,
+        "y": 1161,
+        "w": 296
+      },
+      {
+        "img": "assets/finale/balloon_4.webp",
+        "x": 3004.0,
+        "y": 1131,
+        "w": 260
+      },
+      {
+        "img": "assets/finale/balloon_1.webp",
+        "x": 382.5,
+        "y": 1249,
+        "w": 239
+      },
+      {
+        "img": "assets/finale/balloon_2.webp",
+        "x": 1116.5,
+        "y": 741,
+        "w": 215
+      },
+      {
+        "img": "assets/finale/balloon_3.webp",
+        "x": 1220.0,
+        "y": 976,
+        "w": 266
+      }
+    ],
+    "candle": {
+      "x": 1677,
+      "y": 938,
+      "w": 46
     },
     "dialog": [
       {
-        "name": "Аня",
-        "text": "С днём рождения!!!"
+        "name": "Лиза",
+        "text": "С днём рождения!!! Мы так ждали этот день!"
       },
       {
-        "name": "Лиза",
+        "name": "Аня",
         "text": "Мы так долго готовили для тебя этот сюрприз…"
       },
       {
-        "name": "Соня",
+        "name": "Андрей",
         "text": "Пусть этот год будет самым сладким, красивым и музыкальным!"
-      },
-      {
-        "name": "Все вместе",
-        "text": "Загадывай желание и задувай свечку! 🍒"
       }
     ],
-    "endTitle": "С Днём Рождения!",
-    "endText": "мы тебя очень любим 🍒",
+    "wishName": "Все вместе",
+    "wish": "Загадывай желание и задувай свечку! 🍒",
+    "wishHint": "нажми на свечку",
+    "dark": "rgba(29,10,6,.9)",
+    "end": {
+      "title": {
+        "img": "assets/finale/end_title.webp",
+        "x": 1770.5,
+        "y": 774,
+        "w": 2581
+      },
+      "love": {
+        "img": "assets/finale/end_love.webp",
+        "x": 1722.0,
+        "y": 928,
+        "w": 1022
+      },
+      "heart": {
+        "img": "assets/finale/end_heart.webp",
+        "x": 1674.5,
+        "y": 1070,
+        "w": 87
+      },
+      "button": {
+        "img": "assets/finale/end_btn.webp",
+        "x": 2931.0,
+        "y": 251,
+        "w": 710,
+        "textImg": "assets/finale/end_btn_text.webp"
+      }
+    },
+    "fireworks": true,
+    "fireworkEvery": 0.9,
+    "endTitle": "С днём рождения!",
+    "endText": "мы тебя очень любим!",
     "backButton": "В главное меню"
   },
   "fx": {
@@ -3205,5 +3603,82 @@
       "loop": false,
       "scale": 1
     }
+  },
+  "music": {
+    "playlist": [
+      "assets/audio/bgm-1.mp3",
+      "assets/audio/bgm-2.mp3",
+      "assets/audio/bgm-3.mp3"
+    ],
+    "volume": 0.45,
+    "crossfade": 6
+  },
+  "gallery": {
+    "title": "Галерея",
+    "subtitle": "наши воспоминания",
+    "button": "Галерея",
+    "close": "Закрыть",
+    "locked": "ещё не открыто",
+    "garlandLeft": "assets/menu/garland_l.webp",
+    "garlandRight": "assets/menu/garland_r.webp",
+    "items": [
+      {
+        "name": "Начало",
+        "img": "assets/gallery/menu.webp",
+        "thumb": "assets/gallery/menu_s.webp",
+        "unlock": "",
+        "text": "маленькое приключение начинается"
+      },
+      {
+        "name": "Красный бархат",
+        "img": "assets/cutscenes/kitchen.png",
+        "pixel": true,
+        "unlock": "kitchen",
+        "hint": "испеки торт на кухне",
+        "text": "«Красный бархат» готов! Осталось дождаться праздника…"
+      },
+      {
+        "name": "Наряд готов",
+        "video": "assets/cutscenes/dressup.mp4",
+        "img": "assets/gallery/dressup.webp",
+        "thumb": "assets/gallery/dressup_s.webp",
+        "unlock": "dressup",
+        "hint": "собери наряд в гардеробной",
+        "text": "Зеркало в восторге!"
+      },
+      {
+        "name": "Танцпол покорён",
+        "video": "assets/cutscenes/rhythm.mp4",
+        "img": "assets/gallery/rhythm.webp",
+        "thumb": "assets/gallery/rhythm_s.webp",
+        "unlock": "rhythm",
+        "hint": "станцуй в музыкальной комнате",
+        "text": "Это было громко!"
+      },
+      {
+        "name": "Все дома",
+        "img": "assets/gallery/menu_done.webp",
+        "thumb": "assets/gallery/menu_done_s.webp",
+        "unlock": "all",
+        "hint": "пройди все комнаты",
+        "text": "приключение пройдено"
+      },
+      {
+        "name": "Праздник",
+        "img": "assets/gallery/finale.webp",
+        "thumb": "assets/gallery/finale_s.webp",
+        "unlock": "finale",
+        "hint": "дойди до праздника",
+        "text": "все в сборе"
+      },
+      {
+        "name": "Желание",
+        "img": "assets/gallery/wish.webp",
+        "thumb": "assets/gallery/wish_s.webp",
+        "unlock": "wish",
+        "hint": "задуй свечку",
+        "text": "мы тебя очень любим!"
+      }
+    ]
   }
 }

@@ -77,7 +77,7 @@ G.loadConfig = async () => {
 
 /* ---------------- прогресс игрока (в браузере) ---------------- */
 const PKEY = 'cherry.progress.v1';
-const freshProgress = () => ({ done: {}, visited: {}, songs: {}, records: {}, outfit: null, finale: false, unlockAll: false });
+const freshProgress = () => ({ done: {}, visited: {}, songs: {}, records: {}, outfit: null, finale: false, wish: false, unlockAll: false });
 G.progress = Object.assign(freshProgress(), readLS(PKEY, {}));
 G.saveProgress  = () => writeLS(PKEY, G.progress);
 G.resetProgress = () => { G.progress = freshProgress(); G.saveProgress(); };
@@ -121,17 +121,82 @@ G.sfx = {
   plop: () => G.blip(300, .12, 'sine', .07)
 };
 
-/* фоновая музыка: один зацикленный трек на всю игру */
-let musicEl = null, musicSrc = '';
-G.music = (src, vol = .5) => {
-  if (src === musicSrc && (!src || (musicEl && !musicEl.paused))) { if (musicEl) musicEl.volume = vol; return; }
-  musicSrc = src || '';
-  if (musicEl) { musicEl.pause(); musicEl = null; }
-  if (!src) return;
-  musicEl = new Audio(G.asset(src));
-  musicEl.loop = true; musicEl.volume = vol;
-  musicEl.play().catch(() => {});
+/** звук вкл/выкл (колокольчик): блипы и музыка */
+G.setSound = on => { G.soundOn = !!on; writeLS('cherry.sound', G.soundOn); };
+
+/* ---------------- музыка ----------------
+   G.music('')    — музыка игры: песни из music.playlist идут по очереди,
+                    соседние плавно перетекают друг в друга (music.crossfade, с);
+   G.music(src)   — свой трек сцены, зациклен тем же плавным переходом;
+   G.music(false) — тишина (у ритм-игры свои песни).
+   Если сцену сменили, плейлист запоминает, где остановился, и потом
+   продолжает с того же места. Громкость — music.volume, колокольчик глушит всё. */
+const MUS = { key: null, list: [], vol: .5, chans: [], saved: {}, last: performance.now() };
+const musCfg = () => G.cfg?.music || {};
+
+function musChan(src, idx, at, fadeIn) {
+  const el = new Audio(G.asset(src));
+  el.preload = 'auto'; el.volume = 0;
+  const ch = { el, idx, key: MUS.key, f: 0, target: 1, fade: fadeIn, started: false, next: false };
+  const go = () => { try { if (at) el.currentTime = at; } catch {} el.play().then(() => { ch.started = true; }).catch(() => { ch.blocked = true; }); };
+  if (at) el.addEventListener('loadedmetadata', go, { once: true }); else go();
+  el.addEventListener('ended', () => { if (!ch.next && ch.key === MUS.key && ch.target > 0) musNext(ch, .4); });
+  MUS.chans.push(ch);
+  return ch;
+}
+/** следующий трек программы (для одного трека — он же сначала) */
+function musNext(ch, fade) {
+  ch.next = true;
+  ch.target = 0; ch.fade = fade;
+  const n = (ch.idx + 1) % MUS.list.length;
+  musChan(MUS.list[n], n, 0, fade);
+}
+G.music = (src, vol) => {
+  const M = musCfg();
+  const list = src === false ? [] : src ? [src] : (M.playlist || []).filter(Boolean);
+  const key = src === false ? '' : src || '@playlist';
+  MUS.vol = vol ?? (src ? .7 : M.volume ?? .5);
+  if (key === MUS.key) return;
+  // уходящая программа: запомнить место и плавно погасить
+  for (const ch of MUS.chans) {
+    if (ch.target > 0 && ch.key === MUS.key && MUS.key === '@playlist') MUS.saved[MUS.key] = { idx: ch.idx, t: ch.el.currentTime || 0 };
+    ch.target = 0; ch.fade = 1.2;
+  }
+  MUS.key = key; MUS.list = list;
+  if (!list.length) return;
+  const s = MUS.saved[key];
+  const idx = s && s.idx < list.length ? s.idx : 0;
+  musChan(list[idx], idx, s ? s.t : 0, s ? 1.6 : 1.2);
 };
+/** раз в кадр: громкость каналов, плавные переходы, конец трека */
+function musTick() {
+  const now = performance.now(), dt = Math.min(.25, (now - MUS.last) / 1000);
+  MUS.last = now;
+  const xf = Math.max(.5, musCfg().crossfade ?? 5);
+  for (const ch of [...MUS.chans]) {
+    const el = ch.el;
+    if (ch.f !== ch.target) {
+      const step = dt / Math.max(.05, ch.fade);
+      ch.f = ch.target > ch.f ? Math.min(ch.target, ch.f + step) : Math.max(ch.target, ch.f - step);
+    }
+    // равная мощность: сумма двух перетекающих треков звучит одинаково громко
+    const v = Math.sin(ch.f * Math.PI / 2) * MUS.vol * (G.soundOn ? 1 : 0);
+    if (Math.abs(el.volume - v) > .002) el.volume = G.clamp(v, 0, 1);
+    if (ch.target === 0 && ch.f === 0) { el.pause(); el.removeAttribute('src'); el.load(); MUS.chans.splice(MUS.chans.indexOf(ch), 1); continue; }
+    if (!ch.next && ch.target > 0 && ch.key === MUS.key && el.duration && isFinite(el.duration) &&
+        el.duration - el.currentTime <= Math.min(xf, el.duration / 3)) musNext(ch, Math.min(xf, el.duration - el.currentTime));
+  }
+}
+/** для отладки из консоли: что сейчас играет */
+G.musicState = () => MUS.chans.map(c => ({ src: c.el.src.split('/').pop(), t: +c.el.currentTime.toFixed(1), vol: +c.el.volume.toFixed(2), target: c.target, paused: c.el.paused }));
+/** браузер не даёт играть звук до первого клика — запускаем по первому действию */
+const musUnlock = () => {
+  G.audioCtx();
+  for (const ch of MUS.chans) if (ch.target > 0 && (ch.blocked || ch.el.paused)) { ch.blocked = false; ch.el.play().then(() => { ch.started = true; }).catch(() => {}); }
+};
+setInterval(musTick, 50);          // таймер, а не кадры: переходы идут и в свёрнутой вкладке
+addEventListener('pointerdown', musUnlock, true);
+addEventListener('keydown', musUnlock, true);
 
 /* ---------------- экран ---------------- */
 const shell = $('#shell'), view = $('#view');
@@ -299,6 +364,7 @@ G.go = async (id, params = {}) => {
   G.busy++;
   try {
     await G.fade(true);
+    G.overlay?.close(true);
     G.closeDialog();
     G.scene?.leave?.();
     Object.values(G.scenes).forEach(s => { s.root.hidden = true; });
@@ -462,6 +528,7 @@ addEventListener('keydown', e => {
   if (e.repeat && G.isAction(e)) { e.preventDefault(); return; }
   G.keys.add(e.code);
   if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) e.preventDefault();
+  if (G.overlay?.open) { G.overlay.key(e); return; }   // галерея поверх игры
   if (G.busy) return;
   if (G.dialogOpen) { dialogKey(e); return; }
   G.scene?.key?.(e);
@@ -474,7 +541,7 @@ let last = performance.now();
 function frame(now) {
   const dt = Math.min(.05, (now - last) / 1000);
   last = now;
-  try { G.scene?.update?.(dt, now / 1000); } catch (e) { console.error(e); }
+  if (!G.overlay?.open) try { G.scene?.update?.(dt, now / 1000); } catch (e) { console.error(e); }
   G.fx.tick(dt);
   G.editor?.tick?.();
   requestAnimationFrame(frame);

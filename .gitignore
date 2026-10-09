@@ -4,6 +4,8 @@
 /ритм игра/
 # новые пиксельные спрайты (исходники) — в игре лежат копии в assets/kitchen и assets/sprites
 /Файлы/
+# главное меню, концовка, катсцены и музыка (исходники ~250 МБ) — в игре сжатые копии в assets/menu, assets/finale, assets/gallery, assets/cutscenes, assets/audio
+/общий визуал/
 
 .DS_Store
 Thumbs.db

@@ -90,7 +90,18 @@ const LABELS = {
   swing: 'Размах качания, °', alpha: 'Прозрачность (0–1)', ring: 'Кольцо кнопки', ringFill: 'Середина кнопки', ringSize: 'Размер кнопки',
   burst: 'Вспышка попадания', keySize: 'Размер букв клавиш', progress: 'Полоска песни', pause: 'Кнопка паузы', stars: 'Звёзды',
   starAt: 'Звёзды за долю идеального счёта', on: 'Звезда получена', off: 'Звезда пустая', menu: 'Меню (рамка)', maxRes: 'Макс. чёткость холста',
-  walk: 'Порядок кадров шага (столбцы)', girlScale: 'Увеличение девочек на заставке', rim: 'Толщина бортика миски, px', stages: 'Тесто по стадиям (от светлого к красному)'
+  walk: 'Порядок кадров шага (столбцы)', girlScale: 'Увеличение девочек на заставке', rim: 'Толщина бортика миски, px', stages: 'Тесто по стадиям (от светлого к красному)',
+  art: 'Макет (слои, кнопки, искорки)', candles: 'Огоньки свечей', sparkles: 'Большие искорки',
+  pill: 'Плашка подсказки', buttons: 'Кнопки (x — левый край, y — середина столбика)', bell: 'Кнопка звука', gallery: 'Галерея', galleryButton: 'Кнопка «галерея»',
+  hints: 'Подсказки управления (сменяют друг друга)', edgeTop: 'Полоса рамки сверху', edgeBottom: 'Полоса рамки снизу', flower: 'Цветочек под круглые кнопки',
+  btnDark: 'Кнопка (тёмная)', btnLight: 'Кнопка (светлая)', sparkleImg: 'Картинка искорки', playImg: 'Значок ▶', cherryImg: 'Значок вишенки', bellImg: 'Колокольчик',
+  enter: 'Как появляется: left / up / drop / pop / fade', inDelay: 'Задержка появления, с',
+  playlist: 'Песни по очереди', crossfade: 'Плавный переход между песнями, с', video: 'Видео (по кругу)',
+  lena: 'Лена', balloons: 'Шарики', candle: 'Свечка (основание огонька)', spotlight: 'Гости появляются из полумрака', shadeColor: 'Цвет полумрака',
+  light: 'Свет над гостем { dy, r }', wish: 'Реплика «загадай желание»', wishName: 'Кто говорит «загадай желание»', wishHint: 'Подсказка у свечки',
+  end: 'Финальный экран', love: 'Строка «мы тебя любим»', heart: 'Сердечко', button: 'Кнопка', textImg: 'Надпись на кнопке',
+  unlock: 'Когда открывается: пусто / all / kitchen / dressup / rhythm / finale / wish', locked: 'Надпись «закрыто»', close: 'Кнопка «закрыть»',
+  garlandLeft: 'Гирлянда слева', garlandRight: 'Гирлянда справа'
 };
 const TEMPLATES = {
   props: { img: '', x: 480, y: 420, w: 96 },
@@ -101,7 +112,7 @@ const TEMPLATES = {
   songs: { id: '', title: 'Новая песня', artist: '', src: '', bpm: 0, offset: 0 }
 };
 const hidden = p => p === 'dressup.items' || p === 'dressup.layout' || p === 'github' || /\.charts$/.test(p);
-const IMG_KEYS = /^(img|imgFull|imgDone|bg|thumb|cover|portrait|wall|floor|closed|open|inside|sponge|cream|spatula|yolk|shell|drop|cherry)$/;
+const IMG_KEYS = /^(img|imgFull|imgDone|bg|thumb|cover|portrait|wall|floor|closed|open|inside|sponge|cream|spatula|yolk|shell|drop|cherry|frame|flower|btnDark|btnLight|sparkleImg|playImg|cherryImg|bellImg|edgeTop|edgeBottom|textImg|garlandLeft|garlandRight)$/;
 const AUD_KEYS = /^(music|audio|sound)$/;
 function kind(p, key, val) {
   if (typeof val === 'number') return 'num';
@@ -109,6 +120,7 @@ function kind(p, key, val) {
   val = String(val ?? '');
   if (AUD_KEYS.test(key) || /\.(mp3|ogg|wav|m4a)$/i.test(val) || /songs\.\d+\.src$/.test(p)) return 'audio';
   if (/\.(png|jpe?g|webp|gif|svg)$/i.test(val) || G.pending.has(val)) return 'image';
+  if (/\.(mp4|webm)$/i.test(val) || key === 'video') return 'video';
   if (val && !/[\/.]/.test(val)) return /^#[0-9a-f]{6}$/i.test(val) ? 'color' : 'text';
   if (IMG_KEYS.test(key) || key === 'src') return 'image';
   if (/^#[0-9a-f]{6}$/i.test(val)) return 'color';
@@ -215,14 +227,14 @@ function group(path, title) {
   return d;
 }
 
-function mediaField(p, title, val, isAudio) {
+function mediaField(p, title, val, isAudio, isVideo) {
   const wrap = G.el('div', 'ed__f ed__f--media');
   wrap.innerHTML =
     `<span class="ed__k">${esc(title)}</span>
      <div class="ed__media">
-       <span class="ed__thumb">${isAudio ? '♪' : '<img class="px" alt="">'}</span>
+       <span class="ed__thumb">${isAudio ? '♪' : isVideo ? '🎬' : '<img class="px" alt="">'}</span>
        <div class="ed__mbtns">
-         <button type="button" class="ed__btn" data-a="pick">${isAudio ? 'Загрузить звук…' : 'Загрузить картинку…'}</button>
+         <button type="button" class="ed__btn" data-a="pick">${isAudio ? 'Загрузить звук…' : isVideo ? 'Загрузить видео…' : 'Загрузить картинку…'}</button>
          ${isAudio ? '<button type="button" class="ed__btn" data-a="play">▶</button>' : ''}
          <button type="button" class="ed__btn" data-a="clear" title="Убрать">✕</button>
        </div>
@@ -239,7 +251,7 @@ function mediaField(p, title, val, isAudio) {
   let audio = null;
   wrap.onclick = e => {
     const a = e.target.closest('[data-a]')?.dataset.a;
-    if (a === 'pick') pickFile(isAudio ? 'audio/*' : 'image/*', f => { const path = stashFile(f); setVal(p, path); show(path); });
+    if (a === 'pick') pickFile(isAudio ? 'audio/*' : isVideo ? 'video/*' : 'image/*', f => { const path = stashFile(f); setVal(p, path); show(path); });
     if (a === 'clear') { setVal(p, ''); show(''); }
     if (a === 'play') {
       if (audio) { audio.pause(); audio = null; return; }
@@ -258,7 +270,7 @@ function field(p, key, val, title) {
   if (val && typeof val === 'object')
     return group(p, title + (Array.isArray(val) ? ` · ${val.length}` : ''));
   const k = kind(p, key, val);
-  if (k === 'image' || k === 'audio') return mediaField(p, title, val, k === 'audio');
+  if (k === 'image' || k === 'audio' || k === 'video') return mediaField(p, title, val, k === 'audio', k === 'video');
 
   const row = G.el('label', 'ed__f ed__f--' + k, `<span class="ed__k">${esc(title)}</span>`);
   let inp;
@@ -359,7 +371,7 @@ function buildSel() {
 
 function buildScene() {
   const sc = G.scene;
-  $('#edScene').textContent = ({ title: 'заставка', world: 'дом', kitchen: 'торт', dressup: 'одевашка',
+  $('#edScene').textContent = ({ title: 'главное меню', world: 'дом', kitchen: 'торт', dressup: 'одевашка',
     rhythm: 'ритм-игра', cutscene: 'катсцена', finale: 'финал' })[G.sceneId] || '';
   const tools = $('#edTools'), tsec = $('#edToolsSec');
   tools.innerHTML = '';
@@ -385,7 +397,7 @@ function buildNav() {
   const box = $('#edNavBox');
   const R = G.cfg.world.rooms, rooms = Object.keys(R);
   const items = [
-    ['title', 'Заставка'],
+    ['title', 'Главное меню'], ['gallery', '🖼 Галерея'],
     ...rooms.map(r => [`room:${r}`, '🚪 ' + R[r].name]),
     ['kitchen:0', '🎂 Торт'], ['dressup', '👗 Одевашка'], ['rhythm', '🎵 Ритм'],
     ...rooms.filter(r => R[r].cutscene).map(r => [`cutscene:${r}`, '🖼 Катсцена: ' + R[r].name]),

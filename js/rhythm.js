@@ -1124,7 +1124,7 @@ G.scenes.rhythm = {
   analyze: b => { R = G.cfg.rhythm; return analyze(b); },
 
   enter() {
-    G.music('');
+    G.music(false);                      // у ритм-игры свои песни
     P = null; mode = 'menu';
     R = G.cfg.rhythm;
     sel = Math.max(0, R.songs.findIndex(s => s.src));
@@ -1135,6 +1135,7 @@ G.scenes.rhythm = {
   leave() { stopAudio(); ctx?.suspend(); P = null; mode = 'menu'; },
   refresh() { if (mode !== 'loading') render(); },
   onEdit(on) { if (on && mode === 'play') setPause(true); },
+  onPause(on) { if (on) autoPause(); },
 
   update(dt) {
     clock += dt;
