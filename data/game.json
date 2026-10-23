@@ -31,14 +31,14 @@
         {
           "name": "bg",
           "img": "assets/menu/bg.webp",
-          "x": 1746.0,
-          "y": 1640,
+          "x": 1746,
+          "y": 1641,
           "w": 3492
         },
         {
           "name": "gifts_blur",
           "img": "assets/menu/gifts_blur.webp",
-          "x": 2789.5,
+          "x": 2790,
           "y": 1644,
           "w": 1409,
           "anim": "drift"
@@ -46,7 +46,7 @@
         {
           "name": "glow_a",
           "img": "assets/menu/glow_a.webp",
-          "x": 1672.0,
+          "x": 1672,
           "y": 1240,
           "w": 1288,
           "anim": "glow"
@@ -54,7 +54,7 @@
         {
           "name": "glow_b",
           "img": "assets/menu/glow_b.webp",
-          "x": 1804.0,
+          "x": 1804,
           "y": 1552,
           "w": 1308,
           "anim": "glow",
@@ -72,7 +72,7 @@
         {
           "name": "garland_l",
           "img": "assets/menu/garland_l.webp",
-          "x": 757.0,
+          "x": 757,
           "y": 261,
           "w": 1466,
           "anim": "sway"
@@ -80,7 +80,7 @@
         {
           "name": "garland_r",
           "img": "assets/menu/garland_r.webp",
-          "x": 2664.0,
+          "x": 2664,
           "y": 391,
           "w": 1656,
           "anim": "sway",
@@ -106,14 +106,14 @@
         {
           "name": "cloth",
           "img": "assets/menu/cloth.webp",
-          "x": 1330.0,
+          "x": 1330,
           "y": 1640,
           "w": 2660
         },
         {
           "name": "cake",
           "img": "assets/menu/cake.webp",
-          "x": 502.0,
+          "x": 502,
           "y": 1640,
           "w": 1004,
           "enter": "up"
@@ -129,8 +129,8 @@
         {
           "name": "glass",
           "img": "assets/menu/glass.webp",
-          "x": 1026.5,
-          "y": 1610,
+          "x": 1074,
+          "y": 1608,
           "w": 261
         },
         {
@@ -144,7 +144,7 @@
         {
           "name": "lace",
           "img": "assets/menu/lace.webp",
-          "x": 1954.0,
+          "x": 1954,
           "y": 1201,
           "w": 1134,
           "anim": "float",
@@ -173,8 +173,8 @@
         {
           "name": "gifts_r",
           "img": "assets/menu/gifts_r.webp",
-          "x": 2420.5,
-          "y": 1640,
+          "x": 2421,
+          "y": 1637,
           "w": 877,
           "anim": "hop",
           "enter": "up",
@@ -183,7 +183,7 @@
         {
           "name": "subtitle",
           "img": "assets/menu/subtitle.webp",
-          "x": 1621.0,
+          "x": 1621,
           "y": 369,
           "w": 560,
           "anim": "float",
@@ -350,7 +350,7 @@
     "replayQuestion": "Хочешь сыграть ещё раз?",
     "playAgain": "Сыграть ещё раз",
     "notNow": "Не сейчас",
-    "heroName": "Я"
+    "heroName": "Лена"
   },
   "player": {
     "img": "assets/sprites/lena_walk.png",
@@ -555,6 +555,18 @@
             "y": 262,
             "flat": true
           }
+        ],
+        "chars": [
+          {
+            "name": "Лиззи",
+            "img": "assets/sprites/pets/cat_lizzy.png",
+            "x": 520,
+            "y": 300,
+            "dialog": [
+              "Мяу!",
+              "Мррр… *Лиззи трётся о твои ноги*"
+            ]
+          }
         ]
       },
       "kitchen": {
@@ -722,20 +734,59 @@
           "x": 168,
           "y": 302,
           "dialog": [
-            "Привет! Как хорошо, что ты зашла!",
-            "У кое-кого сегодня день рождения… а праздничного торта ещё нет!",
-            "> Давай испечём вместе! Какой будем делать?",
-            "Самый вишнёвый на свете — «Красный бархат»! Рецепт у меня есть, но времени мало.",
-            "Надевай фартук — начинаем!"
+            {
+              "who": "npc",
+              "text": "Леночка!!!",
+              "sprite": "assets/novel/anya_happy.webp"
+            },
+            {
+              "who": "npc",
+              "text": "С днем рождения!! Я пихдатая подруга, так что про твой др не забыла и ДАЖЕ приготовила тебе торт! Смотри, это я сама сделала!!!",
+              "sprite": "assets/novel/anya_happy.webp"
+            },
+            {
+              "who": "hero",
+              "text": "Эээ.. Спасибо.",
+              "pic": "assets/cutscenes/kitchen_intro.webp"
+            },
+            {
+              "who": "hero",
+              "text": "Это торт..?",
+              "pic": "assets/cutscenes/kitchen_intro.webp"
+            },
+            {
+              "who": "hero",
+              "text": "А может попробуем вместе приготовить торт? Я как раз хотела сегодня поесть красный бархат.",
+              "pic": "assets/cutscenes/kitchen_intro.webp"
+            },
+            {
+              "who": "npc",
+              "text": "Лена... Ты хочешь провести со мной время? Это так трогательно. Я так и знала что ты не захочешь от меня отходить. Берем ингредиенты!",
+              "sprite": "assets/novel/anya_active.webp"
+            }
           ],
           "dialogAfter": [
-            "Торт получился просто чудесный!",
-            "Загляни теперь к Лизе — она поможет с нарядом."
-          ]
+            {
+              "who": "npc",
+              "text": "Это выглядит на удивление съедобно. Вау.",
+              "sprite": "assets/novel/anya_happy.webp"
+            },
+            {
+              "who": "npc",
+              "text": "А, кстати Лиза там тебя хотела увидеть. Не знаю, че ей надо, но она просила тебе это передать..",
+              "sprite": "assets/novel/anya_sly.webp"
+            },
+            {
+              "who": "npc",
+              "text": "Но знаешь, она может и подождать. Я и не знала, что ты такой хороший кондитер. Может хочешь еще испечь по торту?",
+              "sprite": "assets/novel/anya_happy.webp"
+            }
+          ],
+          "talkAfterGame": true
         },
         "cutscene": {
-          "img": "assets/cutscenes/kitchen.png",
-          "text": "«Красный бархат» готов! Осталось дождаться праздника…"
+          "img": "assets/cutscenes/kitchen_end.webp",
+          "text": ""
         }
       },
       "dressup": {
@@ -867,20 +918,49 @@
           "x": 420,
           "y": 118,
           "dialog": [
-            "О, это ты! Проходи скорее.",
-            "На праздник нельзя идти в чём попало — нужен самый красивый наряд!",
-            "Мой шкаф в твоём распоряжении. Выбирай всё, что нравится!"
+            {
+              "who": "npc",
+              "text": "Привет, моя сладуся. Не перестаю тобой любоваться",
+              "sprite": "assets/novel/liza_happy.webp"
+            },
+            {
+              "who": "npc",
+              "text": "Но сегодня твой праздник и сиять нужно ярче всех.",
+              "sprite": "assets/novel/liza_normal.webp"
+            },
+            {
+              "who": "npc",
+              "text": "Мой шкаф в твоем распоряжении. Выбирай все, что нравится",
+              "sprite": "assets/novel/liza_normal.webp"
+            },
+            {
+              "who": "npc",
+              "text": "А я посмотрю 💕",
+              "sprite": "assets/novel/liza_flirt.webp"
+            }
           ],
           "dialogAfter": [
             "Выглядишь потрясающе!",
-            "Соня уже ждёт тебя с музыкой."
+            "Андрей уже ждёт тебя с музыкой."
           ]
         },
         "cutscene": {
           "video": "assets/cutscenes/dressup.mp4",
           "img": "assets/gallery/dressup.webp",
           "text": ""
-        }
+        },
+        "chars": [
+          {
+            "name": "Сонечка",
+            "img": "assets/sprites/pets/dog_sonechka.png",
+            "x": 450,
+            "y": 104,
+            "dialog": [
+              "Гав-гав!",
+              "*Сонечка радостно виляет хвостом*"
+            ]
+          }
+        ]
       },
       "rhythm": {
         "name": "Музыкальная",
@@ -1000,19 +1080,35 @@
           }
         ],
         "npc": {
-          "name": "Соня",
+          "name": "Андрей",
           "img": "assets/sprites/girls/sonya.png",
           "x": 704,
           "y": 316,
           "dialog": [
-            "Привет-привет! Слышишь? Это музыка для нашего праздника!",
-            "Только танцевать одной скучно. Помоги мне попасть в ритм!",
-            "Жми S, D, K и L, когда значки долетают до круга. Длинные — держи до конца!"
+            {
+              "who": "npc",
+              "text": "Меня держат в подвале, насилуют и заставляют делать игру.",
+              "sprite": [
+                "assets/novel/andrey_sos1.webp",
+                "assets/novel/andrey_sos2.webp"
+              ],
+              "spriteEvery": 1
+            },
+            {
+              "who": "npc",
+              "text": "Сообщите в службу спасения."
+            },
+            {
+              "who": "npc",
+              "text": "Станцуйте, чтобы позвонить в 911"
+            }
           ],
           "dialogAfter": [
             "Вот это был танец!",
             "Теперь всё готово к празднику…"
-          ]
+          ],
+          "danceImg": "assets/sprites/andrey_dance.png",
+          "danceWait": 3
         },
         "cutscene": {
           "video": "assets/cutscenes/rhythm.mp4",
@@ -1046,12 +1142,12 @@
         "side": "right",
         "at": 7,
         "img": "assets/world/doors/door_side.png",
-        "lockedText": "Сони пока нет дома"
+        "lockedText": "Андрея пока нет дома"
       }
     ]
   },
   "kitchen": {
-    "bg": "assets/kitchen/bg.png",
+    "bg": "assets/kitchen/v2/bg.png",
     "music": "",
     "scale": 1.5,
     "timeLimit": 480,
@@ -1136,7 +1232,8 @@
         "id": "buttermilk",
         "name": "Кефир",
         "amount": "240 мл",
-        "img": "assets/kitchen/ing/buttermilk.png"
+        "img": "assets/kitchen/ing/buttermilk.png",
+        "w": 30
       },
       {
         "id": "dye",
@@ -1172,31 +1269,31 @@
     "decoys": [
       {
         "name": "Рыба",
-        "img": "assets/kitchen/fish.png"
+        "img": "assets/kitchen/v2/fish.png"
       },
       {
         "name": "Лук",
-        "img": "assets/kitchen/onion.png"
+        "img": "assets/kitchen/v2/onion.png"
       },
       {
-        "name": "Кетчуп",
-        "img": "assets/kitchen/ketchup.png"
+        "name": "Помидор",
+        "img": "assets/kitchen/v2/tomato.png"
       },
       {
         "name": "Перец чили",
-        "img": "assets/kitchen/chili.png"
+        "img": "assets/kitchen/v2/chili.png"
       },
       {
         "name": "Огурцы",
-        "img": "assets/kitchen/pickles.png"
+        "img": "assets/kitchen/v2/pickles.png"
       },
       {
         "name": "Чеснок",
-        "img": "assets/kitchen/garlic.png"
+        "img": "assets/kitchen/v2/garlic.png"
       },
       {
         "name": "Горчица",
-        "img": "assets/kitchen/mustard.png"
+        "img": "assets/kitchen/v2/mustard.png"
       }
     ],
     "gather": {
@@ -1206,72 +1303,94 @@
       "rows": 3,
       "shelfInset": 16,
       "cupboard": {
-        "img": "assets/kitchen/cupboard.png",
-        "x": 262,
-        "y": 274
+        "img": "assets/kitchen/v2/shelf.png",
+        "x": 258,
+        "y": 278
       },
       "tray": {
         "img": "assets/kitchen/tray.png",
-        "x": 262,
-        "y": 322
-      }
+        "x": 258,
+        "y": 326
+      },
+      "front": {
+        "img": "assets/kitchen/v2/shelf_front.png",
+        "x": 258,
+        "y": 278
+      },
+      "shelves": [
+        82,
+        152,
+        224
+      ]
     },
     "measure": {
       "title": "Отмерь",
-      "hint": "Держи мышку или пробел — сыпется. Отпусти в зелёной зоне!",
+      "hint": "Держи мышку или пробел — продукт наклонится и начнёт сыпаться. Отпусти в зелёной зоне!",
       "ok": "Ровно столько!",
       "over": "Перебор! Отсыпаем обратно…",
       "cup": {
-        "img": "assets/kitchen/cup.png",
-        "x": 262,
-        "y": 296,
+        "img": "assets/kitchen/v2/cup_front.png",
+        "x": 258,
+        "y": 316,
         "fill": {
-          "x": 10,
-          "y": 8,
-          "w": 52,
-          "h": 83,
-          "taper": 5
+          "x": 22,
+          "y": 30,
+          "w": 84,
+          "h": 112,
+          "taper": 0
         }
       },
       "items": [
         {
           "ingredient": "flour",
           "color": "#fff3e2",
-          "target": 0.62,
-          "tolerance": 0.075,
-          "speed": 0.36
+          "target": 0.6,
+          "tolerance": 0.085,
+          "speed": 0.36,
+          "kind": "dry"
         },
         {
           "ingredient": "cocoa",
           "img": "assets/kitchen/ing/cocoa_spoon.png",
           "color": "#6b3a2a",
-          "target": 0.35,
-          "tolerance": 0.07,
-          "speed": 0.4
+          "target": 0.6,
+          "tolerance": 0.085,
+          "speed": 0.4,
+          "kind": "dry"
         },
         {
           "ingredient": "sugar",
           "color": "#eaf6fd",
-          "target": 0.45,
-          "tolerance": 0.065,
-          "speed": 0.5
+          "target": 0.6,
+          "tolerance": 0.085,
+          "speed": 0.5,
+          "kind": "dry"
         },
         {
           "ingredient": "buttermilk",
           "color": "#fdfdf3",
-          "target": 0.72,
-          "tolerance": 0.055,
-          "speed": 0.62
+          "target": 0.6,
+          "tolerance": 0.085,
+          "speed": 0.62,
+          "kind": "liquid"
         },
         {
           "ingredient": "powder",
           "img": "assets/kitchen/ing/powder_spoon.png",
           "color": "#fbf7f4",
-          "target": 0.5,
-          "tolerance": 0.07,
-          "speed": 0.5
+          "target": 0.6,
+          "tolerance": 0.085,
+          "speed": 0.5,
+          "kind": "dry"
         }
-      ]
+      ],
+      "back": {
+        "img": "assets/kitchen/v2/cup_back.png",
+        "x": 238,
+        "y": 198
+      },
+      "drawZone": false,
+      "tilt": 115
     },
     "eggs": {
       "title": "Разбей яйца",
@@ -1301,13 +1420,13 @@
     },
     "whisk": {
       "title": "Взбей тесто",
-      "hint": "Зажми мышку и води по кругу. Держи стрелку в зелёной зоне!",
+      "hint": "Води мышкой туда-сюда над миской. Держи стрелку в зелёной зоне!",
       "gaugeLabel": "темп",
       "tooFast": "Слишком быстро — брызги!",
       "dyeText": "Капни краситель! (клик или пробел)",
       "seconds": 9,
-      "speedMin": 0.9,
-      "speedMax": 2.2,
+      "speedMin": 1.8,
+      "speedMax": 6,
       "dyeAt": [
         0.3,
         0.65
@@ -1346,20 +1465,33 @@
       "fall": 0.5,
       "drift": 0.8,
       "oven": {
-        "img": "assets/kitchen/oven.png",
-        "x": 262,
-        "y": 320
+        "img": "assets/kitchen/v2/oven.png",
+        "x": 258,
+        "y": 386
       },
       "window": {
-        "x": 28,
-        "y": 60,
-        "w": 194,
-        "h": 113
+        "x": 55,
+        "y": 145,
+        "w": 250,
+        "h": 130
       },
-      "inside": "assets/kitchen/oven_inside.png",
+      "inside": "",
       "cake": {
-        "img": "assets/kitchen/pan_cake.png"
-      }
+        "img": "assets/kitchen/v2/pan_tin.png",
+        "dough": "assets/kitchen/v2/pan_dough.png",
+        "rim": 24,
+        "riseFrom": 17
+      },
+      "rack": {
+        "x": 180,
+        "y": 226
+      },
+      "gauge": {
+        "x": 462,
+        "y": 80,
+        "h": 200
+      },
+      "barY": 34
     },
     "stack": {
       "title": "Собери торт",
@@ -1372,12 +1504,15 @@
       "okDist": 30,
       "perfectDist": 9,
       "plate": {
-        "img": "assets/kitchen/plate.png",
-        "x": 262,
-        "y": 322
+        "img": "assets/kitchen/v2/plate.png",
+        "x": 258,
+        "y": 334
       },
-      "sponge": "assets/kitchen/sponge.png",
-      "cream": "assets/kitchen/cream_layer.png"
+      "sponge": "assets/kitchen/v2/sponge.png",
+      "cream": "",
+      "landed": "assets/kitchen/v2/sponge_cream.png",
+      "step": 40,
+      "seat": 26
     },
     "frost": {
       "title": "Покрой кремом",
@@ -1385,72 +1520,87 @@
       "need": 0.9,
       "brush": 15,
       "cake": {
-        "img": "assets/kitchen/cake_naked.png",
-        "imgDone": "assets/kitchen/cake_frosted.png",
-        "x": 262,
-        "y": 326
+        "img": "assets/kitchen/v2/cake_naked.png",
+        "imgDone": "assets/kitchen/v2/cake_frosted.png",
+        "x": 258,
+        "y": 309
       },
-      "spatula": "assets/kitchen/spatula.png"
+      "spatula": "assets/kitchen/v2/spatula.png",
+      "plate": {
+        "img": "assets/kitchen/v2/plate.png",
+        "x": 258,
+        "y": 334
+      },
+      "spatulaOffset": [
+        -22,
+        60
+      ],
+      "spatulaRot": 0
     },
     "decor": {
       "title": "Укрась",
       "hint": "Перетаскивай украшения на торт. Нужно минимум {min}:",
       "min": 6,
       "cake": {
-        "img": "assets/kitchen/cake_frosted.png",
-        "x": 262,
-        "y": 326
+        "img": "assets/kitchen/v2/cake_frosted.png",
+        "x": 258,
+        "y": 309
       },
       "items": [
         {
+          "name": "Бантик",
+          "img": "assets/kitchen/v2/d_bow.png",
+          "x": 52,
+          "y": 120
+        },
+        {
           "name": "Вишенка",
-          "img": "assets/kitchen/d_cherry.png",
-          "x": 60,
+          "img": "assets/kitchen/v2/d_cherry.png",
+          "x": 110,
           "y": 120
         },
         {
-          "name": "Крем",
-          "img": "assets/kitchen/d_swirl.png",
-          "x": 104,
-          "y": 120
-        },
-        {
-          "name": "Крошка",
-          "img": "assets/kitchen/d_crumbs.png",
-          "x": 60,
-          "y": 160
-        },
-        {
-          "name": "Сердечко",
-          "img": "assets/kitchen/d_heart.png",
-          "x": 104,
-          "y": 164
+          "name": "Звёздочки",
+          "img": "assets/kitchen/v2/d_stars.png",
+          "x": 52,
+          "y": 178
         },
         {
           "name": "Клубника",
-          "img": "assets/kitchen/d_berry.png",
-          "x": 60,
-          "y": 206
+          "img": "assets/kitchen/v2/d_berry.png",
+          "x": 110,
+          "y": 178
         },
         {
-          "name": "Розочка",
-          "img": "assets/kitchen/d_rose.png",
-          "x": 104,
-          "y": 206
-        },
-        {
-          "name": "Звёздочка",
-          "img": "assets/kitchen/d_star.png",
-          "x": 60,
-          "y": 246
+          "name": "Крем",
+          "img": "assets/kitchen/v2/d_swirl.png",
+          "x": 52,
+          "y": 236
         },
         {
           "name": "Свечка",
-          "img": "assets/kitchen/d_candle.png",
-          "x": 104,
-          "y": 252
+          "img": "assets/kitchen/v2/d_candle.png",
+          "x": 110,
+          "y": 236
+        },
+        {
+          "name": "Сердечко",
+          "img": "assets/kitchen/v2/d_heart.png",
+          "x": 52,
+          "y": 294
+        },
+        {
+          "name": "Посыпка",
+          "img": "assets/kitchen/v2/d_sprinkles.png",
+          "x": 110,
+          "y": 294
         }
-      ]
+      ],
+      "plate": {
+        "img": "assets/kitchen/v2/plate.png",
+        "x": 258,
+        "y": 334
+      }
     }
   },
   "dressup": {
@@ -2783,7 +2933,7 @@
       "miss": "Мимо",
       "again": "Ещё раз",
       "toSongs": "К песням",
-      "next": "Дальше",
+      "next": "К празднику",
       "exit": "Выйти",
       "paused": "Пауза",
       "resume": "Продолжить",
@@ -3261,7 +3411,7 @@
     "shadeColor": "rgba(29,10,6,.82)",
     "lena": {
       "img": "assets/finale/lena.webp",
-      "x": 1399.0,
+      "x": 1399,
       "y": 1169,
       "w": 550,
       "name": "Лена"
@@ -3269,7 +3419,7 @@
     "girls": [
       {
         "img": "assets/finale/liza.webp",
-        "x": 706.0,
+        "x": 706,
         "y": 1332,
         "w": 648,
         "name": "Лиза"
@@ -3296,13 +3446,13 @@
     "balloons": [
       {
         "img": "assets/finale/balloon_5.webp",
-        "x": 3173.0,
+        "x": 3173,
         "y": 1161,
         "w": 296
       },
       {
         "img": "assets/finale/balloon_4.webp",
-        "x": 3004.0,
+        "x": 3004,
         "y": 1131,
         "w": 260
       },
@@ -3320,7 +3470,7 @@
       },
       {
         "img": "assets/finale/balloon_3.webp",
-        "x": 1220.0,
+        "x": 1220,
         "y": 976,
         "w": 266
       }
@@ -3357,7 +3507,7 @@
       },
       "love": {
         "img": "assets/finale/end_love.webp",
-        "x": 1722.0,
+        "x": 1722,
         "y": 928,
         "w": 1022
       },
@@ -3369,7 +3519,7 @@
       },
       "button": {
         "img": "assets/finale/end_btn.webp",
-        "x": 2931.0,
+        "x": 2931,
         "y": 251,
         "w": 710,
         "textImg": "assets/finale/end_btn_text.webp"
@@ -3630,12 +3780,18 @@
         "text": "маленькое приключение начинается"
       },
       {
+        "name": "Это торт..?",
+        "img": "assets/cutscenes/kitchen_intro.webp",
+        "unlock": "kitchen",
+        "hint": "загляни к Ане на кухню",
+        "text": "Аня приготовила сюрприз"
+      },
+      {
         "name": "Красный бархат",
-        "img": "assets/cutscenes/kitchen.png",
-        "pixel": true,
+        "img": "assets/cutscenes/kitchen_end.webp",
         "unlock": "kitchen",
         "hint": "испеки торт на кухне",
-        "text": "«Красный бархат» готов! Осталось дождаться праздника…"
+        "text": "Торт готов!"
       },
       {
         "name": "Наряд готов",
