@@ -3,7 +3,12 @@
    ------------------------------------------------------------
    • Комнаты описаны в data/game.json → world.rooms: прямоугольник
      в клетках (x, y, w, h; клетка = 16 пикселей арта), текстура
-     стены и пола, список предметов (props), персонаж (npc).
+     стены и пола, список предметов (props), персонаж (npc) — после
+     разговора с ним начинается мини-игра — и другие персонажи (chars:
+     кошка, собака…) — с ними просто разговор.
+   • У персонажа может быть danceImg: после первого разговора он
+     превращается в танцора (с эффектом), через danceWait секунд
+     начинается мини-игра.
    • Комната, в которой героиня ещё не была, затемнена.
    • Двери — world.doors: соединяют две комнаты. Дверь в комнату,
      до которой очередь ещё не дошла, закрыта («Персонаж не дома»).
@@ -19,7 +24,7 @@ let W, S, T;                       // конфиг мира, масштаб, р�
 let box, mapCv, playerEl, hintEl, bannerEl, nameEl;
 let ents = [], doors = [], darkEls = {};
 let cam = { x: 0, y: 0 }, bounds = { w: 0, h: 0 };
-let near = null, target = null, talking = false, transit = null, lockCool = 0, pan = null, palOpen = false;
+let near = null, target = null, talking = false, transit = null, lockCool = 0, pan = null;
 const P = { x: 0, y: 0, dir: 'down', t: 0, room: '', placed: false };
 const tex = new Map();             // путь → Image (текстуры стен/полов)
 
@@ -123,6 +128,53 @@ function drawMap() {
 }
 
 /* ---------------- сцена ---------------- */
+/** слой предмета: ковры — под всем, остальное — по «ногам»; lift поднимает или опускает слой */
+const propZ = p => (p.flat ? 2 : Math.round(p.y) + 10) + (p.lift || 0);
+const dancing = (o, id) => !!o.danceImg && !!G.progress.danced?.[id];
+
+/** персонаж на карте: картинка, имя, «!» у того, кто ждёт мини-игру */
+function person(n, id, path, type) {
+  const wrap = G.el('div', 'ent wnpc' + (type === 'char' ? ' wnpc--char' : '') + (n.flip ? ' is-flip' : ''));
+  G.place(wrap, n);
+  wrap.dataset.edit = path;
+  wrap.style.zIndex = Math.round(n.y) + 10 + (n.lift || 0);
+  const img = type === 'npc' && dancing(n, id) ? n.danceImg : n.img;
+  wrap.innerHTML =
+    (img ? `<img class="px" src="${G.asset(img)}" alt="" draggable="false"${n.w ? ` style="width:${n.w}px"` : ''}>` : '<div class="ent--empty" style="width:24px;height:32px">?</div>') +
+    (n.name ? `<span class="wnpc__name">${G.esc(n.name)}</span>` : '') +
+    (type === 'npc' && !G.isDone(id) ? '<span class="wnpc__mark">!</span>' : '');
+  if (type === 'npc' && dancing(n, id)) danceDecor(wrap);
+  box.appendChild(wrap);
+  return { type, room: id, o: n, el: wrap };
+}
+/** танцор: покачивается, вокруг летают звёздочки */
+function danceDecor(wrap) {
+  wrap.classList.add('is-dance');
+  const st = G.el('i', 'wnpc__stars', '<b>✦</b><b>✧</b><b>✦</b><b>✧</b><b>✦</b>');
+  wrap.appendChild(st);
+}
+/** превращение в танцора: пиксельная «диско»-вспышка */
+function discoIn(n, wrap) {
+  const im = wrap.querySelector('img');
+  if (im) im.src = G.asset(n.danceImg);
+  wrap.classList.add('is-disco');
+  const burst = G.el('i', 'wdisco');
+  const cols = ['#ff4fa3', '#ffe14f', '#4fe3ff', '#8cff5a', '#c77dff', '#ff8a3d'];
+  for (let i = 0; i < 18; i++) {
+    const b = G.el('b');
+    const a = i / 18 * Math.PI * 2, d = 18 + (i % 3) * 7;
+    b.style.setProperty('--dx', Math.round(Math.cos(a) * d) + 'px');
+    b.style.setProperty('--dy', Math.round(Math.sin(a) * d * .8 - 14) + 'px');
+    b.style.background = cols[i % cols.length];
+    b.style.animationDelay = (i % 4) * .05 + 's';
+    burst.appendChild(b);
+  }
+  wrap.appendChild(burst);
+  G.fx?.at('roomReveal', box, n.x, n.y - 20, { z: 9600 });
+  [0, 120, 240, 360, 520].forEach((t, i) => setTimeout(() => G.blip([523, 659, 784, 1047, 1319][i], .12, 'square', .03), t));
+  setTimeout(() => { burst.remove(); wrap.classList.remove('is-disco'); danceDecor(wrap); }, 1300);
+}
+
 function render() {
   W = G.cfg.world; S = W.scale || 2; T = W.tile || 16;
   root.innerHTML = '';
@@ -152,23 +204,12 @@ function render() {
 
     (r.props || []).forEach((p, i) => {
       const e = G.img(p, `world.rooms.${id}.props.${i}`, 'wprop' + (p.flip ? ' is-flip' : ''));
-      e.style.zIndex = p.flat ? 2 : Math.round(p.y) + 10;
+      e.style.zIndex = propZ(p);
       box.appendChild(e);
     });
 
-    if (r.npc) {
-      const n = r.npc;
-      const wrap = G.el('div', 'ent wnpc');
-      G.place(wrap, n);
-      wrap.dataset.edit = `world.rooms.${id}.npc`;
-      wrap.style.zIndex = Math.round(n.y) + 10;
-      wrap.innerHTML =
-        (n.img ? `<img class="px" src="${G.asset(n.img)}" alt="" draggable="false">` : '<div class="ent--empty" style="width:24px;height:32px">?</div>') +
-        `<span class="wnpc__name">${G.esc(n.name)}</span>` +
-        (G.isDone(id) ? '' : '<span class="wnpc__mark">!</span>');
-      box.appendChild(wrap);
-      ents.push({ type: 'npc', room: id, o: n, el: wrap });
-    }
+    if (r.npc) ents.push(person(r.npc, id, `world.rooms.${id}.npc`, 'npc'));
+    (r.chars || []).forEach((c, i) => ents.push(person(c, id, `world.rooms.${id}.chars.${i}`, 'char')));
 
     const dark = G.el('div', 'wdark' + (lit(id) ? ' is-lit' : ''));
     Object.assign(dark.style, { left: (q.x + 2) + 'px', top: (q.y + 2) + 'px', width: (q.w - 4) + 'px', height: (q.h - 4) + 'px' });
@@ -248,8 +289,10 @@ function enterRoom(id) {
 /* ---------------- героиня ---------------- */
 function draw() {
   const pl = G.cfg.player;
-  playerEl.style.left = P.x + 'px';
-  playerEl.style.top = P.y + 'px';
+  // героиня стоит на целом пикселе экрана, привязанном к полу; камера ведёт её на целое
+  // число пикселей (camTarget) — поэтому она не дрожит ни на ходу, ни когда остановилась
+  playerEl.style.left = Math.round(P.x * S) / S + 'px';
+  playerEl.style.top = Math.round(P.y * S) / S + 'px';
   playerEl.style.zIndex = Math.round(P.y) + 10;
   const row = { down: pl.rowDown, left: pl.rowLeft, right: pl.rowRight, up: pl.rowUp }[P.dir] ?? 0;
   let col = pl.idleFrame ?? 0;
@@ -264,12 +307,14 @@ function draw() {
 function camTarget() {
   const vw = G.VW, vh = G.VH, ww = bounds.w * S, wh = bounds.h * S;
   return {
-    x: ww <= vw ? (ww - vw) / 2 : G.clamp(P.x * S - vw / 2, 0, ww - vw),
-    y: wh <= vh ? (wh - vh) / 2 : G.clamp(P.y * S - vh * .56, 0, wh - vh)
+    x: ww <= vw ? (ww - vw) / 2 : G.clamp(P.x * S - Math.round(vw / 2), 0, ww - vw),
+    y: wh <= vh ? (wh - vh) / 2 : G.clamp(P.y * S - Math.round(vh * .56), 0, wh - vh)
   };
 }
+/** камера едет плавно, только пока догоняет героиню (после редактора); догнав — идёт за ней точно */
+let camLock = false;
 function applyCam() { box.style.transform = `translate(${-Math.round(cam.x)}px,${-Math.round(cam.y)}px) scale(${S})`; }
-function snapCam() { cam = camTarget(); applyCam(); }
+function snapCam() { cam = camTarget(); camLock = true; applyCam(); draw(); }
 
 /** можно ли стоять в точке (x, y) — проверяем прямоугольник «ног» */
 function free(x, y) {
@@ -298,6 +343,7 @@ function free(x, y) {
     }
     const n = r.npc;
     if (n && x + hw > n.x - 8 && x - hw < n.x + 8 && y > n.y - 7 && y - hh < n.y + 1) return false;
+    for (const c of r.chars || []) if (x + hw > c.x - 6 && x - hw < c.x + 6 && y > c.y - 5 && y - hh < c.y + 1) return false;
   }
   return true;
 }
@@ -358,12 +404,27 @@ async function talk(n) {
   P.dir = Math.abs(npc.x - P.x) > Math.abs(npc.y - P.y) ? (npc.x < P.x ? 'left' : 'right') : (npc.y < P.y ? 'up' : 'down');
   P.t = 0; draw();
   try {
+    const at = n.el.dataset.edit;                                               // путь персонажа в конфиге — для редактора
+    if (n.type === 'char') { await G.say(npc.dialog, npc.name, at + '.dialog'); return; }       // кошка, собака: просто поговорить
     if (!G.isDone(id)) {
-      if (await G.say(npc.dialog, npc.name) < 0) return;
+      if (await G.say(npc.dialog, npc.name, at + '.dialog') < 0) return;
+      if (npc.danceImg && !G.progress.danced?.[id] && G.scenes[id]) {
+        (G.progress.danced ||= {})[id] = true; G.saveProgress();
+        discoIn(npc, n.el);
+        const my = G.sceneId;
+        await G.sleep((npc.danceWait ?? 3) * 1000 + 1300);
+        if (G.sceneId !== my || G.editing) return;
+      }
     } else {
-      if (await G.say(npc.dialogAfter, npc.name) < 0) return;
-      if (!G.scenes[id]) return;
-      if (await G.choose(T_.replayQuestion, [T_.playAgain, T_.notNow], npc.name) !== 0) return;
+      const after = (npc.dialogAfter || []).filter(Boolean), last = after[after.length - 1];
+      if (G.scenes[id] && /\?\s*$/.test(String(last && typeof last === 'object' ? last.text : last ?? ''))) {
+        // последняя фраза — сама вопрос («Может, испечём ещё?»): варианты ответа сразу на ней
+        if (await G.ask(after, [T_.playAgain, T_.notNow], npc.name, at + '.dialogAfter') !== 0) return;
+      } else {
+        if (await G.say(after, npc.name, at + '.dialogAfter') < 0) return;
+        if (!G.scenes[id]) return;
+        if (await G.choose(T_.replayQuestion, [T_.playAgain, T_.notNow], npc.name) !== 0) return;
+      }
     }
     if (G.scenes[id]) G.go(id);
   } finally { talking = false; }
@@ -384,6 +445,7 @@ root.addEventListener('pointerdown', e => {
 G.scenes.world = {
   root,
   get roomId() { return P.room; },
+  viewSize: () => 'fill',                 // дом — по размеру окна, без полос
   get player() { return P; },
 
   enter(p) {
@@ -407,6 +469,11 @@ G.scenes.world = {
     for (let i = 0; i < 60 && !free(P.x, P.y); i++) { P.x += (i % 2 ? 1 : -1) * (i + 1) * 2; }
     draw(); snapCam();
     G.music(R(P.room).music);
+    // вернулись после мини-игры и катсцены: персонаж сам заговаривает (talkAfterGame)
+    if (p.talk) {
+      const n = ents.find(e => e.type === 'npc' && e.room === P.room);
+      if (n?.o.talkAfterGame) setTimeout(() => { if (G.sceneId === 'world' && !G.editing && !G.dialogOpen) talk(n); }, 1000);
+    }
   },
 
   refresh() {
@@ -479,12 +546,17 @@ G.scenes.world = {
       if (open !== dr.open) { dr.open = open; dr.el.classList.toggle('is-open', open); }
     }
 
-    draw();
     if (!G.editing) {
-      const t = camTarget(), k = Math.min(1, dt * 7);
-      cam.x += (t.x - cam.x) * k; cam.y += (t.y - cam.y) * k;
+      const t = camTarget();
+      if (!camLock) {
+        const k = Math.min(1, dt * 7);
+        cam.x += (t.x - cam.x) * k; cam.y += (t.y - cam.y) * k;
+        if (Math.abs(t.x - cam.x) < .6 && Math.abs(t.y - cam.y) < .6) camLock = true;
+      }
+      if (camLock) { cam.x = t.x; cam.y = t.y; }
       applyCam();
     }
+    draw();
     near = freeMove && !transit ? findNear() : null;
     showHint();
   },
@@ -496,6 +568,7 @@ G.scenes.world = {
   /* --- редактор --- */
   /** в редакторе пустое место тянет камеру */
   editPan(e) {
+    camLock = false;
     pan = { sx: e.clientX, sy: e.clientY, cx: cam.x, cy: cam.y };
     const move = ev => {
       cam.x = G.clamp(pan.cx - (ev.clientX - pan.sx) / G.k, -200, Math.max(0, bounds.w * S - G.VW) + 200);
@@ -514,56 +587,50 @@ G.scenes.world = {
   /* инструменты в панели редактора: добавить / удалить / настроить предмет */
   selectTools: true,
   editorTools(boxEl) {
-    const m = /^world\.rooms\.(\w+)\.props\.(\d+)$/.exec(G.editor.sel || '');
-    const prop = m && R(m[1])?.props[+m[2]];
-    const open = palOpen;
+    const m = /^world.rooms.(w+).(props|chars|npc)(?:.(d+))?$/.exec(G.editor.sel || '');
+    const isProp = m && m[2] === 'props', obj = m && G.get(G.editor.sel);
+    const prop = isProp ? obj : null;
     boxEl.innerHTML =
-      `<p class="ed__note">Все предметы в комнатах — отдельные картинки: их можно двигать, заменять и удалять.
-        Пустое место тянет камеру. Размер и текстуры комнаты — в её настройках ниже.</p>
-       <div class="ed__row"><button class="ed__btn ed__btn--main" id="wAdd">➕ Добавить предмет</button><button class="ed__btn" id="wUp">⬆ Своя картинка…</button></div>
-       <div class="ed__pal" id="wPal" hidden></div>
-       <div class="ed__label">Выбранный предмет</div>
+      `<p class="ed__note">Все предметы в комнатах — отдельные картинки: тащи мышкой, колесо или уголок — размер,
+        стрелки — по пикселю. Пустое место тянет камеру. Размер и текстуры комнаты — в её настройках ниже.</p>
+       <div class="ed__row ed__row--wrap"><button class="ed__btn ed__btn--main" id="wAdd">➕ Добавить предмет</button>
+         <button class="ed__btn" id="wChar">🐾 Добавить персонажа</button></div>
+       <div class="ed__label">Выбранный объект</div>
        <div class="ed__row ed__row--wrap">
+         <button class="ed__btn" id="wSwap">🖼 Заменить картинку…</button>
+         <button class="ed__btn" id="wSize" title="Вернуть исходный размер картинки">1:1</button>
          <button class="ed__btn${prop?.solid ? ' is-on' : ''}" id="wSolid">Преграда</button>
          <button class="ed__btn${prop?.flat ? ' is-on' : ''}" id="wFlat">На полу</button>
-         <button class="ed__btn${prop?.flip ? ' is-on' : ''}" id="wFlip">Отразить</button>
+         <button class="ed__btn${obj?.flip ? ' is-on' : ''}" id="wFlip">Отразить</button>
+         <button class="ed__btn" id="wUpZ" title="Слой выше">▲ слой</button>
+         <button class="ed__btn" id="wDnZ" title="Слой ниже">▼ слой</button>
          <button class="ed__btn" id="wDup">Дублировать</button>
          <button class="ed__btn" id="wDel" style="color:#b3261e">🗑 Удалить</button>
        </div>`;
     const q = s => boxEl.querySelector(s);
-    ['#wSolid', '#wFlat', '#wFlip', '#wDup', '#wDel'].forEach(s => { q(s).disabled = !prop; });
+    ['#wSolid', '#wFlat'].forEach(s => { q(s).disabled = !prop; });
+    ['#wSwap', '#wSize', '#wFlip', '#wUpZ', '#wDnZ'].forEach(s => { q(s).disabled = !obj; });
+    ['#wDup', '#wDel'].forEach(s => { q(s).disabled = !obj || m[2] === 'npc'; });
     const done = sel => { G.refresh(); if (sel !== undefined) G.editor.select(sel); G.editor.structural(); };
     const add = img => {
       const c = this.center(), list = (R(c.room).props ||= []);
       list.push({ img, x: c.x, y: c.y, solid: true });
       done(`world.rooms.${c.room}.props.${list.length - 1}`);
     };
-    const flag = k => () => { if (!prop) return; if (prop[k]) delete prop[k]; else prop[k] = true; done(); };
+    const flag = k => () => { if (!obj) return; if (obj[k]) delete obj[k]; else obj[k] = true; done(); };
     q('#wSolid').onclick = flag('solid'); q('#wFlat').onclick = flag('flat'); q('#wFlip').onclick = flag('flip');
-    q('#wDup').onclick = () => { const list = R(m[1]).props; list.push(Object.assign(G.clone(prop), { x: prop.x + 12, y: prop.y + 8 })); done(`world.rooms.${m[1]}.props.${list.length - 1}`); };
-    q('#wDel').onclick = () => { R(m[1]).props.splice(+m[2], 1); done(null); };
-    q('#wUp').onclick = () => G.editor.pickFile('image/*', f => add(G.editor.stashFile(f)));
-    const fillPal = async () => {
-      const pal = q('#wPal');
-      try {
-        const man = await (await fetch('assets/world/manifest.json', { cache: 'no-store' })).json();
-        const names = { furniture: 'Мебель', items: 'Мелочи и окна', doors: 'Двери' };
-        pal.innerHTML = '';
-        for (const grp of Object.keys(names)) {
-          pal.appendChild(G.el('div', 'ed__label', names[grp]));
-          const grid = G.el('div', 'ed__palgrid');
-          Object.keys(man).filter(k => man[k] === grp).forEach(path => {
-            const b = G.el('button', 'ed__palitem', `<img class="px" loading="lazy" src="${G.asset(path)}" alt="">`);
-            b.title = path.split('/').pop().replace('.png', '');
-            b.onclick = () => add(path);
-            grid.appendChild(b);
-          });
-          pal.appendChild(grid);
-        }
-      } catch { pal.textContent = 'Не удалось загрузить список спрайтов'; }
+    q('#wSwap').onclick = () => G.editor.pickAsset(p => { obj.img = p; delete obj.w; done(); }, { title: 'Заменить картинку', prefer: m[2] === 'props' ? 'assets/world/' : 'assets/sprites/' });
+    q('#wSize').onclick = () => { delete obj.w; done(); };
+    const shift = d => () => { obj.lift = (obj.lift || 0) + d; if (!obj.lift) delete obj.lift; done(); };
+    q('#wUpZ').onclick = shift(12); q('#wDnZ').onclick = shift(-12);
+    q('#wDup').onclick = () => { const list = R(m[1])[m[2]]; list.push(Object.assign(G.clone(obj), { x: obj.x + 12, y: obj.y + 8 })); done(`world.rooms.${m[1]}.${m[2]}.${list.length - 1}`); };
+    q('#wDel').onclick = () => { R(m[1])[m[2]].splice(+m[3], 1); done(null); };
+    q('#wAdd').onclick = () => G.editor.pickAsset(add, { title: 'Добавить предмет', prefer: 'assets/world/', upload: true });
+    q('#wChar').onclick = () => {
+      const c = this.center(), list = (R(c.room).chars ||= []);
+      list.push({ name: 'Новый', img: 'assets/sprites/pets/cat_lizzy.png', x: c.x, y: c.y, dialog: ['Привет!'] });
+      done(`world.rooms.${c.room}.chars.${list.length - 1}`);
     };
-    q('#wAdd').onclick = () => { const pal = q('#wPal'); pal.hidden = !pal.hidden; palOpen = !pal.hidden; if (palOpen && !pal.childElementCount) fillPal(); };
-    if (open) { q('#wPal').hidden = false; fillPal(); }
   },
 
   editRoots: () => [

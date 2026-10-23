@@ -11,14 +11,18 @@
 const G = window.G, $ = G.$, esc = G.esc;
 
 /* ---------------- макет на экране ---------------- */
-/** слой в координатах макета: вписан по ширине в экран 960×540, сверху и снизу — полосы рамки */
+/** слой в координатах макета на весь экран. Экран меню и финала — в пропорциях рисунка (G.artView),
+    поэтому никаких своих полос нет; полосы рамки (edgeTop) появятся, только если экран выше рисунка */
+G.artView = A => ({ w: 960, h: Math.round(960 * A.h / A.w) });
 G.artStage = (root, A, cls) => {
-  const k = G.VW / A.w, top = (G.VH - A.h * k) / 2;
+  let k = G.VW / A.w;
+  if (Math.abs(G.VH - A.h * k) < 1) k = Math.max(k, G.VH / A.h);   // экран в пропорциях рисунка: закрыть щель в полпикселя
+  const top = (G.VH - A.h * k) / 2;
   const art = G.el('div', 'art ' + (cls || ''));
   art.style.width = A.w + 'px'; art.style.height = A.h + 'px';
   art.style.transform = `translate(0, ${top}px) scale(${k})`;
   art.dataset.unit = k;
-  if (top > 0 && A.edgeTop) {
+  if (top > 1 && A.edgeTop) {
     const t = G.el('div', 'art-bar art-bar--t'), b = G.el('div', 'art-bar art-bar--b');
     t.style.height = b.style.height = Math.ceil(top) + 1 + 'px';
     t.style.backgroundImage = `url("${G.asset(A.edgeTop)}")`;
@@ -155,7 +159,8 @@ function renderTitle() {
     art.appendChild(r);
     return r.querySelector('button');
   };
-  round(A.gallery, 'meta.art.gallery', 'mround--gal', `${G.galleryIcon}<em>${esc(M.galleryButton || 'Галерея')}</em>`, M.galleryButton || 'Галерея',
+  // галерея появляется, когда игра пройдена
+  if (G.galleryOpen()) round(A.gallery, 'meta.art.gallery', 'mround--gal', `${G.galleryIcon}<em>${esc(M.galleryButton || 'Галерея')}</em>`, M.galleryButton || 'Галерея',
     () => { G.sfx.tap(); G.gallery.show(); });
   const snd = round(A.bell, 'meta.art.bell', 'mround--snd', `<img class="mround__bell" src="${G.asset(A.bellImg)}" alt=""><i class="mround__x"></i>`, 'Звук', () => {
     G.setSound(!G.soundOn); soundIcon(snd); G.sfx.tap();
@@ -175,6 +180,7 @@ function markSel() {
 }
 G.scenes.title = {
   root: titleRoot,
+  viewSize: () => G.artView(G.cfg.meta.art),
   enter() {
     titleRoot.classList.remove('is-in');
     tSel = 0;
@@ -209,7 +215,7 @@ function renderCut() {
     v.play().catch(() => {});
   } else if (c.img) {
     const im = new Image();
-    im.className = 'cut__img px'; im.alt = ''; im.draggable = false;
+    im.className = 'cut__img' + (c.pixel ? ' px' : ''); im.alt = ''; im.draggable = false;
     im.src = G.asset(c.img);
     cutRoot.appendChild(im);
   }
@@ -225,6 +231,9 @@ function cutNext() {
 cutRoot.addEventListener('click', cutNext);
 G.scenes.cutscene = {
   root: cutRoot,
+  // у катсцены с framed: true — рамка вокруг экрана, без неё — на весь экран
+  get framed() { return !!G.get(G.sceneParams.path || '')?.framed; },
+  viewSize() { return this.framed ? null : 'fill'; },
   enter(p) {
     cut = { path: p.path, next: p.next, ready: false, t: 0 };
     G.music('');
@@ -273,7 +282,7 @@ async function selfUpdate() {
   const boot = $('#boot');
   if (await selfUpdate()) return;
   try {
-    await G.loadConfig();
+    await Promise.all([G.loadConfig(), G.github.loadShared()]);
   } catch (e) {
     console.error(e);
     boot.classList.add('is-error');
@@ -283,6 +292,7 @@ async function selfUpdate() {
   }
   G.editor.init();
   G.gallery.init();
+  G.preloadMusic(G.cfg.finale?.music);   // чтобы в финале музыка заиграла без паузы на загрузку
   G.start();
   // шрифты меню — до показа, чтобы надписи не прыгали
   await Promise.race([Promise.all(['60px Gooseberry', '60px "Bryndan Write"'].map(f => document.fonts?.load(f).catch(() => {}))), G.sleep(1500)]);

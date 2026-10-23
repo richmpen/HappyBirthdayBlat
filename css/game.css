@@ -39,7 +39,7 @@ body{
 button{ font:inherit; color:inherit; }
 .px{ image-rendering:pixelated; image-rendering:crisp-edges; }
 
-/* ---------- рамка вокруг игры ---------- */
+/* ---------- фон за игрой (виден, только если пропорции окна не 16:9) ---------- */
 #shell{
   position:fixed; inset:0; right:var(--ed-w);
   background:
@@ -54,21 +54,17 @@ button{ font:inherit; color:inherit; }
   transform-origin:50% 50%;
   background:#170b10;
   overflow:hidden;
-  border-radius:22px;
   user-select:none; -webkit-user-select:none;
   touch-action:none;
-  box-shadow:0 0 0 5px #fff, 0 0 0 10px var(--rose), 0 26px 70px 14px rgba(40,0,12,.6);
 }
-#shellHint{
-  position:absolute; right:14px; bottom:6px;
-  font-size:11px; font-weight:700; letter-spacing:.06em; color:#ffd6e0; opacity:.45;
-  pointer-events:none;
-}
-body.editing #shellHint, body[data-scene="dressup"] #shell{ display:none; }
-/* ритм-игра — неоновая, без вишнёвой рамки */
+body[data-scene="dressup"] #shell{ display:none; }
+/* вокруг меню и финала — цвет края самого рисунка, чтобы не было видно полос */
+body[data-scene="title"] #shell{ background:#6f0a1c; }
+body[data-scene="finale"] #shell{ background:#952721; transition:background-color 2.6s ease; }
+body[data-scene="finale"].fin-dark #shell{ background:#1d0a06; }
+/* ритм-игра — неоновая */
 body[data-scene="rhythm"] #shell{ background:radial-gradient(1200px 700px at 30% 20%, #10220a 0%, rgba(16,34,10,0) 70%), #030602; }
-body[data-scene="rhythm"] #view{ background:#000; border-radius:6px; box-shadow:0 0 0 3px #000, 0 0 0 5px #88e856, 0 0 46px 6px rgba(136,232,86,.35); }
-body[data-scene="rhythm"] #shellHint{ color:#88e856; }
+body[data-scene="rhythm"] #view{ background:#000; }
 
 #fade{
   position:fixed; inset:0; z-index:4000;
@@ -77,6 +73,10 @@ body[data-scene="rhythm"] #shellHint{ color:#88e856; }
   transition:opacity .24s linear;
 }
 #fade.is-on{ opacity:1; pointer-events:auto; }
+/* катсцены: мягкое медленное затемнение */
+#fade.is-slow{ background:#14060a; transition:opacity 1.1s cubic-bezier(.45,0,.55,1); }
+/* катсцена с рамкой (frame: true) */
+body[data-scene="cutscene"].cut-framed #view{ border-radius:22px; box-shadow:0 0 0 5px #fff, 0 0 0 10px var(--rose), 0 26px 70px 14px rgba(40,0,12,.6); }
 
 #boot{
   position:fixed; inset:0; z-index:5000;
@@ -125,6 +125,9 @@ body.editing .zone--edit{ display:block; }
 body.editing [data-edit]{ cursor:move; }
 body.editing .wroom, body.editing .wdoor{ cursor:pointer; }
 body.editing [data-edit]:hover{ outline:2px dashed #7cffb2; outline-offset:2px; }
+/* спрятанный слой (F11): в игре не виден, в редакторе — полупрозрачный */
+.is-hide{ visibility:hidden; }
+body.editing .is-hide{ visibility:visible; opacity:.3; }
 [data-unit] [data-edit]:hover{ outline-width:1px !important; outline-offset:1px !important; }
 
 /* ============================================================
@@ -216,6 +219,27 @@ kbd{
 .dlg__choice.is-on, .dlg__choice:hover{ background:var(--cherry); color:#fff; border-color:#fff; box-shadow:0 4px 0 var(--cherry-d); transform:translateY(-2px); }
 .dlg__choice.is-on::before{ content:'♥ '; }
 
+/* ---------- новелла: спрайт слева и картинка за диалогом ---------- */
+#novel{ position:absolute; inset:0; z-index:1900; cursor:pointer; }
+/* картинка появляется через затемнение: сначала экран темнеет, потом проступает картинка; уходит так же */
+.nv__pic{
+  position:absolute; inset:0; background:center/cover no-repeat; opacity:0; scale:1.02;
+  transition:opacity 1.2s ease, scale 1.6s ease;
+}
+.nv__pic.is-on{ opacity:1; scale:1; }
+/* портрет сбоку от окна диалога, как в пиксельных играх */
+.nv__sprite{
+  position:absolute; left:125px; top:540px; height:290px; width:auto; max-width:none;
+  translate:-50% -100%;                          /* точка портрета — низ-центр, как везде в игре */
+  transform-origin:50% 100%;                     /* уменьшается к низу: низ спрайта не уезжает */
+  transition:filter .3s ease, scale .3s ease; pointer-events:none;
+  filter:drop-shadow(0 6px 14px rgba(60,0,20,.35));
+}
+.nv__sprite.is-in{ animation:nv-in .35s var(--pop); }
+.nv__sprite.is-dim{ filter:brightness(.5) saturate(.75) drop-shadow(0 6px 14px rgba(60,0,20,.35)); scale:.9; }
+@keyframes nv-in{ from{ opacity:0; transform:translateX(-40px); } to{ opacity:1; transform:none; } }
+body.editing .nv__sprite{ pointer-events:auto; cursor:move; }
+
 #popup{
   position:absolute; left:50%; top:74px; z-index:2100;
   transform:translate(-50%,-14px) scale(.9);
@@ -273,7 +297,7 @@ body.editing .art-p, body.editing .art-dot{ pointer-events:auto; }
 @keyframes a-float  { from{ transform:translate(0,0); } to{ transform:translate(0,-22px); } }
 @keyframes a-swing  { from{ transform:translate(0,0) rotate(-4deg); } to{ transform:translate(0,-22px) rotate(4deg); } }
 @keyframes a-hop    { 0%,100%{ transform:translate(0,0) scale(1,1); } 45%{ transform:translate(0,-10px) scale(.995,1.01); } 55%{ transform:translate(0,-10px) scale(.995,1.01); } }
-@keyframes a-balloon{ from{ transform:translate(0,14px) rotate(-1.6deg); } to{ transform:translate(0,-40px) rotate(1.8deg); } }
+@keyframes a-balloon{ from{ transform:translate(0,24px) rotate(-1.6deg); } to{ transform:translate(0,-70px) rotate(1.8deg); } }
 
 /* ---------- огонёк свечи (CSS): точка — основание пламени ---------- */
 .flame{ height:0; pointer-events:none; transform:translate(-50%,0); }
@@ -415,6 +439,47 @@ body.editing .wprop{ pointer-events:auto; }
   box-shadow:0 1px 0 rgba(0,0,0,.3);
   animation:g-bob .9s ease-in-out infinite;
 }
+.wnpc.is-flip{ transform:translate(-50%,-100%); }
+.wnpc.is-flip img{ scale:-1 1; }
+.wnpc--char .wnpc__name{ background:#b35a7a; }
+/* танцор: качается вверх-вниз, вокруг летают звёздочки */
+.wnpc.is-dance img{ animation:w-dance .6s ease-in-out infinite; transform-origin:50% 100%; }
+@keyframes w-dance{ 0%,100%{ translate:0 0; rotate:-3deg; } 50%{ translate:0 -2.5px; rotate:3deg; } }
+.wnpc__stars{ position:absolute; left:50%; top:45%; width:0; height:0; pointer-events:none; }
+.wnpc__stars b{
+  position:absolute; left:-3px; top:-4px; font:900 7px/1 var(--ui); color:#ffe14f;
+  text-shadow:0 0 3px #fff, 0 0 5px #ff4fa3;
+  animation:w-orbit 2.4s linear infinite;
+}
+.wnpc__stars b:nth-child(2){ animation-delay:-.48s; color:#4fe3ff; }
+.wnpc__stars b:nth-child(3){ animation-delay:-.96s; color:#ff8fd0; font-size:5px; }
+.wnpc__stars b:nth-child(4){ animation-delay:-1.44s; color:#8cff5a; }
+.wnpc__stars b:nth-child(5){ animation-delay:-1.92s; font-size:5px; }
+@keyframes w-orbit{
+  0%  { transform:rotate(0deg) translateX(19px) rotate(0deg) scale(.7); opacity:.6; }
+  25% { transform:rotate(90deg) translateX(15px) rotate(-90deg) scale(1.1); opacity:1; }
+  50% { transform:rotate(180deg) translateX(19px) rotate(-180deg) scale(.7); opacity:.6; }
+  75% { transform:rotate(270deg) translateX(15px) rotate(-270deg) scale(1.1); opacity:1; }
+  100%{ transform:rotate(360deg) translateX(19px) rotate(-360deg) scale(.7); opacity:.6; }
+}
+/* появление танцора: пиксельная диско-вспышка */
+.wnpc.is-disco img{ animation:w-disco 1.2s steps(12) both; }
+@keyframes w-disco{
+  0%  { scale:0 0; filter:brightness(3) hue-rotate(0deg); }
+  25% { scale:1.4 .6; filter:brightness(2.2) hue-rotate(120deg); }
+  45% { scale:.8 1.3; filter:brightness(1.8) hue-rotate(240deg); }
+  65% { scale:1.15 .9; filter:brightness(1.4) hue-rotate(320deg); }
+  100%{ scale:1 1; filter:none; }
+}
+.wdisco{ position:absolute; left:50%; top:55%; width:0; height:0; pointer-events:none; }
+.wdisco::before{
+  content:''; position:absolute; left:-30px; top:-30px; width:60px; height:60px; border-radius:50%;
+  background:conic-gradient(#ff4fa3, #ffe14f, #4fe3ff, #8cff5a, #c77dff, #ff4fa3);
+  opacity:.55; filter:blur(1px); animation:w-disco-glow 1.2s steps(10) forwards;
+}
+.wdisco b{ position:absolute; left:-1.5px; top:-1.5px; width:3px; height:3px; animation:w-disco-px .9s steps(8) forwards; }
+@keyframes w-disco-glow{ 0%{ scale:.2; rotate:0deg; opacity:.8; } 100%{ scale:1.6; rotate:180deg; opacity:0; } }
+@keyframes w-disco-px{ 0%{ translate:0 0; opacity:1; } 80%{ opacity:1; } 100%{ translate:var(--dx) var(--dy); opacity:0; } }
 .wplayer{ pointer-events:none; }
 .wdark{
   position:absolute; z-index:9000; pointer-events:none;
@@ -465,7 +530,8 @@ body.editing .wdoor{ pointer-events:auto; }
 
 /* ---------- катсцена ---------- */
 #sc-cutscene{ background:#000; cursor:pointer; }
-.cut__img{ position:absolute; inset:0; width:100%; height:100%; object-fit:contain; animation:g-fadein 1s ease-out; }
+.cut__img{ position:absolute; inset:0; width:100%; height:100%; object-fit:contain; animation:cut-in 2s ease both; }
+@keyframes cut-in{ from{ opacity:0; scale:1.04; } to{ opacity:1; scale:1; } }
 .cut__text{
   position:absolute; left:50%; bottom:66px; transform:translateX(-50%);
   max-width:84%; padding:12px 30px 15px; text-align:center;
@@ -492,8 +558,8 @@ body.editing .wdoor{ pointer-events:auto; }
 .k-back{ z-index:2; pointer-events:none; }
 .k-front{ z-index:10; pointer-events:none; }
 body.editing .k-back, body.editing .k-front{ pointer-events:auto; }
-.k-item{ z-index:12; cursor:pointer; transition:left .38s var(--pop), top .38s var(--pop), scale .3s, filter .15s; }
-.k-item:hover{ filter:brightness(1.08) drop-shadow(0 2px 0 rgba(107,10,34,.25)); scale:1.08; }
+.k-item{ z-index:12; cursor:pointer; transition:left .38s var(--pop), top .38s var(--pop); }
+.k-item:hover{ filter:brightness(1.12); scale:1.08; }
 .k-item.is-got{ scale:.6; pointer-events:none; z-index:14; }
 .k-chip{
   position:absolute; z-index:40; white-space:nowrap;
@@ -501,9 +567,13 @@ body.editing .k-back, body.editing .k-front{ pointer-events:auto; }
   background:#fff; border:1.5px solid var(--pink); border-radius:99px; box-shadow:0 2px 0 rgba(156,18,56,.3);
 }
 .k-chip--center{ transform:translateX(-50%); }
+.k-gram{ z-index:41; font-variant-numeric:tabular-nums; }
+.k-gram.is-ok{ background:var(--leaf); color:#fff; border-color:#fff; }
 .k-chip--warn{ background:var(--cherry); color:#fff; border-color:#fff; animation:g-bob .6s ease-in-out infinite; }
-.k-pour{ z-index:12; transform-origin:50% 100%; rotate:25deg; transition:rotate .18s; pointer-events:none; }
-.k-pour.is-on{ rotate:118deg; }
+/* продукт над стаканом: стоит прямо, при наливании наклоняется вправо на месте */
+.k-pour{ z-index:12; pointer-events:none; }
+.k-pour > img{ display:block; transform-origin:50% 50%; transition:rotate .22s ease; }
+.k-pour.is-on > img{ rotate:var(--tilt, 115deg); }
 .k-ring{
   position:absolute; z-index:30; transform:translate(-50%,-50%);
   border:2.5px solid #fff; border-radius:50%; pointer-events:none;
@@ -516,15 +586,19 @@ body.editing .k-back, body.editing .k-front{ pointer-events:auto; }
 .k-yolk{ z-index:26; transition:left .4s ease-in, top .4s ease-in; pointer-events:none; }
 .k-shell{ z-index:30; cursor:pointer; scale:1.4; animation:g-float 2.2s ease-in-out infinite; filter:drop-shadow(0 0 2px #fff) drop-shadow(0 0 2px #fff); }
 .k-whisk{ z-index:20; transform:translate(-50%,-85%); transform-origin:50% 85%; pointer-events:none; }
-.k-dye{ z-index:15; cursor:pointer; transition:scale .15s; }
+.k-dye{ z-index:15; cursor:pointer; }
 .k-dye.is-ask{ animation:g-bob .45s ease-in-out infinite; filter:drop-shadow(0 0 5px #fff) drop-shadow(0 0 3px var(--gold)); }
 .k-drop{ z-index:30; transition:left .35s ease-in, top .35s ease-in; pointer-events:none; }
 .k-rise{ z-index:5; transform-origin:50% 100%; pointer-events:none; }
+.k-rise--front{ z-index:12; filter:brightness(.82) saturate(.9); }          /* корж за стеклом новой духовки */
+.k-dough{ position:absolute; overflow:hidden; pointer-events:none; }
+.k-dough.k-rise--front{ z-index:11; }
+.k-dough img{ display:block; }
 .k-piece{ z-index:40; pointer-events:none; }
 .k-piece.is-fall{ transition:left .3s, top .32s cubic-bezier(.5,0,1,.6), rotate .4s, opacity .4s; }
 .k-tool{ z-index:60; pointer-events:none; rotate:-18deg; }
-.k-src{ z-index:30; cursor:grab; transition:scale .15s; }
-.k-src:hover{ scale:1.25; }
+.k-src{ z-index:30; cursor:grab; }
+.k-src:hover{ scale:1.15; filter:brightness(1.1); }
 .k-deco{ cursor:grab; }
 .k-deco.is-drag{ cursor:grabbing; filter:drop-shadow(0 4px 0 rgba(107,10,34,.25)); }
 .k-gauge{
@@ -601,8 +675,8 @@ body.editing .k-back, body.editing .k-front{ pointer-events:auto; }
   box-shadow:0 5px 0 rgba(156,18,56,.3);
   pointer-events:none;
 }
-.k-done{ position:absolute; left:128px; bottom:70px; transform:translateX(-50%); z-index:520; }
-.k-done:hover{ transform:translateX(-50%) translateY(-3px); }
+.k-done{ position:absolute; left:128px; bottom:70px; translate:-50% 0; z-index:520; }
+.k-done:disabled, .k-done:disabled:hover{ transform:none; filter:grayscale(.75) opacity(.75); }
 .k-over{
   position:absolute; inset:0; z-index:800; display:grid; place-items:center;
   background:rgba(90,15,36,.28); transition:opacity .3s; pointer-events:none;
@@ -856,7 +930,7 @@ body[data-scene="finale"] .dlg__name{ background:linear-gradient(180deg, #d4553f
 body[data-scene="finale"] .dlg__next{ color:#a3321f; }
 
 /* ---------- катсцена-видео ---------- */
-.cut__video{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; animation:g-fadein 1s ease-out; background:#000; }
+.cut__video{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; background:#000; animation:cut-in 2s ease both; }
 
 /* ============================================================
    ГАЛЕРЕЯ (на всё окно, поверх игры)
@@ -877,7 +951,7 @@ body[data-scene="finale"] .dlg__next{ color:#a3321f; }
   opacity:0; transition:opacity .2s, translate .25s var(--pop);
 }
 .gal-btn:hover em{ opacity:1; translate:0 -50%; }
-body[data-scene="title"] .gal-btn, body.editing .gal-btn, body.gal-open .gal-btn{ display:none; }
+body[data-scene="title"] .gal-btn, body.editing .gal-btn, body.gal-open .gal-btn, body:not(.game-done) .gal-btn{ display:none; }
 
 .gal{
   position:fixed; inset:0; z-index:3900; display:grid; place-items:center;

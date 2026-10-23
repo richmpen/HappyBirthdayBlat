@@ -20,3 +20,4 @@ s = s.replace(/(href="css\/[a-z]+\.css)(\?v=[\w-]+)?"/g, `$1?v=${build}"`)
      .replace(/window\.BUILD = '[^']*'/, `window.BUILD = '${build}'`);
 fs.writeFileSync(file, s, 'utf8');
 console.log('build', build);
+console.log('картинок в наборе редактора:', require('./assets-list').write());

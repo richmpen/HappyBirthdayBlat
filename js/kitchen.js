@@ -3,10 +3,12 @@
    ------------------------------------------------------------
    Восемь коротких игр подряд, на всё даётся время (kitchen.timeLimit):
      gather  — найти продукты из рецепта среди обманок
-     measure — отмерить: держи, чтобы сыпать, отпусти в зелёной зоне
+     measure — отмерить: стакан ездит влево-вправо (move), держи — продукт
+               наклоняется и льётся (kind: liquid) или сыплется (kind: dry);
+               попадай в стакан и отпусти, когда граммы совпадут с рецептом
      eggs    — разбить яйца: нажми, когда кольцо совпадёт; вылови скорлупу
-     whisk   — взбить тесто: води по кругу в нужном темпе, добавь краситель
-     bake    — выпечь: держи жар в зелёной зоне
+     whisk   — взбить тесто: води мышкой туда-сюда в нужном темпе, добавь краситель
+     bake    — выпечь: держи жар в зелёной зоне; корж растёт на решётке
      stack   — собрать коржи: отпусти корж ровно над тортом
      frost   — покрыть кремом: «закрась» торт лопаткой
      decor   — украсить
@@ -100,6 +102,7 @@ STEPS.gather = {
     const g = K.gather;
     got.clear();
     put(g.cupboard, 'kitchen.gather.cupboard', 'k-back');
+    if (g.front?.img) put(g.front, 'kitchen.gather.front', 'k-front');      // цветы спереди полки — поверх продуктов
     put(g.tray, 'kitchen.gather.tray', 'k-back');
     const cs = size(g.cupboard.img, 460, 232), ts = size(g.tray.img, 320, 36);
     const items = shuffle([
@@ -110,8 +113,8 @@ STEPS.gather = {
     st = { items, n: 0, need: K.ingredients.length, ts };
     items.forEach((it, i) => {
       const c = i % cols, r = Math.floor(i / cols);
-      it.x = left + (cs.w - 24) * (c + .5) / cols; it.y = top + rowH * (r + 1);
-      it.el = put({ img: it.o.img, x: it.x, y: it.y }, it.path, 'k-item');
+      it.x = left + (cs.w - 24) * (c + .5) / cols; it.y = top + (g.shelves?.[r] ?? rowH * (r + 1));
+      it.el = put({ img: it.o.img, x: it.x, y: it.y, w: it.o.w }, it.path, 'k-item');
       it.el.dataset.i = i; it.el.title = it.o.name;
     });
   },
@@ -135,22 +138,57 @@ STEPS.gather = {
 /* ============================================================
    2. ОТМЕРИТЬ
    ============================================================ */
+/** «250 г» → { n: 250, unit: 'г' }; понимает ½, ¼, «1,5» */
+function parseAmount(s) {
+  const t = String(s || '').trim().replace(',', '.').replace('½', '.5').replace('¼', '.25').replace('¾', '.75');
+  const m = /^(\d*\.?\d+)\s*(.*)$/.exec(t);
+  return m ? { n: parseFloat(m[1]), unit: m[2] } : null;
+}
+const fmtAmount = (v, unit) => {
+  const r = v >= 20 ? Math.round(v) : Math.round(v * 10) / 10;
+  return `${String(r).replace('.', ',')}${unit ? ' ' + unit : ''}`;
+};
+
 STEPS.measure = {
   build() {
     const m = K.measure;
-    st = { k: 0, level: 0, pouring: false, mode: 'pour', g: canvas(4), src: null, label: null };
+    st = { k: 0, level: 0, pouring: false, tilt: 0, mode: 'pour', g: canvas(4), src: null, label: null, parts: [], t: 0, dx: 0, missT: 0 };
+    if (m.back?.img) st.back = put(m.back, 'kitchen.measure.back', 'k-back');   // задняя стенка стакана — за содержимым
     st.cup = put(m.cup, 'kitchen.measure.cup', 'k-front');
+    st.gram = chip('', 0, 0, 'k-chip--center k-gram');
     this.next();
+  },
+  /** где стоит продукт: над серединой стакана (или в точке m.pour) — середина картинки */
+  anchor(o) {
+    const m = K.measure, cs = size(m.cup.img, 82, 98), f = m.cup.fill, s2 = size(o.img, 32, 48), w = o.w || s2.w, h = w * s2.h / s2.w;
+    const tilt = (m.tilt ?? 115) * Math.PI / 180, mid = m.cup.x - cs.w / 2 + f.x + f.w / 2;
+    const p = m.pour || { x: mid - Math.sin(tilt) * h * .46, y: m.cup.y - cs.h - h / 2 - 4 };
+    return { x: p.x, y: p.y + h / 2, w, h };
   },
   next() {
     const m = K.measure, it = m.items[st.k], o = ing(it.ingredient) || { name: '?', img: '' };
     const cs = size(m.cup.img, 82, 98);
-    st.it = it; st.level = 0; st.mode = 'pour';
+    st.it = it; st.o = o; st.level = 0; st.mode = 'pour'; st.tilt = 0; st.parts = []; st.missT = 0;
+    st.amount = parseAmount(it.amount || o.amount);
     st.src?.remove(); st.label?.remove();
-    st.src = put({ img: it.img || o.img, x: m.cup.x - cs.w / 2 - 6, y: m.cup.y - cs.h - 8 }, '', 'k-pour');
-    st.label = chip(`${o.name} · ${o.amount || ''}  (${st.k + 1}/${m.items.length})`, m.cup.x + cs.w / 2 + 14, m.cup.y - cs.h / 2 - 8);
+    const src = { img: it.img || o.img, w: it.w || o.w };
+    st.a = this.anchor(src);
+    // продукт стоит прямо; при наливании наклоняется вправо вокруг своей середины — на месте
+    const wrap = G.el('div', 'ent k-pour');
+    const pic = new Image();
+    pic.className = 'px'; pic.alt = ''; pic.draggable = false;
+    pic.src = G.asset(src.img);
+    pic.style.width = st.a.w + 'px';
+    wrap.appendChild(pic);
+    wrap.style.left = st.a.x + 'px'; wrap.style.top = st.a.y + 'px';
+    wrap.style.setProperty('--tilt', (it.tilt ?? m.tilt ?? 115) + 'deg');
+    layer.appendChild(wrap);
+    st.src = wrap;
+    st.label = chip(`${o.name}: нужно ${it.amount || o.amount || ''}  (${st.k + 1}/${m.items.length})`, m.cup.x, 34, 'k-chip--center');
     hint(m.hint);
   },
+  /** сколько уже в стакане — в тех же единицах, что в рецепте (зелёная зона = ровно столько, сколько нужно) */
+  amountNow() { const A = st.amount; return A ? st.level / st.it.target * A.n : 0; },
   hold(on) {
     if (st.mode !== 'pour') return;
     if (on) { st.pouring = true; st.src.classList.add('is-on'); return; }
@@ -160,49 +198,102 @@ STEPS.measure = {
     if (Math.abs(st.level - it.target) <= it.tolerance) {
       st.mode = 'ok';
       G.sfx.ok();
-      fx('popStar', K.measure.cup.x, K.measure.cup.y - 60);
-      G.popup(K.measure.ok, 900);
-      later(() => { st.k++; if (st.k >= K.measure.items.length) complete(); else this.next(); }, 800);
+      fx('popStar', K.measure.cup.x + st.dx, K.measure.cup.y - 60);
+      G.popup(st.amount ? `${st.o.name}: ${fmtAmount(this.amountNow(), st.amount.unit)} — ${K.measure.ok}` : K.measure.ok, 1100);
+      later(() => { st.k++; if (st.k >= K.measure.items.length) complete(); else this.next(); }, 900);
     }
   },
+  /** горлышко наклонённого продукта — откуда льётся */
+  spout() {
+    const A = st.a, r = (st.it.tilt ?? K.measure.tilt ?? 115) * st.tilt * Math.PI / 180;
+    const cx = A.x, cy = A.y - A.h / 2;
+    return { x: cx + Math.sin(r) * A.h * .46, y: cy - Math.cos(r) * A.h * .46 };
+  },
   update(dt) {
-    const m = K.measure, it = st.it, cs = size(m.cup.img, 82, 98), f = m.cup.fill;
-    if (st.mode === 'pour' && st.pouring) {
+    const m = K.measure, it = st.it, cs = size(m.cup.img, 82, 98), f = m.cup.fill, dry = it.kind === 'dry';
+    st.t += dt;
+    // стакан ездит влево-вправо; пока отмерено — стоит
+    const mv = m.move || {};
+    if (st.mode === 'pour') st.phase = (st.phase || 0) + dt * (mv.speed ?? 1.5) * (1 + st.k * (mv.faster ?? .12));
+    st.dx = Math.sin(st.phase || 0) * (mv.swing ?? 70);
+    const cx = m.cup.x + st.dx;
+    st.cup.style.left = cx + 'px';
+    if (st.back) st.back.style.left = (m.back.x + st.dx) + 'px';
+    st.tilt = G.clamp(st.tilt + (st.pouring ? dt : -dt) / .22, 0, 1);       // наклон идёт вместе с CSS-поворотом
+    const ox = cx - cs.w / 2, oy = m.cup.y - cs.h;
+    const sp = this.spout(), inCup = sp.x >= ox + f.x + 3 && sp.x <= ox + f.x + f.w - 3;
+    const flowing = st.mode === 'pour' && st.pouring && st.tilt >= .95;
+    if (flowing && inCup) {
       st.level += it.speed * dt;
-      if ((st.tick = (st.tick || 0) + dt) > .09) { st.tick = 0; G.blip(300 + st.level * 500, .03, 'triangle', .02); }
+      if ((st.tick = (st.tick || 0) + dt) > .09) { st.tick = 0; G.blip(dry ? 900 + Math.random() * 500 : 300 + st.level * 500, .03, dry ? 'square' : 'triangle', dry ? .008 : .02); }
       if (st.level > it.target + it.tolerance) {
         st.mode = 'drain'; st.pouring = false; st.src.classList.remove('is-on');
         G.sfx.bad(); G.popup(m.over, 1200); shake(st.cup);
       }
+    } else if (flowing && (st.missT -= dt) <= 0) {                   // льётся мимо стакана
+      st.missT = 1.2;
+      G.sfx.bad(); G.popup(m.miss || 'Мимо стакана!', 700);
     } else if (st.mode === 'drain') {
       st.level -= 1.8 * dt;
       if (st.level <= 0) { st.level = 0; st.mode = 'pour'; }
     }
-    // рисуем содержимое стакана под его стеклом
-    const g = st.g, ox = m.cup.x - cs.w / 2, oy = m.cup.y - cs.h;
+    // граммы на стакане
+    if (st.amount) {
+      st.gram.textContent = `${fmtAmount(this.amountNow(), st.amount.unit)} / ${fmtAmount(st.amount.n, st.amount.unit)}`;
+      st.gram.style.left = (cx + cs.w / 2 + 26) + 'px'; st.gram.style.top = (m.cup.y - cs.h / 2) + 'px';   // ездит вместе со стаканом
+      st.gram.classList.toggle('is-ok', Math.abs(st.level - it.target) <= it.tolerance);
+    }
+    // содержимое стакана — между задней и передней стенкой
+    const g = st.g;
     g.clearRect(0, 0, 640, 360);
-    const yAt = L => oy + f.y + f.h * (1 - L), inset = yy => f.taper * ((yy - (oy + f.y)) / f.h);
-    const band = (L0, L1, col) => {
+    const yAt = L => oy + f.y + f.h * (1 - L), inset = yy => (f.taper || 0) * ((yy - (oy + f.y)) / f.h);
+    const band = (L0, L1, col, bumpy) => {
       const y0 = Math.round(yAt(L1)), y1 = Math.round(yAt(L0));
       g.fillStyle = col;
       for (let y = y0; y < y1; y++) g.fillRect(Math.round(ox + f.x + inset(y)), y, Math.round(f.w - inset(y) * 2), 1);
+      if (bumpy && L1 > .02) {                                       // сухое ложится горкой
+        const x0 = ox + f.x + inset(y0), w = f.w - inset(y0) * 2;
+        for (let x = 0; x < w; x += 2) { const hg = Math.round(3 * Math.sin(Math.PI * x / w)); if (hg) g.fillRect(Math.round(x0 + x), y0 - hg, 2, hg); }
+      }
     };
+    const lvl = Math.min(1, st.level);
     if (st.level > 0) {
-      band(0, Math.min(1, st.level), it.color);
-      g.fillStyle = 'rgba(255,255,255,.55)';
-      const ys = Math.round(yAt(Math.min(1, st.level)));
-      g.fillRect(Math.round(ox + f.x + inset(ys)), ys, Math.round(f.w - inset(ys) * 2), 2);
+      band(0, lvl, it.color, dry);
+      if (!dry) {
+        g.fillStyle = 'rgba(255,255,255,.55)';
+        const ys = Math.round(yAt(lvl));
+        g.fillRect(Math.round(ox + f.x + inset(ys)), ys, Math.round(f.w - inset(ys) * 2), 2);
+      }
     }
-    band(it.target - it.tolerance, it.target + it.tolerance, st.mode === 'ok' ? 'rgba(106,153,78,.75)' : 'rgba(106,153,78,.4)');
-    g.fillStyle = '#3f7a2a';
-    for (const L of [it.target - it.tolerance, it.target + it.tolerance]) {
-      const y = Math.round(yAt(L));
-      for (let x = ox + f.x - 6; x < ox + f.x + f.w + 6; x += 6) g.fillRect(Math.round(x), y, 3, 1);
+    if (m.drawZone !== false) {                                       // у нового стакана зелёная зона нарисована на нём самом
+      band(it.target - it.tolerance, it.target + it.tolerance, st.mode === 'ok' ? 'rgba(106,153,78,.75)' : 'rgba(106,153,78,.4)');
+      g.fillStyle = '#3f7a2a';
+      for (const L of [it.target - it.tolerance, it.target + it.tolerance]) {
+        const y = Math.round(yAt(L));
+        for (let x = ox + f.x - 6; x < ox + f.x + f.w + 6; x += 6) g.fillRect(Math.round(x), y, 3, 1);
+      }
     }
-    if (st.pouring) {
+    // куда падает: в стакан — до поверхности, мимо — до стола
+    const floor = m.cup.y - 4, surf = inCup ? Math.round(yAt(lvl)) - (dry && st.level > 0 ? 3 : 0) : floor;
+    if (flowing && !dry) {                                            // жидкость — струйкой
       g.fillStyle = it.color;
-      const sx = Math.round(m.cup.x - 4), top = Math.round(oy - 30);
-      g.fillRect(sx, top, 5, Math.round(yAt(st.level)) - top);
+      const x0 = Math.round(sp.x), y0 = Math.round(sp.y);
+      for (let y = y0; y < surf; y++) g.fillRect(x0 + Math.round(Math.sin((y + st.t * 60) * .25) * .6), y, 3, 1);
+      g.fillStyle = 'rgba(255,255,255,.5)';
+      for (let y = y0; y < surf; y += 5) g.fillRect(x0 + 1, y, 1, 2);
+      if (!inCup) { g.fillStyle = it.color; g.fillRect(x0 - 5, floor - 1, 13, 2); }   // лужица на столе
+    }
+    if (dry) {                                                        // сухое — сыплется крупинками
+      if (flowing) for (let i = 0; i < 3; i++) st.parts.push({ x: sp.x + G.rnd(-2, 2), y: sp.y, vx: G.rnd(-8, 8), vy: G.rnd(10, 30) });
+      const edge = mix(/^#[0-9a-f]{6}$/i.test(it.color) ? it.color : '#ffffff', '#6b4a3a', .35);
+      st.parts = st.parts.filter(p => {
+        p.vy += 420 * dt; p.x += p.vx * dt; p.y += p.vy * dt;
+        const inside = p.x >= ox + f.x && p.x <= ox + f.x + f.w;
+        if (p.y >= (inside ? Math.round(yAt(lvl)) - (st.level > 0 ? 3 : 0) : floor)) return false;
+        g.fillStyle = edge; g.fillRect(Math.round(p.x), Math.round(p.y), 2, 2);
+        g.fillStyle = it.color; g.fillRect(Math.round(p.x), Math.round(p.y), 1, 1);
+        return true;
+      });
     }
   }
 };
@@ -308,7 +399,7 @@ STEPS.eggs = {
 STEPS.whisk = {
   build() {
     const w = K.whisk;
-    st = { g: canvas(4), ang: -1.2, rot: 0, acc: 0, rps: 0, progress: 0, dyes: 0, color: 0, down: false, last: null, cool: 0, ask: false, hum: 0 };
+    st = { g: canvas(4), ang: -1.2, rot: 0, acc: 0, rps: 0, progress: 0, dyes: 0, color: 0, last: null, cool: 0, ask: false, hum: 0, wx: 0, wy: 0, tilt: 0 };
     st.bowl = put(w.bowl, 'kitchen.whisk.bowl', 'k-back');
     st.whisk = put({ img: w.whisk.img, x: 0, y: 0 }, 'kitchen.whisk.whisk', 'k-whisk');
     st.dye = put(w.dye, 'kitchen.whisk.dye', 'k-dye');
@@ -317,14 +408,15 @@ STEPS.whisk = {
     const b = this.c();
     st.gauge = gauge(b.x + b.r + 62, b.y - 86, 172, w.gaugeLabel);
     st.bar = bar(b.x - 110, b.y - b.r - 46, 220);
+    st.wx = b.x + b.r * .3; st.wy = b.y;
     this.place(); this.paint();
   },
   c() { const w = K.whisk, s = size(w.bowl.img, 208, 208); return { x: w.bowl.x, y: w.bowl.y - s.h / 2, r: s.w / 2 - (w.bowl.rim ?? 22) }; },
+  /** венчик ходит за мышкой внутри миски и наклоняется в сторону движения */
   place() {
-    const b = this.c(), R = b.r * .58;
-    st.whisk.style.left = (b.x + Math.cos(st.ang) * R) + 'px';
-    st.whisk.style.top = (b.y + Math.sin(st.ang) * R) + 'px';
-    st.whisk.style.rotate = (st.ang * 180 / Math.PI + 90) + 'deg';
+    st.whisk.style.left = st.wx + 'px';
+    st.whisk.style.top = st.wy + 'px';
+    st.whisk.style.rotate = st.tilt + 'deg';
   },
   paint() {
     const w = K.whisk, g = st.g, b = this.c(), p = st.progress;
@@ -375,22 +467,21 @@ STEPS.whisk = {
   },
   down(e) {
     if (e.target.closest('.k-dye')) { this.addDye(); return; }
-    st.down = true; st.last = null; this.move(e);
+    this.move(e);
   },
-  up() { st.down = false; st.last = null; },
+  /** мешаем, просто дёргая мышкой туда-сюда над миской (кнопку держать не нужно) */
   move(e) {
-    if (!st.down) return;
     const p = art(e), b = this.c(), d = Math.hypot(p.x - b.x, p.y - b.y);
-    if (d < 12 || d > b.r + 60) { st.last = null; return; }
-    const a = Math.atan2(p.y - b.y, p.x - b.x);
-    if (st.last != null) {
-      let da = a - st.last;
-      if (da > Math.PI) da -= Math.PI * 2;
-      if (da < -Math.PI) da += Math.PI * 2;
-      st.acc += Math.abs(da);
-      st.rot += da * .7;
+    if (d > b.r + 70) { st.last = null; return; }
+    const k = Math.min(1, b.r * .72 / Math.max(d, 1));
+    const x = b.x + (p.x - b.x) * k, y = b.y + (p.y - b.y) * k;
+    if (st.last) {
+      const dx = x - st.last.x, dy = y - st.last.y;
+      st.acc += Math.hypot(dx, dy);
+      st.rot += dx * .006;
+      st.tilt = G.clamp(st.tilt * .6 + dx * 2.2, -38, 38);
     }
-    st.last = a; st.ang = a;
+    st.last = { x, y }; st.wx = x; st.wy = y;
     this.place();
   },
   addDye() {
@@ -409,9 +500,11 @@ STEPS.whisk = {
   key(e) { if (G.isAction(e)) this.addDye(); },
   update(dt) {
     const w = K.whisk;
-    const rps = st.acc / (Math.PI * 2) / Math.max(dt, .001);
+    // темп — сколько радиусов миски венчик проходит за секунду
+    const rps = st.acc / this.c().r / Math.max(dt, .001);
     st.acc = 0;
-    st.rps += (rps - st.rps) * Math.min(1, dt * 6);
+    st.rps += (rps - st.rps) * Math.min(1, dt * 4);
+    st.tilt *= Math.max(0, 1 - dt * 5); this.place();
     st.cool = Math.max(0, st.cool - dt);
     const max = w.speedMax * 1.6, inZone = st.rps >= w.speedMin && st.rps <= w.speedMax;
     st.gauge.set(st.rps / max, w.speedMin / max, w.speedMax / max);
@@ -423,7 +516,7 @@ STEPS.whisk = {
     } else if (st.rps > w.speedMax * 1.25 && st.cool <= 0) {
       st.cool = .7;
       const b = this.c();
-      fx('splash', b.x + Math.cos(st.ang) * b.r * .6, b.y + Math.sin(st.ang) * b.r * .6);
+      fx('splash', st.wx, st.wy);
       st.progress = Math.max(0, st.progress - .04);
       G.popup(w.tooFast, 800); G.sfx.bad();
     }
@@ -442,14 +535,28 @@ STEPS.bake = {
   build() {
     const b = K.bake, os = size(b.oven.img, 250, 206);
     st = { heat: .1, t: 0, progress: 0, hold: false, cool: 0, os };
-    const left = b.oven.x - os.w / 2, top = b.oven.y - os.h, win = b.window;
-    st.inside = put({ img: b.inside, x: left + win.x + win.w / 2, y: top + win.y + win.h }, '', 'k-back');
-    st.inside.style.width = win.w + 'px'; st.inside.style.height = win.h + 'px';
-    st.cake = put({ img: b.cake.img, x: left + win.x + win.w / 2, y: top + win.y + win.h - 20 }, 'kitchen.bake.cake', 'k-rise');
+    const left = b.oven.x - os.w / 2, top = b.oven.y - os.h, win = b.window || { x: 0, y: 0, w: os.w, h: os.h };
+    if (b.inside) {                                   // старая духовка: нутро отдельной картинкой за стеклом
+      st.inside = put({ img: b.inside, x: left + win.x + win.w / 2, y: top + win.y + win.h }, '', 'k-back');
+      st.inside.style.width = win.w + 'px'; st.inside.style.height = win.h + 'px';
+    }
+    const rack = b.rack || { x: win.x + win.w / 2, y: win.y + win.h - 20 };   // точка на решётке (от левого верхнего угла духовки)
+    st.cake = put({ img: b.cake.img, x: left + rack.x, y: top + rack.y, w: b.cake.w }, 'kitchen.bake.cake', 'k-rise' + (b.inside ? '' : ' k-rise--front'));
+    if (b.cake.dough) {
+      // тесто — отдельной картинкой над бортиком противня: поднимается из него, противень стоит как стоял
+      const ds = size(b.cake.dough, 151, 56), box = G.el('div', 'k-dough' + (b.inside ? '' : ' k-rise--front'));
+      Object.assign(box.style, { left: (left + rack.x - ds.w / 2) + 'px', top: (top + rack.y - ds.h) + 'px', width: ds.w + 'px', height: (b.cake.rim ?? 24) + 'px' });
+      const dough = new Image();
+      dough.className = 'px'; dough.alt = ''; dough.draggable = false; dough.src = G.asset(b.cake.dough);
+      box.appendChild(dough);
+      layer.appendChild(box);
+      st.dough = dough; st.doughBox = box;
+    }
     put(b.oven, 'kitchen.bake.oven', 'k-front');
-    st.gauge = gauge(b.oven.x + os.w / 2 + 34, top + 8, os.h - 30, b.gaugeLabel);
-    st.bar = bar(b.oven.x - 110, top - 22, 220);
-    st.steam = G.fx.at('steam', layer, b.oven.x, top - 20, { z: 30, loop: true, scale: 1.4 });
+    const gz = b.gauge || { x: b.oven.x + os.w / 2 + 34, y: top + 8, h: os.h - 30 };
+    st.gauge = gauge(gz.x, gz.y, gz.h, b.gaugeLabel);
+    st.bar = bar(b.oven.x - 110, b.barY ?? top - 22, 220);
+    st.steam = G.fx.at('steam', layer, b.oven.x, Math.max(top, 30) + (b.inside ? -20 : 30), { z: 30, loop: true, scale: 1.4 });
     if (st.steam) st.steam.style.opacity = 0;
   },
   hold(on) { st.hold = on; },
@@ -466,8 +573,16 @@ STEPS.bake = {
       G.popup(b.tooHot, 800); G.sfx.bad(); fx('puff', b.oven.x, b.oven.y - st.os.h + 10);
     }
     st.bar(st.progress);
-    st.cake.style.scale = `1 ${.45 + .55 * st.progress}`;
-    st.cake.style.filter = st.heat > z1 + .16 ? 'brightness(.6)' : '';
+    const burnt = st.heat > z1 + .16 ? 'brightness(.6)' : '';
+    if (st.dough) {
+      // корж поднимается из противня вверх, противень не растягивается
+      st.dough.style.translate = `0 ${Math.round((1 - st.progress) * (b.cake.riseFrom ?? 17))}px`;
+      st.doughBox.style.filter = burnt;
+    } else {
+      // растёт вверх от решётки: точка опоры — низ картинки, она не сдвигается
+      st.cake.style.transform = `translate(-50%,-100%) scale(${.94 + .06 * st.progress}, ${.55 + .45 * st.progress})`;
+    }
+    st.cake.style.filter = burnt;
     if (st.steam) st.steam.style.opacity = G.clamp((st.heat - .3) * 1.6, 0, 1);
     if ((st.hum = (st.hum || 0) + dt) > .25 && st.hold) { st.hum = 0; G.blip(120 + st.heat * 160, .07, 'sawtooth', .012); }
     if (st.progress >= 1) { G.blip(1568, .5, 'sine', .08); complete(); }
@@ -482,7 +597,7 @@ STEPS.stack = {
     const s = K.stack;
     st = { n: 0, t: 0, mode: 'swing', topY: 0, offs: [], piece: null, ss: size(s.sponge, 124, 38), cs: size(s.cream, 124, 18), ps: size(s.plate.img, 160, 28) };
     put(s.plate, 'kitchen.stack.plate', 'k-back');
-    st.topY = s.plate.y - st.ps.h + 12;
+    st.topY = s.plate.y - (s.seat ?? st.ps.h - 12);
     st.count = chip('', s.plate.x + 130, 70);
     this.spawn();
   },
@@ -508,12 +623,15 @@ STEPS.stack = {
         const perfect = Math.abs(dx) <= s.perfectDist;
         fx(perfect ? 'popStar' : 'puff', shown, landY - 10, { scale: perfect ? 1 : .7 });
         if (perfect) G.popup(K.texts.perfect, 700);
-        st.topY -= st.ss.h - 8; st.n++;
+        if (s.landed) p.src = G.asset(s.landed);                      // корж лёг — на нём крем
+        st.topY -= s.step ?? st.ss.h - 8; st.n++;
         if (st.n >= s.layers) { complete(); return; }
-        // прослойка крема ложится сама
-        const c = put({ img: s.cream, x: shown, y: st.topY + 6 }, 'kitchen.stack.cream', 'k-piece is-fall');
-        c.style.zIndex = 41 + st.n * 2;
-        st.topY -= st.cs.h - 8;
+        // прослойка крема ложится сама — над этим коржом, но под следующим
+        if (s.cream) {
+          const c = put({ img: s.cream, x: shown, y: st.topY + 6 }, 'kitchen.stack.cream', 'k-piece is-fall');
+          c.style.zIndex = 39 + st.n * 2;
+          st.topY -= st.cs.h - 8;
+        }
         later(() => this.spawn(), 350);
       }, 330);
     } else {
@@ -537,12 +655,15 @@ STEPS.frost = {
   build() {
     const f = K.frost, cs = size(f.cake.img, 176, 150);
     st = { cs, down: false, last: null, cover: 0, total: 0, check: 0, ox: Math.round(f.cake.x - cs.w / 2), oy: Math.round(f.cake.y - cs.h) };
+    if (f.plate?.img) put(f.plate, 'kitchen.frost.plate', 'k-back');
     put(f.cake, 'kitchen.frost.cake', 'k-back');
     // маска: где уже намазано; цель — пиксели, которые отличаются у «голого» и «покрытого» торта
     st.mask = document.createElement('canvas'); st.mask.width = cs.w; st.mask.height = cs.h;
     st.mg = st.mask.getContext('2d', { willReadFrequently: true });
     st.g = canvas(20);
     st.spatula = put({ img: f.spatula, x: f.cake.x + 110, y: f.cake.y - 40 }, 'kitchen.frost.spatula', 'k-tool');
+    st.spatula.style.rotate = (f.spatulaRot ?? -18) + 'deg';
+    st.tool = f.spatulaOffset || [8, 54];                       // где у картинки лопатки кончик (от низа-центра)
     st.bar = bar(f.cake.x - 110, st.oy - 26, 220);
     const a = im(f.cake.img), b = im(f.cake.imgDone);
     if (a && b) {
@@ -578,7 +699,7 @@ STEPS.frost = {
   up() { st.down = false; st.last = null; },
   move(e) {
     const p = art(e);
-    st.spatula.style.left = (p.x + 8) + 'px'; st.spatula.style.top = (p.y + 54) + 'px';
+    st.spatula.style.left = (p.x + st.tool[0]) + 'px'; st.spatula.style.top = (p.y + st.tool[1]) + 'px';
     if (!st.down) return;
     if (st.last) {
       const d = Math.hypot(p.x - st.last.x, p.y - st.last.y), n = Math.max(1, Math.ceil(d / 5));
@@ -614,6 +735,7 @@ STEPS.decor = {
   build() {
     const d = K.decor;
     st = { drag: null, count: 0, cs: size(d.cake.img, 176, 150) };
+    if (d.plate?.img) put(d.plate, 'kitchen.decor.plate', 'k-back');
     st.cake = put(d.cake, 'kitchen.decor.cake', 'k-back');
     d.items.forEach((it, i) => {
       const e = put(it, `kitchen.decor.items.${i}`, 'k-src');
@@ -706,12 +828,12 @@ function buildStep(intro) {
   st = {};
   ui.pills.innerHTML = order.map((s, i) => `<i class="${i < idx ? 'is-done' : i === idx ? 'is-on' : ''}">${i < idx ? '✓' : i + 1}</i>`).join('');
   ui.title.textContent = S.title;
-  hint(S.hint);
+  hint(G.fmt(S.hint, S));
   STEPS[id].build();
   paintCard();
   locked = true;
   if (intro && !G.editing) {
-    const o = overlay(`<div class="k-intro"><small>${G.esc(G.fmt(K.texts.stepOf, { n: idx + 1, total: order.length }))}</small><b>${G.esc(S.title)}</b><span>${G.esc(S.hint)}</span></div>`);
+    const o = overlay(`<div class="k-intro"><small>${G.esc(G.fmt(K.texts.stepOf, { n: idx + 1, total: order.length }))}</small><b>${G.esc(S.title)}</b><span>${G.esc(G.fmt(S.hint, S))}</span></div>`);
     later(() => { o.classList.add('is-out'); locked = false; later(() => o.remove(), 300); }, 1500);
   } else { ui.over?.remove(); locked = false; }
 }
@@ -811,7 +933,7 @@ G.scenes.kitchen = {
   root,
   get state() { return { step: order[idx], idx, st, timeLeft, locked, running }; },
   enter(p) {
-    G.music(G.cfg.kitchen.music);
+    G.music(G.cfg.kitchen.music);       // своя песня кухни; выйдешь — продолжится прежняя
     start(p.step);
   },
   leave() { loadId++; running = false; timers.forEach(clearTimeout); timers = []; },

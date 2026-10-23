@@ -257,3 +257,49 @@
 .ed__more{ margin-top:8px; border:1px dashed var(--p300, #f3b6c6); border-radius:12px; padding:6px 10px; }
 .ed__more > summary{ cursor:pointer; font-weight:800; font-size:12px; color:var(--p600); padding:4px 0; }
 .ed__more[open] > summary{ margin-bottom:6px; }
+
+/* ---------- набор картинок (выбор из всех картинок проекта) ---------- */
+.edpick{
+  position:fixed; inset:0; right:var(--ed-w, 370px); z-index:3100; display:grid; place-items:center; padding:24px;
+  background:rgba(40,4,16,.55); font:13px/1.4 'Nunito', 'Segoe UI', system-ui, sans-serif; color:#4a0d1f;
+  --p50:#fff5f6; --p100:#ffe9ec; --p150:#ffdbe1; --p200:#ffc7d0; --p300:#ff9eae; --p400:#e8556f; --p500:#c9184a; --p600:#a4133c; --p700:#7d1128; --edge:#f2b6c2; --plum-soft:#8c4a5c;
+}
+.edpick *{ box-sizing:border-box; }
+.edpick__box{ display:flex; flex-direction:column; width:min(860px, 100%); height:min(640px, 100%); background:#fffaf5; border:4px solid var(--p600); border-radius:18px; overflow:hidden; box-shadow:0 30px 80px rgba(0,0,0,.5); }
+.edpick__head{ display:flex; gap:8px; align-items:center; padding:10px 12px; background:linear-gradient(150deg, var(--p500), var(--p700)); color:#fff; }
+.edpick__head b{ font-size:14px; white-space:nowrap; }
+.edpick__head input{ flex:1; min-width:0; padding:7px 10px; border:0; border-radius:9px; font:700 12.5px 'Nunito', sans-serif; outline:none; }
+.edpick__head .ed__btn{ flex:none; }
+.edpick__body{ flex:1; min-height:0; overflow-y:auto; padding:10px 12px 20px; display:flex; flex-direction:column; gap:6px; }
+.edpick .ed__palgrid{ grid-template-columns:repeat(auto-fill, minmax(78px, 1fr)); gap:6px; }
+.edpick .ed__palitem{ height:78px; }
+.edpick .ed__palitem img{ max-height:66px; }
+.ed__palitem img.px{ image-rendering:pixelated; }
+
+/* ---------- слои (F11) ---------- */
+#edLayers{ gap:4px !important; max-height:46vh; overflow-y:auto; }
+.edl{ display:flex; align-items:center; gap:7px; padding:4px 6px; border:2px solid var(--p100); border-radius:10px; background:var(--p50); cursor:pointer; }
+.edl:hover{ border-color:var(--p300); }
+.edl.is-sel{ border-color:var(--p500); background:var(--p100); }
+.edl.is-off{ opacity:.5; }
+.edl__th{ flex:0 0 34px; width:34px; height:34px; display:grid; place-items:center; overflow:hidden; border-radius:7px; background:#fff; border:1px solid var(--p150); }
+.edl__th img{ max-width:100%; max-height:100%; object-fit:contain; image-rendering:pixelated; }
+.edl__n{ flex:1; min-width:0; font-size:11px; font-weight:800; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.edl__n small{ display:block; font-size:9.5px; font-weight:700; color:var(--plum-soft); overflow:hidden; text-overflow:ellipsis; }
+
+/* ---------- фразы диалога-новеллы ---------- */
+.edn{ display:flex; flex-direction:column; gap:5px; padding:7px; border:2px solid var(--p150); border-radius:11px; background:#fff; }
+.edn__top{ display:flex; align-items:center; gap:5px; }
+.edn__top > b{ flex:0 0 auto; min-width:20px; height:20px; display:grid; place-items:center; border-radius:50%; background:var(--p500); color:#fff; font-size:10.5px; }
+.edn__top select, .edn__top input{ flex:1; min-width:0; padding:4px 6px; border:2px solid var(--p200); border-radius:8px; font:700 11.5px 'Nunito', sans-serif; color:var(--p700); background:#fff; }
+.edn textarea{ width:100%; padding:6px 8px; font:700 12.5px/1.3 'Nunito', sans-serif; color:var(--p700); border:2px solid var(--p200); border-radius:9px; resize:vertical; outline:none; field-sizing:content; min-height:38px; }
+.edn textarea:focus{ border-color:var(--p400); }
+.edn__media{ display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+.edn__m{ display:flex; gap:6px; align-items:center; font-size:10.5px; color:var(--plum-soft); line-height:1.5; }
+.edn__m .ed__thumb{ flex:0 0 40px; width:40px; height:40px; font-size:14px; }
+.edn__m b{ color:var(--p600); }
+.edn__m .ed__mini{ margin-right:2px; }
+.edn.is-now{ border-color:var(--p500); box-shadow:0 0 0 3px rgba(201,24,74,.18); }
+.edn__now{ font-style:normal; font-size:9.5px; font-weight:800; color:#fff; background:var(--p500); padding:2px 7px; border-radius:99px; white-space:nowrap; }
+.edn__wait{ display:flex; align-items:center; gap:5px; font-size:10.5px; font-weight:800; color:var(--plum-soft); }
+.edn__wait input{ width:58px; padding:3px 6px; border:2px solid var(--p200); border-radius:7px; font:700 11.5px 'Nunito', sans-serif; color:var(--p700); }

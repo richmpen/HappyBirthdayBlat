@@ -1086,7 +1086,7 @@ G.scenes.dressup = {
     setTimeout(fitStage, 320);
     if (innerWidth <= 760) sheet.close();
     setTimeout(() => { if (G.sceneId === 'dressup') { toast(D().texts.hello); berryRain(12); } }, 700);
-    G.music(G.cfg.world.rooms.dressup?.music);
+    G.music(D().music || G.cfg.world.rooms.dressup?.music);   // своя песня одевашки; выйдешь — продолжится прежняя
   },
   leave() { setBeta(false); },
   refresh() {

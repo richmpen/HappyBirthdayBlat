@@ -1006,8 +1006,8 @@ function renderPlay() {
 
 function renderResult() {
   const T = R.texts, plain = s => { s = String(s || '').replace(/[!.…]+$/, ''); return s.charAt(0).toUpperCase() + s.slice(1); };
-  const allSongs = playable().every(s => G.progress.songs[s.id]);
-  const goNext = allSongs && !G.isDone('rhythm');
+  // к празднику можно уйти уже после первой песни
+  const goNext = playable().some(s => G.progress.songs[s.id]) && !G.isDone('rhythm');
   const box = panel('rhr');
   box.innerHTML =
     `<div class="rhp__sub">${G.esc(P.song.title)} · ${G.esc(P.d.name)}</div>` +

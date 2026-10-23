@@ -6,6 +6,10 @@
 /Файлы/
 # главное меню, концовка, катсцены и музыка (исходники ~250 МБ) — в игре сжатые копии в assets/menu, assets/finale, assets/gallery, assets/cutscenes, assets/audio
 /общий визуал/
+# новелла, катсцены, новая кухня и питомцы (исходники) — в игре копии в assets/novel, assets/cutscenes, assets/kitchen/v2, assets/sprites
+/игра/
+/кухня/
+/кухня оставшееся/
 
 .DS_Store
 Thumbs.db

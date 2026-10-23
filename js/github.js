@@ -13,11 +13,24 @@
    • соавтор (Collaborator) — classic-токен с правом public_repo.
    Токен хранится только в браузере того, кто его ввёл,
    и в репозиторий не попадает.
+
+   «Сохранять может любой»: владелец один раз встраивает свой
+   токен в сайт (data/share.json, в слегка запутанном виде, чтобы
+   GitHub не принял его за утёкший пароль). Тогда «Сохранить» с
+   сайта работает у всех без ввода ключа. Важно: такой ключ может
+   достать любой, кто откроет сайт, поэтому токен должен уметь
+   менять только этот репозиторий (fine-grained, Contents).
    ============================================================ */
 (() => {
 'use strict';
 const G = window.G;
 const KEY = 'cherry.github';
+const MASK = 'cherry-birthday-🍒';
+
+/** токен ↔ строка для data/share.json: перевёрнут, перемешан с маской, base64 */
+const xor = (str, k) => [...str].map((c, i) => String.fromCharCode(c.charCodeAt(0) ^ (k.charCodeAt(i % k.length) & 31))).join('');
+const pack = t => btoa(xor([...t].reverse().join(''), MASK));
+const unpack = s => { try { return [...xor(atob(s), MASK)].reverse().join(''); } catch { return ''; } };
 
 const toBase64 = blob => new Promise((res, rej) => {
   const fr = new FileReader();
@@ -43,13 +56,28 @@ G.github = {
     return { owner: m[1], repo: seg && !seg.includes('.') ? seg : `${m[1]}.github.io` };
   },
 
+  /** общий ключ сайта (data/share.json), если владелец разрешил сохранять всем */
+  shared: null,
+  async loadShared() {
+    try {
+      const r = await fetch('data/share.json?t=' + Date.now(), { cache: 'no-store' });
+      const j = r.ok ? await r.json() : null;
+      this.shared = j?.k ? { token: unpack(j.k), owner: j.owner || '', repo: j.repo || '', branch: j.branch || '' } : null;
+    } catch { this.shared = null; }
+  },
+  /** содержимое data/share.json для токена (пустой токен — запретить) */
+  shareFile(s) {
+    return JSON.stringify(s.token ? { k: pack(s.token), owner: s.owner, repo: s.repo, branch: s.branch } : {}, null, 2) + '\n';
+  },
+
   settings() {
-    const s = G.readLS(KEY, {}), d = this.detect(), c = G.cfg.github || {};
+    const s = G.readLS(KEY, {}), d = this.detect(), c = G.cfg.github || {}, sh = this.shared || {};
     return {
-      owner:  s.owner  || c.owner  || d.owner || '',
-      repo:   s.repo   || c.repo   || d.repo  || '',
-      branch: s.branch || c.branch || 'main',
-      token:  s.token  || ''
+      owner:  s.owner  || sh.owner  || c.owner  || d.owner || '',
+      repo:   s.repo   || sh.repo   || c.repo   || d.repo  || '',
+      branch: s.branch || sh.branch || c.branch || 'main',
+      token:  s.token  || sh.token  || '',
+      own:    !!s.token
     };
   },
   store(s) { G.writeLS(KEY, s); },

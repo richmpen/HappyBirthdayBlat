@@ -168,6 +168,7 @@ function applyStage() {
   candleHit.classList.toggle('is-on', stage === 'wish');
   tipEl.classList.toggle('is-on', stage === 'wish');
   root.classList.toggle('is-dark', stage === 'end');
+  document.body.classList.toggle('fin-dark', stage === 'end');      // фон вокруг рисунка темнеет вместе с ним
   fwOn = stage === 'end' && !!F.fireworks;
 }
 
@@ -239,15 +240,16 @@ async function blow() {
 
 G.scenes.finale = {
   root,
+  viewSize: () => G.artView(G.cfg.finale.art),
   enter() {
     G.progress.finale = true; G.saveProgress();
     F = G.cfg.finale;
-    G.music(F.music, F.musicVolume ?? .7);
+    G.music(F.music, F.musicVolume ?? .7, { now: true });     // музыка финала — сразу, с начала
     stage = 'intro'; lit = new Set(['lena']); spots.clear(); fwOn = false; fwWait = 0; shadeDone = false;
     render();
     if (!G.editing) sequence(); else { showAll(); stage = 'lit'; render(); }
   },
-  leave() { run++; fwOn = false; G.closeDialog(); },
+  leave() { run++; fwOn = false; G.closeDialog(); document.body.classList.remove('fin-dark'); },
   refresh() { render(); },
   onEdit(on) {
     if (!on) return;

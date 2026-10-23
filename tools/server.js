@@ -126,7 +126,7 @@ const server = http.createServer(async (req, res) => {
       const { config, files = [] } = JSON.parse((await readBody(req)).toString('utf8'));
       const paths = [];
       for (const f of files) {
-        const full = /^assets\//.test(f.path) && resolve(f.path);
+        const full = (/^assets\//.test(f.path) || f.path === 'data/share.json') && resolve(f.path);
         if (!full) return send(400, 'bad path: ' + f.path);
         fs.mkdirSync(path.dirname(full), { recursive: true });
         fs.writeFileSync(full, Buffer.from(f.base64, 'base64'));
@@ -137,6 +137,7 @@ const server = http.createServer(async (req, res) => {
         paths.push('data/game.json');
         console.log(`сохранено: data/game.json${files.length ? ' + файлов: ' + files.length : ''}`);
       }
+      if (files.length) { require('./assets-list').write(); paths.push('data/assets.json'); }   // новые картинки — в набор редактора
       const g = await locked(() => publish(paths, `Редактор: правки игры${files.length ? ` (+${files.length} файл.)` : ''}`));
       if (g.pushed) console.log('отправлено на GitHub: ' + repo.name);
       else if (g.error) console.log('на GitHub не отправилось: ' + g.error);

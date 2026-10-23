@@ -1,8 +1,13 @@
 /* ============================================================
-   editor.js — редактор игры (клавиша F10)
+   editor.js — редактор игры (F10 — настройки, F11 — слои)
    ------------------------------------------------------------
    • Объекты на экране можно таскать мышкой, колесом менять размер,
      стрелками двигать по пикселю.
+   • F11 — список слоёв сцены: у каждой картинки — замена из набора
+     (все картинки проекта) или со своего компьютера, слой выше/ниже,
+     спрятать, дублировать, удалить.
+   • Диалоги персонажей — как в новелле: у каждой фразы кто говорит,
+     текст, спрайт слева и картинка на весь экран.
    • В панели справа — все тексты, картинки, звуки и числа.
      Картинку/звук можно загрузить со своего компьютера.
    • «Сохранить на сайт» кладёт всё в репозиторий GitHub одним
@@ -29,7 +34,7 @@ const LABELS = {
   x: 'X', y: 'Y', w: 'Ширина', h: 'Высота', img: 'Картинка', bg: 'Фон', name: 'Имя / название', title: 'Заголовок',
   subtitle: 'Подзаголовок', text: 'Текст', label: 'Надпись', lockedText: 'Текст, если дверь закрыта', to: 'Куда ведёт (id комнаты)',
   dialog: 'Диалог (строка с «>» в начале — говорит героиня)', dialogAfter: 'Диалог после прохождения',
-  music: 'Музыка', musicVolume: 'Громкость музыки (0–1)',
+  music: 'Музыка (пусто — общая музыка игры)', musicVolume: 'Громкость музыки (0–1)',
   walk: 'Зона, где можно ходить', spawn: 'Точка появления', doors: 'Двери', props: 'Предметы-декорации', npc: 'Персонаж', cutscene: 'Катсцена',
   cols: 'Кадров в ряду', rows: 'Рядов', speed: 'Скорость', fps: 'Кадров в секунду',
   rowDown: 'Ряд «идёт вниз»', rowLeft: 'Ряд «идёт влево»', rowRight: 'Ряд «идёт вправо»', rowUp: 'Ряд «идёт вверх»', idleFrame: 'Кадр «стоит»',
@@ -96,12 +101,18 @@ const LABELS = {
   hints: 'Подсказки управления (сменяют друг друга)', edgeTop: 'Полоса рамки сверху', edgeBottom: 'Полоса рамки снизу', flower: 'Цветочек под круглые кнопки',
   btnDark: 'Кнопка (тёмная)', btnLight: 'Кнопка (светлая)', sparkleImg: 'Картинка искорки', playImg: 'Значок ▶', cherryImg: 'Значок вишенки', bellImg: 'Колокольчик',
   enter: 'Как появляется: left / up / drop / pop / fade', inDelay: 'Задержка появления, с',
+  move: 'Стакан ездит { swing — размах, px; speed — скорость; faster — быстрее с каждым продуктом }', miss: 'Текст «мимо»',
+  framed: 'Рамка вокруг катсцены',
+  duck: 'Музыка в диалогах и катсценах (доля громкости, 0–1)', duckFade: 'Плавность приглушения, с',
   playlist: 'Песни по очереди', crossfade: 'Плавный переход между песнями, с', video: 'Видео (по кругу)',
   lena: 'Лена', balloons: 'Шарики', candle: 'Свечка (основание огонька)', spotlight: 'Гости появляются из полумрака', shadeColor: 'Цвет полумрака',
   light: 'Свет над гостем { dy, r }', wish: 'Реплика «загадай желание»', wishName: 'Кто говорит «загадай желание»', wishHint: 'Подсказка у свечки',
   end: 'Финальный экран', love: 'Строка «мы тебя любим»', heart: 'Сердечко', button: 'Кнопка', textImg: 'Надпись на кнопке',
   unlock: 'Когда открывается: пусто / all / kitchen / dressup / rhythm / finale / wish', locked: 'Надпись «закрыто»', close: 'Кнопка «закрыть»',
-  garlandLeft: 'Гирлянда слева', garlandRight: 'Гирлянда справа'
+  garlandLeft: 'Гирлянда слева', garlandRight: 'Гирлянда справа',
+  chars: 'Другие персонажи (просто разговор)', danceImg: 'Картинка «танцует» (после разговора)', danceWait: 'Пауза перед игрой, с',
+  who: 'Кто говорит', sprite: 'Спрайт слева', pic: 'Картинка на весь экран', spriteEvery: 'Смена кадров спрайта, с',
+  hide: 'Спрятан', novel: 'Портрет в диалогах (общий): x — середина, y — низ, h — высота', portrait: 'Портрет в диалоге (свой размер и место)', talkAfterGame: 'Сам заговаривает после мини-игры', dough: 'Тесто (поднимается из противня)', riseFrom: 'Насколько тесто сначала в противне, px', lift: 'Слой выше / ниже (+/−)'
 };
 const TEMPLATES = {
   props: { img: '', x: 480, y: 420, w: 96 },
@@ -112,7 +123,7 @@ const TEMPLATES = {
   songs: { id: '', title: 'Новая песня', artist: '', src: '', bpm: 0, offset: 0 }
 };
 const hidden = p => p === 'dressup.items' || p === 'dressup.layout' || p === 'github' || /\.charts$/.test(p);
-const IMG_KEYS = /^(img|imgFull|imgDone|bg|thumb|cover|portrait|wall|floor|closed|open|inside|sponge|cream|spatula|yolk|shell|drop|cherry|frame|flower|btnDark|btnLight|sparkleImg|playImg|cherryImg|bellImg|edgeTop|edgeBottom|textImg|garlandLeft|garlandRight)$/;
+const IMG_KEYS = /^(img|sprite|pic|danceImg|dough|imgFull|imgDone|bg|thumb|cover|portrait|wall|floor|closed|open|inside|sponge|cream|spatula|yolk|shell|drop|cherry|frame|flower|btnDark|btnLight|sparkleImg|playImg|cherryImg|bellImg|edgeTop|edgeBottom|textImg|garlandLeft|garlandRight)$/;
 const AUD_KEYS = /^(music|audio|sound)$/;
 function kind(p, key, val) {
   if (typeof val === 'number') return 'num';
@@ -335,7 +346,7 @@ function arrayFields(box, path, arr) {
 function fields(box, path) {
   const obj = path ? G.get(path) : G.cfg;
   if (obj == null) { box.innerHTML = '<p class="ed__note">Пусто</p>'; return; }
-  if (Array.isArray(obj)) { arrayFields(box, path, obj); return; }
+  if (Array.isArray(obj)) { (DLG_PATH.test(path) ? novelFields : arrayFields)(box, path, obj); return; }
   Object.keys(obj).forEach(key => {
     const p = path ? `${path}.${key}` : key;
     if (!hidden(p)) box.appendChild(field(p, key, obj[key]));
@@ -346,7 +357,223 @@ function fields(box, path) {
 function structural() {
   touch();
   G.refresh();
+  G.dialogRefresh?.();
   rebuild();
+}
+
+/* ============================================================
+   НАБОР КАРТИНОК: выбрать из всех картинок проекта или загрузить свою
+   ============================================================ */
+let picker = null;
+function closePicker() { picker?.remove(); picker = null; }
+async function pickAsset(cb, opt = {}) {
+  closePicker();
+  const list = await G.assetList();
+  const groups = new Map();
+  for (const p of list) {
+    const d = p.slice(0, p.lastIndexOf('/') + 1);
+    if (!groups.has(d)) groups.set(d, []);
+    groups.get(d).push(p);
+  }
+  const pref = d => (opt.prefer && d.startsWith(opt.prefer) ? 0 : 1);
+  const dirs = [...groups.keys()].sort((a, b) => pref(a) - pref(b) || a.localeCompare(b));
+  picker = G.el('div', 'edpick');
+  picker.innerHTML =
+    `<div class="edpick__box">
+       <div class="edpick__head"><b>${esc(opt.title || 'Выбери картинку')}</b>
+         <input type="search" placeholder="поиск по имени файла…" spellcheck="false">
+         <button class="ed__btn" data-a="up">⬆ Своя картинка…</button><button class="ed__btn" data-a="x" title="Закрыть (Esc)">✕</button></div>
+       <div class="edpick__body"></div>
+     </div>`;
+  const body = picker.querySelector('.edpick__body'), search = picker.querySelector('input');
+  const done = p => { closePicker(); cb(p); };
+  const fill = () => {
+    const q = search.value.trim().toLowerCase();
+    body.innerHTML = '';
+    for (const d of dirs) {
+      const items = groups.get(d).filter(p => !q || p.toLowerCase().includes(q));
+      if (!items.length) continue;
+      body.appendChild(G.el('div', 'ed__label', esc(d.replace(/^assets\//, '').replace(/\/$/, '') || 'assets')));
+      const grid = G.el('div', 'ed__palgrid');
+      items.forEach(p => {
+        const b = G.el('button', 'ed__palitem', `<img loading="lazy" class="${/\.png$/i.test(p) ? 'px' : ''}" src="${G.asset(p)}" alt="">`);
+        b.type = 'button'; b.title = p.split('/').pop();
+        b.onclick = () => done(p);
+        grid.appendChild(b);
+      });
+      body.appendChild(grid);
+    }
+    if (!body.childElementCount) body.innerHTML = '<p class="ed__note">Ничего не нашлось</p>';
+  };
+  search.oninput = fill;
+  search.onkeydown = e => { if (e.key === 'Escape') closePicker(); };
+  picker.onclick = e => {
+    const a = e.target.closest('[data-a]')?.dataset.a;
+    if (a === 'x' || e.target === picker) closePicker();
+    if (a === 'up') pickFile('image/*', f => done(stashFile(f)));
+  };
+  fill();
+  document.body.appendChild(picker);
+  search.focus();
+}
+
+/* ============================================================
+   СЛОИ (F11): все картинки сцены, сверху — то, что выше
+   ============================================================ */
+let layersMode = false;
+const imgKeyOf = o => ['img', 'src', 'bg', 'sprite', 'thumb'].find(k => typeof o[k] === 'string')
+  || Object.keys(o).find(k => typeof o[k] === 'string' && IMG_KEYS.test(k));
+function layerItems() {
+  const seen = new Set(), out = [];
+  view.querySelectorAll('[data-edit]').forEach((el, i) => {
+    const path = el.dataset.edit, o = G.get(path);
+    if (seen.has(path) || !o || typeof o !== 'object' || Array.isArray(o)) return;
+    const key = imgKeyOf(o);
+    if (!key) return;
+    seen.add(path);
+    const z = parseInt(getComputedStyle(el).zIndex, 10);
+    out.push({ el, path, o, key, z: Number.isNaN(z) ? 0 : z, i });
+  });
+  return out.sort((a, b) => (b.z - a.z) || (b.i - a.i));
+}
+/** слой выше (d = 1) или ниже (d = −1) соседа */
+function shiftLayer(it, d, items) {
+  const asc = [...items].reverse(), nb = asc[asc.indexOf(it) + d];
+  if (!nb) return;
+  if (/^world\./.test(it.path)) {           // в доме слой считается по «ногам», сдвигаем поправкой
+    it.o.lift = (it.o.lift || 0) + (nb.z - it.z) + d;
+    if (!it.o.lift) delete it.o.lift;
+  } else it.o.z = Math.max(0, nb.z + d);
+}
+function buildLayers() {
+  const box = $('#edLayers');
+  if (!box) return;
+  const items = layerItems();
+  box.innerHTML = items.length ? '' : '<p class="ed__note">В этой сцене нет картинок-слоёв. (У одевашки свои инструменты — ниже.)</p>';
+  items.forEach(it => {
+    const parent = it.path.replace(/\.\d+$/, ''), idx = /\.(\d+)$/.exec(it.path)?.[1], arr = idx != null && G.get(parent);
+    const inArr = Array.isArray(arr);
+    const row = G.el('div', 'edl' + (it.path === sel ? ' is-sel' : '') + (it.o.hide ? ' is-off' : ''));
+    const src = it.o[it.key];
+    row.innerHTML =
+      `<span class="edl__th">${src ? `<img class="px" src="${G.asset(src)}" alt="">` : '—'}</span>
+       <span class="edl__n" title="${esc(pathTitle(it.path))}">${esc(itemTitle(it.o, +idx || 0))}<small>${esc(LABELS[parent.split(".").pop()] || "")}</small></span>
+       <span class="ed__tools">
+         <button class="ed__mini" data-a="eye" title="${it.o.hide ? 'Показать' : 'Спрятать'}">${it.o.hide ? '◌' : '👁'}</button>
+         <button class="ed__mini" data-a="up" title="Слой выше">▲</button><button class="ed__mini" data-a="dn" title="Слой ниже">▼</button>
+         <button class="ed__mini" data-a="img" title="Заменить картинку">🖼</button>
+         ${inArr ? '<button class="ed__mini" data-a="dup" title="Дублировать">⧉</button><button class="ed__mini" data-a="del" title="Удалить">✕</button>' : ''}
+       </span>`;
+    row.onclick = e => {
+      const a = e.target.closest('[data-a]')?.dataset.a;
+      if (!a) { select(it.path); buildLayers(); return; }
+      if (a === 'eye') { if (it.o.hide) delete it.o.hide; else it.o.hide = true; }
+      if (a === 'up' || a === 'dn') shiftLayer(it, a === 'up' ? 1 : -1, items);
+      if (a === 'img') { pickAsset(p => { it.o[it.key] = p; if (/^world\./.test(it.path)) delete it.o.w; structural(); }, { title: 'Заменить картинку', prefer: (src || '').replace(/[^/]+$/, '') }); return; }
+      if (a === 'dup') { const c = G.clone(it.o); if (typeof c.x === 'number') { c.x += 12; c.y += 8; } arr.splice(+idx + 1, 0, c); sel = `${parent}.${+idx + 1}`; }
+      if (a === 'del') { if (!confirm('Удалить этот слой?')) return; arr.splice(+idx, 1); sel = null; }
+      structural();
+    };
+    box.appendChild(row);
+  });
+}
+
+/* ============================================================
+   ДИАЛОГ-НОВЕЛЛА: фразы, спрайты, картинки
+   ============================================================ */
+const DLG_PATH = /^world\.rooms\.\w+\.(npc|chars\.\d+)\.(dialog|dialogAfter)$/;
+function novelFields(box, path, arr) {
+  const owner = G.get(path.replace(/\.\w+$/, '')) || {}, hero = G.cfg.texts.heroName;
+  /** строка → объект (только когда её правят) */
+  const line = i => {
+    let v = arr[i];
+    if (!v || typeof v !== 'object') {
+      v = String(v ?? '');
+      v = arr[i] = v.startsWith('>') ? { who: 'hero', text: v.slice(1).trim() } : { who: 'npc', text: v };
+    }
+    return v;
+  };
+  const head = G.el('div', 'ed__row ed__row--wrap');
+  head.innerHTML = '<button class="ed__btn ed__btn--main" data-a="play">▶ Проиграть диалог</button><button class="ed__btn" data-a="addT">+ Фраза</button><button class="ed__btn" data-a="addP">+ Картинка</button>';
+  head.onclick = e => {
+    const a = e.target.closest('[data-a]')?.dataset.a;
+    if (a === 'play') { api.toggle(false); G.say(arr, owner.name); }
+    if (a === 'addT') { arr.push({ who: 'npc', text: '' }); structural(); }
+    if (a === 'addP') pickAsset(p => { arr.push({ pic: p, text: '' }); structural(); }, { title: 'Картинка в диалог', prefer: 'assets/cutscenes/' });
+  };
+  box.appendChild(head);
+  const pp = path.replace(/.(dialog|dialogAfter)$/, '.portrait'), own = !!G.get(pp);
+  const prow = G.el('div', 'ed__row ed__row--wrap');
+  prow.innerHTML = own
+    ? '<button class="ed__btn is-on" data-a="own">Портрет: свой у этого персонажа</button><button class="ed__btn" data-a="all">↺ Как у всех</button>'
+    : '<button class="ed__btn" data-a="own">Свой размер и место портрета</button>';
+  prow.onclick = e => {
+    const a = e.target.closest('[data-a]')?.dataset.a;
+    if (a === 'own' && !own) G.set(pp, G.clone(G.cfg.novel || { x: 125, y: 540, h: 290 }));
+    if (a === 'all') delete owner.portrait;
+    if (a) structural();
+  };
+  box.appendChild(prow);
+  box.appendChild(G.el('p', 'ed__note', 'Портрет двигается прямо на экране: начни диалог, нажми F10 и тащи портрет мышкой, колесо или уголок — размер.' + (own ? '' : ' Сейчас размер общий для всех диалогов.')));
+  box.appendChild(G.el('p', 'ed__note', `«⏱ дальше само» — фраза или картинка сменится сама через столько секунд. Спрайт остаётся до следующей фразы со спрайтом. Если говорит не ${esc(owner.name || 'персонаж')}, спрайт темнеет. Картинка показывается только на своей фразе; фраза с картинкой без текста — просто картинка (клик — дальше).`));
+  arr.forEach((raw, i) => {
+    const v = raw && typeof raw === 'object' ? raw : { who: String(raw ?? '').startsWith('>') ? 'hero' : 'npc', text: String(raw ?? '').replace(/^>\s*/, '') };
+    const who = v.who || (v.name ? v.name : 'npc');
+    const isOther = who !== 'npc' && who !== 'hero';
+    const sp = [].concat(v.sprite || []).filter(s => s && s !== '-');
+    const now = G.dialogInfo?.(), isNow = now?.path === path && now.i === i;
+    const row = G.el('div', 'edn' + (isNow ? ' is-now' : ''));
+    row.innerHTML =
+      `<div class="edn__top"><b>${i + 1}</b>${isNow ? '<em class="edn__now">сейчас на экране</em>' : ''}
+         <select data-k="who"><option value="npc"${who === 'npc' ? ' selected' : ''}>${esc(owner.name || 'Персонаж')}</option>
+           <option value="hero"${who === 'hero' ? ' selected' : ''}>${esc(hero)}</option><option value="other"${isOther ? ' selected' : ''}>другое имя…</option></select>
+         <input type="text" data-k="name" value="${esc(isOther ? who : '')}" placeholder="имя"${isOther ? '' : ' hidden'}>
+         <span class="ed__tools">${i > 0 ? '<button class="ed__mini" data-a="up" title="Выше">↑</button>' : ''}${i < arr.length - 1 ? '<button class="ed__mini" data-a="dn" title="Ниже">↓</button>' : ''}
+           <button class="ed__mini" data-a="ins" title="Вставить фразу после">+</button><button class="ed__mini" data-a="del" title="Удалить">✕</button></span></div>
+       <label class="edn__wait" title="Перейти к следующей фразе само, через столько секунд (пусто — по клику). У картинки без текста — сколько она висит.">⏱ дальше само через <input type="number" data-k="wait" min="0" step="0.5" value="${v.wait ?? ''}" placeholder="—"> с</label>
+       <textarea data-k="text" rows="2" placeholder="${v.pic ? 'без текста — просто картинка' : 'текст фразы'}">${esc(v.text || '')}</textarea>
+       <div class="edn__media">
+         <span class="edn__m"><span class="ed__thumb">${sp.length ? `<img src="${G.asset(sp[0])}" alt="">` : v.sprite === '-' ? '∅' : '·'}</span>
+           <span><b>Спрайт</b>${sp.length > 1 ? ` · кадров: ${sp.length}` : v.sprite === '-' ? ' · убран' : sp.length ? '' : ' · как раньше'}<br>
+           <button class="ed__mini" data-a="spr" title="Выбрать спрайт">🖼</button>${sp.length ? '<button class="ed__mini" data-a="spr+" title="Добавить кадр (меняются по очереди)">+</button>' : ''}<button class="ed__mini" data-a="spr-" title="Убрать спрайт с экрана">∅</button><button class="ed__mini" data-a="spr0" title="Как у прошлой фразы">↺</button></span></span>
+         <span class="edn__m"><span class="ed__thumb">${v.pic ? `<img src="${G.asset(v.pic)}" alt="">` : '·'}</span>
+           <span><b>Картинка</b><br><button class="ed__mini" data-a="pic" title="Выбрать картинку на весь экран">🖼</button><button class="ed__mini" data-a="pic0" title="Без картинки">✕</button></span></span>
+       </div>`;
+    const q = k => row.querySelector(`[data-k="${k}"]`);
+    q('text').oninput = e => { line(i).text = e.target.value; touch(); G.dialogRefresh?.(); };
+    q('who').onchange = e => {
+      const o = line(i), val = e.target.value;
+      delete o.name;
+      if (val === 'other') { o.who = q('name').value || 'Кто-то'; q('name').hidden = false; q('name').value = o.who; }
+      else { o.who = val; q('name').hidden = true; }
+      touch(); G.dialogRefresh?.();
+    };
+    q('name').oninput = e => { line(i).who = e.target.value || 'Кто-то'; touch(); G.dialogRefresh?.(); };
+    q('wait').oninput = e => { const o = line(i), n = parseFloat(e.target.value); if (n > 0) o.wait = n; else delete o.wait; touch(); };
+    row.onclick = e => {
+      const a = e.target.closest('[data-a]')?.dataset.a;
+      if (!a) return;
+      const o = line(i);
+      if (a === 'up') [arr[i - 1], arr[i]] = [arr[i], arr[i - 1]];
+      if (a === 'dn') [arr[i + 1], arr[i]] = [arr[i], arr[i + 1]];
+      if (a === 'ins') arr.splice(i + 1, 0, { who: o.who || 'npc', text: '' });
+      if (a === 'del') arr.splice(i, 1);
+      if (a === 'spr' || a === 'spr+') {
+        pickAsset(p => {
+          o.sprite = a === 'spr+' ? [].concat(o.sprite || []).filter(s => s && s !== '-').concat(p) : p;
+          if (Array.isArray(o.sprite) && !o.spriteEvery) o.spriteEvery = 1;
+          structural();
+        }, { title: 'Спрайт для фразы', prefer: 'assets/novel/' });
+        return;
+      }
+      if (a === 'spr-') o.sprite = '-';
+      if (a === 'spr0') { delete o.sprite; delete o.spriteEvery; }
+      if (a === 'pic') { pickAsset(p => { o.pic = p; structural(); }, { title: 'Картинка на весь экран', prefer: 'assets/cutscenes/' }); return; }
+      if (a === 'pic0') delete o.pic;
+      structural();
+    };
+    box.appendChild(row);
+  });
 }
 
 /* ============================================================
@@ -362,7 +589,8 @@ function buildSel() {
   const box = $('#edSel');
   box.innerHTML = '';
   if (!sel || G.get(sel) == null) {
-    box.innerHTML = '<p class="ed__note">Кликни по объекту на экране: его можно тащить мышкой, колесо меняет размер, стрелки двигают по пикселю (Shift — по 10).</p>';
+    box.innerHTML = '<p class="ed__note">Кликни по объекту на экране: его можно тащить мышкой, колесо меняет размер, стрелки двигают по пикселю (Shift — по 10).</p>' +
+      '<p class="ed__note"><b>Диалог:</b> кликни по персонажу — его фразы внизу, в «Диалог». Или начни разговор в игре и нажми F10 — откроется сразу этот диалог (можно и кликнуть по окну диалога).</p>';
     return;
   }
   box.appendChild(G.el('div', 'ed__seltitle', esc(pathTitle(sel))));
@@ -421,47 +649,92 @@ function buildNav() {
 }
 
 function buildGithub() {
-  const s = G.github.settings(), box = $('#edGhBox');
+  const s = G.github.settings(), box = $('#edGhBox'), own = G.readLS('cherry.github', {}), shared = !!G.github.shared?.token;
+  const tokenBox =
+    `<label class="ed__f"><span class="ed__k">Владелец (логин GitHub)</span><input type="text" id="ghOwner" value="${esc(own.owner || s.owner)}" spellcheck="false"></label>
+     <label class="ed__f"><span class="ed__k">Репозиторий</span><input type="text" id="ghRepo" value="${esc(own.repo || s.repo)}" spellcheck="false"></label>
+     <label class="ed__f"><span class="ed__k">Ветка</span><input type="text" id="ghBranch" value="${esc(own.branch || s.branch)}" spellcheck="false"></label>
+     <label class="ed__f"><span class="ed__k">Токен доступа</span><input type="password" id="ghToken" value="${esc(own.token || '')}" autocomplete="off" placeholder="github_pat_…"></label>
+     <div class="ed__row"><button class="ed__btn" id="ghCheck">Проверить доступ</button></div>
+     <div class="ed__note" id="ghMsg"></div>
+     <p class="ed__note"><b>Владелец репозитория:</b> <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">создать Fine-grained token</a> →
+       Repository access: <b>Only select repositories</b> → этот репозиторий → Permissions → <b>Contents: Read and write</b>, срок — какой разрешит GitHub (до года).
+       Такой токен умеет менять только этот сайт.<br>
+       <b>Соавтор (Collaborator):</b> <a href="https://github.com/settings/tokens/new?scopes=public_repo&description=cherry-game" target="_blank" rel="noopener">создать classic-токен</a> с галочкой <b>public_repo</b>.</p>
+     <div class="ed__label">Сохранять может любой</div>
+     <p class="ed__note">${shared
+       ? '✓ Сейчас <b>любой</b>, кто открыл сайт, может нажать F10 / F11, поправить и «Сохранить» — без ключа.'
+       : 'Встроить токен выше в сайт: тогда любой, кто открыл игру, сможет править (F10 / F11) и сохранять — правки увидят все.'}
+       Ключ при этом может достать любой посетитель, поэтому подходит только fine-grained токен на один этот репозиторий. Убрать доступ можно здесь же или удалив токен на GitHub.</p>
+     <div class="ed__row"><button class="ed__btn ed__btn--main" id="ghShare">🌍 ${shared ? 'Обновить общий ключ' : 'Разрешить сохранять всем'}</button>${shared ? '<button class="ed__btn" id="ghUnshare">🚫 Запретить</button>' : ''}</div>`;
   if (local) {
     box.innerHTML = '<p class="ed__note ed__note--ok">' + (localGit
       ? `Игра запущена с компьютера. «Сохранить» сам отправляет правки на GitHub (${esc(localGit.name)}) — ничего вводить не нужно.`
-      : 'Игра запущена с компьютера: «Сохранить» пишет прямо в папку проекта.') + '</p>';
-    return;
+      : 'Игра запущена с компьютера: «Сохранить» пишет прямо в папку проекта.') + '</p>' +
+      `<details class="ed__more"><summary>Чтобы правили и сохраняли прямо с сайта все</summary>${tokenBox}</details>`;
+  } else {
+    box.innerHTML =
+      (shared
+        ? '<p class="ed__note ed__note--ok">Сохранять с сайта может любой: просто нажми «Сохранить» — через 1–2 минуты правки увидят все.</p>'
+        : `<p class="ed__note"><b>Проще всего — без всяких ключей:</b> открой папку игры на своём компьютере и запусти <b>start.bat</b>.
+             Откроется эта же игра, и там «Сохранить» сам отправляет правки на GitHub.</p>
+           <div class="ed__row"><button class="ed__btn" id="ghExport">⬇ Забрать мои правки файлом</button></div>
+           <p class="ed__note">Чтобы не потерять то, что уже подвигано здесь: скачай правки, а в игре из start.bat открой «Файл настроек» → «Загрузить».</p>`) +
+      `<details class="ed__more"><summary>Сохранять прямо с сайта своим ключом GitHub</summary>${tokenBox}</details>`;
+    $('#ghExport') && ($('#ghExport').onclick = () => $('#edExport').click());
   }
-  box.innerHTML =
-    `<p class="ed__note"><b>Проще всего — без всяких ключей:</b> открой папку игры на своём компьютере и запусти <b>start.bat</b>.
-       Откроется эта же игра, и там «Сохранить» сам отправляет правки на GitHub.</p>
-     <div class="ed__row"><button class="ed__btn" id="ghExport">⬇ Забрать мои правки файлом</button></div>
-     <p class="ed__note">Чтобы не потерять то, что уже подвигано здесь: скачай правки, а в игре из start.bat открой «Файл настроек» → «Загрузить».</p>
-     <details class="ed__more"><summary>Сохранять прямо с сайта (нужен ключ GitHub)</summary>
-     <label class="ed__f"><span class="ed__k">Владелец (логин GitHub)</span><input type="text" id="ghOwner" value="${esc(s.owner)}" spellcheck="false"></label>
-     <label class="ed__f"><span class="ed__k">Репозиторий</span><input type="text" id="ghRepo" value="${esc(s.repo)}" spellcheck="false"></label>
-     <label class="ed__f"><span class="ed__k">Ветка</span><input type="text" id="ghBranch" value="${esc(s.branch)}" spellcheck="false"></label>
-     <label class="ed__f"><span class="ed__k">Токен доступа</span><input type="password" id="ghToken" value="${esc(s.token)}" autocomplete="off" placeholder="github_pat_…"></label>
-     <div class="ed__row"><button class="ed__btn" id="ghCheck">Проверить доступ</button></div>
-     <div class="ed__note" id="ghMsg"></div>
-     <p class="ed__note">Токен вводится один раз и хранится только в твоём браузере.<br>
-       <b>Владелец репозитория:</b> <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">создать Fine-grained token</a> →
-       Repository access: <b>Only select repositories</b> → этот репозиторий → Permissions → <b>Contents: Read and write</b>.
-       Такой токен умеет менять только этот сайт, поэтому его можно лично передать художникам.<br>
-       <b>Соавтор (Collaborator):</b> <a href="https://github.com/settings/tokens/new?scopes=public_repo&description=cherry-game" target="_blank" rel="noopener">создать classic-токен</a> с галочкой <b>public_repo</b>.</p>
-     </details>`;
-  $('#ghExport').onclick = () => $('#edExport').click();
+  if (localGit && !$('#ghOwner').value) { const [o, r] = localGit.name.split('/'); $('#ghOwner').value = o || ''; $('#ghRepo').value = r || ''; }
   const read = () => G.github.store({
     owner: $('#ghOwner').value.trim(), repo: $('#ghRepo').value.trim(),
     branch: $('#ghBranch').value.trim() || 'main', token: $('#ghToken').value.trim()
   });
   ['#ghOwner', '#ghRepo', '#ghBranch', '#ghToken'].forEach(q => { $(q).oninput = read; });
+  const msg = (t, cls = '') => { const m = $('#ghMsg'); m.textContent = t; m.className = 'ed__note ' + cls; };
   $('#ghCheck').onclick = async () => {
     read();
-    const msg = $('#ghMsg');
-    msg.textContent = 'Проверяю…'; msg.className = 'ed__note';
+    msg('Проверяю…');
     try {
       const r = await G.github.check();
-      msg.textContent = r.canPush ? `✓ Доступ есть: ${r.name}. Можно сохранять.` : `Репозиторий ${r.name} виден, но права записи нет.`;
-      msg.className = 'ed__note ' + (r.canPush ? 'ed__note--ok' : 'ed__note--bad');
-    } catch (e) { msg.textContent = '✕ ' + e.message; msg.className = 'ed__note ed__note--bad'; }
+      msg(r.canPush ? `✓ Доступ есть: ${r.name}. Можно сохранять.` : `Репозиторий ${r.name} виден, но права записи нет.`, r.canPush ? 'ed__note--ok' : 'ed__note--bad');
+    } catch (e) { msg('✕ ' + e.message, 'ed__note--bad'); }
   };
+  /** записать data/share.json: с токеном — сохранять могут все, пустой — никто без своего ключа */
+  const setShared = async token => {
+    read();
+    const st = { ...G.github.settings(), token };
+    const text = G.github.shareFile(st);
+    if (local) {
+      const r = await fetch('/__api/save', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ files: [{ path: 'data/share.json', base64: btoa(text) }] }) });
+      const j = r.ok ? await r.json() : null;
+      if (!r.ok) throw new Error('локальный сервер ответил ' + r.status);
+      if (j?.error) throw new Error(j.error);
+    } else {
+      await G.github.commit({ files: [{ path: 'data/share.json', blob: new Blob([text], { type: 'application/json' }) }],
+        buildConfig: remote => remote || G.base, message: token ? 'Редактор: сохранять может любой' : 'Редактор: общий ключ убран' });
+    }
+    G.github.shared = token ? { token, owner: st.owner, repo: st.repo, branch: st.branch } : null;
+  };
+  $('#ghShare').onclick = async () => {
+    read();
+    const t = $('#ghToken').value.trim();
+    if (!t) { msg('Сначала вставь токен выше', 'ed__note--bad'); $('#ghToken').focus(); return; }
+    if (!confirm('Встроить этот токен в сайт? После этого любой посетитель сможет менять игру (и при желании достать ключ). Токен должен быть fine-grained только на этот репозиторий.')) return;
+    msg('Проверяю токен…');
+    try {
+      const r = await G.github.check();
+      if (!r.canPush) throw new Error('у токена нет права записи в ' + r.name);
+      msg('Встраиваю ключ в сайт…');
+      await setShared(t);
+      note('Готово! Через 1–2 минуты сохранять с сайта сможет любой 🍒');
+      buildGithub();
+    } catch (e) { msg('✕ ' + e.message, 'ed__note--bad'); }
+  };
+  $('#ghUnshare') && ($('#ghUnshare').onclick = async () => {
+    if (!confirm('Убрать общий ключ с сайта? Сохранять смогут только те, у кого свой ключ или start.bat.')) return;
+    try { await setShared(''); note('Общий ключ убран. Сам токен лучше ещё и удалить на GitHub.'); buildGithub(); }
+    catch (e) { msg('✕ ' + e.message, 'ed__note--bad'); }
+  });
 }
 
 function build() {
@@ -476,6 +749,7 @@ function build() {
       </div>
     </div>
     <div class="ed__body">
+      <details class="ed__sec" id="edLayersSec"><summary>🧱 Слои сцены (F11)</summary><div id="edLayers"></div></details>
       <details class="ed__sec" open><summary>🎯 Выбранный объект</summary><div id="edSel"></div></details>
       <details class="ed__sec" open id="edToolsSec"><summary>🛠 Инструменты этой сцены</summary><div id="edTools"></div></details>
       <details class="ed__sec" open><summary>📄 Настройки этой сцены</summary><div id="edRoots"></div></details>
@@ -522,7 +796,7 @@ function build() {
 
 function rebuild() {
   if (!built || !G.editing) return;
-  buildSel(); buildScene(); buildAll(); buildNav(); buildGithub();
+  buildSel(); buildScene(); buildAll(); buildNav(); buildGithub(); buildLayers();
 }
 
 /* ============================================================
@@ -600,13 +874,25 @@ function select(path) {
   sel = path;
   buildSel();
   if (built && G.editing && G.scene?.selectTools) G.scene.editorTools($('#edTools'));
-  if (path) panel.querySelector('.ed__body').scrollTop = 0;
+  if (built && G.editing) buildLayers();
+  if (path && !layersMode) panel.querySelector('.ed__body').scrollTop = 0;
 }
 const selEl = () => sel ? view.querySelector(`[data-edit="${CSS.escape(sel)}"]`) : null;
+/** у картинки без ширины (мебель в доме) ширину берём из самой картинки — тогда её можно растягивать */
+function ensureW(o, el) {
+  if (!o || typeof o.w === 'number') return !!o;
+  if (typeof o.h === 'number' && typeof o.x === 'number' && !imgKeyOf(o)) return true;   // портрет в диалоге: только высота
+  if (typeof o.x !== 'number' || !imgKeyOf(o)) return false;
+  const im = el?.tagName === 'IMG' ? el : el?.querySelector('img');
+  if (!im?.naturalWidth) return false;
+  o.w = parseFloat(getComputedStyle(im).width) || im.naturalWidth;
+  return true;
+}
 const movable = o => o && typeof o.x === 'number' && typeof o.y === 'number';
 
 function live(path, el, o) {
   if (el) G.place(el, o);
+  if (el?.id === 'novelSprite') G.placePortrait?.();
   ['x', 'y', 'w', 'h'].forEach(k => { if (typeof o[k] === 'number') syncInputs(`${path}.${k}`); });
   touch();
 }
@@ -626,7 +912,7 @@ view.addEventListener('pointerdown', e => {
 
 selH.addEventListener('pointerdown', e => {
   const el = selEl(), o = sel && G.get(sel);
-  if (!o || typeof o.w !== 'number') return;
+  if (!ensureW(o, el)) return;
   e.preventDefault(); e.stopPropagation();
   drag = { mode: 'size', path: sel, el, o, sx: e.clientX, sy: e.clientY, ow: o.w, oh: o.h, moved: false, unit: +(el?.closest('[data-unit]')?.dataset.unit || 1) };
   selH.setPointerCapture(e.pointerId);
@@ -640,6 +926,8 @@ function onMove(e) {
   if (drag.mode === 'move') {
     o.x = Math.round(drag.ox + dx);
     o.y = Math.round(drag.oy + dy);
+  } else if (typeof o.h === 'number' && typeof o.w !== 'number') {   // портрет: тянем высоту
+    o.h = Math.max(40, Math.round(drag.oh + dy));
   } else if (typeof o.h === 'number') {          // зона: ширина и высота отдельно
     o.w = Math.max(10, Math.round(drag.ow + dx));
     o.h = Math.max(10, Math.round(drag.oh + dy));
@@ -666,9 +954,10 @@ view.addEventListener('click', e => { if (G.editing) { e.preventDefault(); e.sto
 view.addEventListener('wheel', e => {
   if (!G.editing || !sel) return;
   const o = G.get(sel);
-  if (!o || typeof o.w !== 'number') return;
+  if (!ensureW(o, selEl())) return;
   e.preventDefault();
   const k = e.deltaY > 0 ? .96 : 1.04;
+  if (typeof o.w !== 'number') { o.h = Math.max(40, G.round(o.h * k, 1)); live(sel, selEl(), o); G.placePortrait?.(); return; }
   o.w = Math.max(6, G.round(o.w * k, 1));
   if (typeof o.h === 'number') o.h = Math.max(6, G.round(o.h * k, 1));
   live(sel, selEl(), o);
@@ -689,16 +978,36 @@ const api = G.editor = {
 
   toggle(force) {
     const on = force ?? !G.editing;
+    if (force === undefined) layersMode = false;
     if (on === G.editing) return;
     G.editing = on;
     G.keys.clear();
     panel.hidden = !on;
     document.body.classList.toggle('editing', on);
-    if (on) { if (!built) build(); rebuild(); paintState(); }
-    else { sel = null; drag = null; selBox.hidden = true; }
+    if (on) {
+      if (!built) build();
+      // открыли посреди разговора — сразу показываем этот диалог и текущую фразу
+      const d = G.dialogInfo?.();
+      if (d && G.get(d.path)) sel = d.path;
+      rebuild(); paintState();
+      if (d) requestAnimationFrame(() => panel.querySelector('.edn.is-now')?.scrollIntoView({ block: 'center' }));
+    }
+    else { sel = null; drag = null; selBox.hidden = true; closePicker(); layersMode = false; }
     G.scene?.onEdit?.(on);
     G.fit();
   },
+
+  /** F11: слои сцены. Второй F11 закрывает редактор */
+  layers() {
+    if (G.editing && layersMode) { this.toggle(false); return; }
+    layersMode = true;
+    this.toggle(true);
+    const sec = $('#edLayersSec');
+    sec.open = true;
+    buildLayers();
+    panel.querySelector('.ed__body').scrollTop = 0;
+  },
+  pickAsset,
 
   /** сцена сменилась или сменился её экран — обновить панель */
   sceneChanged() {
@@ -721,6 +1030,7 @@ const api = G.editor = {
 
   /** клавиши в режиме редактора; true — клавиша обработана */
   key(e) {
+    if (picker) { if (e.code === 'Escape') closePicker(); return false; }
     if (G.scene?.editKey) return G.scene.editKey(e);
     const o = sel && G.get(sel);
     if (e.code === 'Escape') { select(null); return true; }
@@ -743,7 +1053,7 @@ const api = G.editor = {
     selBox.hidden = false;
     selBox.style.left = r.left + 'px'; selBox.style.top = r.top + 'px';
     selBox.style.width = r.width + 'px'; selBox.style.height = r.height + 'px';
-    selH.hidden = !(o && typeof o.w === 'number') || !!el.dataset.nodrag;
+    selH.hidden = !(o && (typeof o.w === 'number' || typeof o.h === 'number' || (typeof o.x === 'number' && imgKeyOf(o)))) || !!el.dataset.nodrag;
     const label = movable(o) ? `${Math.round(o.x)}, ${Math.round(o.y)}${typeof o.w === 'number' ? ' · ' + Math.round(o.w) : ''}` : '';
     if (selL.textContent !== label) selL.textContent = label;
   },
