@@ -1117,7 +1117,10 @@
             }
           ],
           "dialogAfter": [
-            "Вот это был танец!",
+            {
+              "who": "npc",
+              "text": "Я взорвал ваш дом"
+            },
             "Теперь всё готово к празднику…"
           ],
           "danceImg": "assets/sprites/andrey_dance.png",
