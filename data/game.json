@@ -742,12 +742,19 @@
             {
               "who": "npc",
               "text": "С днем рождения!! Я пихдатая подруга, так что про твой др не забыла и ДАЖЕ приготовила тебе торт! Смотри, это я сама сделала!!!",
-              "sprite": "assets/novel/anya_happy.webp"
+              "sprite": "assets/novel/anya_happy.webp",
+              "wait": 0.8
+            },
+            {
+              "pic": "assets/cutscenes/kitchen_intro.webp",
+              "text": "",
+              "wait": 2
             },
             {
               "who": "hero",
               "text": "Эээ.. Спасибо.",
-              "pic": "assets/cutscenes/kitchen_intro.webp"
+              "pic": "assets/cutscenes/kitchen_intro.webp",
+              "sprite": "-"
             },
             {
               "who": "hero",
@@ -1148,7 +1155,7 @@
   },
   "kitchen": {
     "bg": "assets/kitchen/v2/bg.png",
-    "music": "",
+    "music": "assets/audio/bgm-2.mp3",
     "scale": 1.5,
     "timeLimit": 480,
     "recipe": {
@@ -1606,6 +1613,7 @@
   "dressup": {
     "title": "CHERRY",
     "tag": "примерочная Лизы",
+    "music": "assets/audio/bgm-3.mp3",
     "texts": {
       "wardrobe": "Гардероб",
       "random": "Рандом",
@@ -3756,12 +3764,12 @@
   },
   "music": {
     "playlist": [
-      "assets/audio/bgm-1.mp3",
-      "assets/audio/bgm-2.mp3",
-      "assets/audio/bgm-3.mp3"
+      "assets/audio/bgm-1.mp3"
     ],
     "volume": 0.45,
-    "crossfade": 6
+    "crossfade": 6,
+    "duck": 0.35,
+    "duckFade": 0.9
   },
   "gallery": {
     "title": "Галерея",
@@ -3836,5 +3844,10 @@
         "text": "мы тебя очень любим!"
       }
     ]
+  },
+  "novel": {
+    "x": 110,
+    "y": 560,
+    "h": 290
   }
 }
