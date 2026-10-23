@@ -429,8 +429,8 @@
           },
           {
             "img": "assets/world/furniture/armchair_wide_c.png",
-            "x": 472,
-            "y": 352,
+            "x": 471,
+            "y": 334,
             "solid": true,
             "foot": 16
           },
