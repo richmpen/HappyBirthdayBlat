@@ -421,16 +421,16 @@
             "foot": 10
           },
           {
-            "img": "assets/world/furniture/armchair_c.png",
-            "x": 362,
+            "img": "assets/uploads/mvlj2h7w-armchair_side_c.png",
+            "x": 472,
             "y": 352,
             "solid": true,
             "foot": 16
           },
           {
-            "img": "assets/world/furniture/armchair_wide_c.png",
-            "x": 471,
-            "y": 334,
+            "img": "assets/uploads/mvlj26wp-armchair_side_c.png",
+            "x": 360,
+            "y": 354,
             "solid": true,
             "foot": 16
           },
