@@ -275,6 +275,7 @@ G.place = (el, o) => {
   else if (el._ar && o.w != null) el.style.height = (o.w * el._ar) + 'px';
   if (typeof o.z === 'number') el.style.zIndex = o.z;
   el.classList.toggle('is-hide', !!o.hide);
+  el.classList.toggle('is-flip', !!o.flip);
 };
 
 /** картинка-объект. path — путь в конфиге (чтобы редактор мог её выбрать) */
@@ -560,6 +561,7 @@ function placePortrait(on) {
   const o = { x: L.x ?? 125, y: L.y ?? G.VH, h: L.h ?? 290 };
   if (G.get(path)) novSpr.dataset.edit = path; else delete novSpr.dataset.edit;
   G.place(novSpr, o);
+  novSpr.classList.toggle('is-flip', !!(L.flip || dlgState?.lines[dlgState.i]?.flip));
   novSpr.style.width = 'auto';
   // окно диалога — рядом с портретом: портрет слева — окно правее, справа — левее
   const ar = novSpr.naturalWidth ? novSpr.naturalWidth / novSpr.naturalHeight : .66, half = o.h * ar / 2;

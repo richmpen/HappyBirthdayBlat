@@ -105,6 +105,9 @@ body[data-scene="cutscene"].cut-framed #view{ border-radius:22px; box-shadow:0 0
   max-width:none;
 }
 .ent.is-flip{ transform:translate(-50%,-100%) scaleX(-1); }
+.art-dot.is-flip{ transform:translate(-50%,-50%) scaleX(-1); }
+.nv__sprite.is-flip{ transform:scaleX(-1); }
+.ed__mini.is-on{ background:var(--p500, #c9184a); color:#fff; }
 .sheet{ background-repeat:no-repeat; }
 .ent--empty{
   display:grid; place-items:center; text-align:center;

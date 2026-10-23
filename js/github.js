@@ -100,6 +100,12 @@ G.github = {
     } catch {
       throw new Error('нет связи с GitHub — проверь интернет');
     }
+    // свой ключ в этом браузере не подошёл (например, браузер сам подставил в поле пароль),
+    // а у сайта есть общий — забываем свой и повторяем с общим
+    if (r.status === 401 && s.own && this.shared?.token && !opt.retried) {
+      G.writeLS(KEY, { ...G.readLS(KEY, {}), token: '' });
+      return this.api(path, { ...opt, retried: true });
+    }
     if (!r.ok) {
       let msg = '';
       try { msg = (await r.json()).message; } catch {}

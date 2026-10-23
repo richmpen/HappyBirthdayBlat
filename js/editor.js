@@ -462,12 +462,14 @@ function buildLayers() {
          <button class="ed__mini" data-a="eye" title="${it.o.hide ? 'Показать' : 'Спрятать'}">${it.o.hide ? '◌' : '👁'}</button>
          <button class="ed__mini" data-a="up" title="Слой выше">▲</button><button class="ed__mini" data-a="dn" title="Слой ниже">▼</button>
          <button class="ed__mini" data-a="img" title="Заменить картинку">🖼</button>
+         <button class="ed__mini${it.o.flip ? ' is-on' : ''}" data-a="flip" title="Отразить">↔</button>
          ${inArr ? '<button class="ed__mini" data-a="dup" title="Дублировать">⧉</button><button class="ed__mini" data-a="del" title="Удалить">✕</button>' : ''}
        </span>`;
     row.onclick = e => {
       const a = e.target.closest('[data-a]')?.dataset.a;
       if (!a) { select(it.path); buildLayers(); return; }
       if (a === 'eye') { if (it.o.hide) delete it.o.hide; else it.o.hide = true; }
+      if (a === 'flip') { if (it.o.flip) delete it.o.flip; else it.o.flip = true; }
       if (a === 'up' || a === 'dn') shiftLayer(it, a === 'up' ? 1 : -1, items);
       if (a === 'img') { pickAsset(p => { it.o[it.key] = p; if (/^world\./.test(it.path)) delete it.o.w; structural(); }, { title: 'Заменить картинку', prefer: (src || '').replace(/[^/]+$/, '') }); return; }
       if (a === 'dup') { const c = G.clone(it.o); if (typeof c.x === 'number') { c.x += 12; c.y += 8; } arr.splice(+idx + 1, 0, c); sel = `${parent}.${+idx + 1}`; }
@@ -594,6 +596,17 @@ function buildSel() {
     return;
   }
   box.appendChild(G.el('div', 'ed__seltitle', esc(pathTitle(sel))));
+  const o = G.get(sel), key = o && typeof o === 'object' && !Array.isArray(o) && imgKeyOf(o);
+  if (key) {
+    const row = G.el('div', 'ed__row');
+    row.innerHTML = `<button class="ed__btn${o.flip ? ' is-on' : ''}" data-a="flip">↔ Отразить</button><button class="ed__btn" data-a="img">🖼 Заменить картинку…</button>`;
+    row.onclick = e => {
+      const a = e.target.closest('[data-a]')?.dataset.a;
+      if (a === 'flip') { if (o.flip) delete o.flip; else o.flip = true; structural(); }
+      if (a === 'img') pickAsset(p => { o[key] = p; if (/^world./.test(sel)) delete o.w; structural(); }, { title: 'Заменить картинку', prefer: String(o[key] || '').replace(/[^/]+$/, '') });
+    };
+    box.appendChild(row);
+  }
   fields(box, sel);
 }
 
@@ -654,7 +667,7 @@ function buildGithub() {
     `<label class="ed__f"><span class="ed__k">Владелец (логин GitHub)</span><input type="text" id="ghOwner" value="${esc(own.owner || s.owner)}" spellcheck="false"></label>
      <label class="ed__f"><span class="ed__k">Репозиторий</span><input type="text" id="ghRepo" value="${esc(own.repo || s.repo)}" spellcheck="false"></label>
      <label class="ed__f"><span class="ed__k">Ветка</span><input type="text" id="ghBranch" value="${esc(own.branch || s.branch)}" spellcheck="false"></label>
-     <label class="ed__f"><span class="ed__k">Токен доступа</span><input type="password" id="ghToken" value="${esc(own.token || '')}" autocomplete="off" placeholder="github_pat_…"></label>
+     <label class="ed__f"><span class="ed__k">Токен доступа${shared ? ' (не нужен: у сайта есть общий ключ, он скрыт)' : ''}</span><input type="password" id="ghToken" value="${esc(own.token || '')}" autocomplete="new-password" data-lpignore="true" name="cherry-gh-token" placeholder="${shared ? 'пусто — сохраняется общим ключом' : 'github_pat_…'}"></label>
      <div class="ed__row"><button class="ed__btn" id="ghCheck">Проверить доступ</button></div>
      <div class="ed__note" id="ghMsg"></div>
      <p class="ed__note"><b>Владелец репозитория:</b> <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">создать Fine-grained token</a> →
