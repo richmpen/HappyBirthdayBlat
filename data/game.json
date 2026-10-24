@@ -558,7 +558,7 @@
         ],
         "chars": [
           {
-            "name": "Лиззи",
+            "name": "",
             "img": "assets/sprites/pets/cat_lizzy.png",
             "x": 520,
             "y": 300,
@@ -735,7 +735,7 @@
           }
         ],
         "npc": {
-          "name": "Аня",
+          "name": "",
           "img": "assets/sprites/girls/anya.png",
           "x": 168,
           "y": 302,
@@ -747,7 +747,7 @@
             },
             {
               "who": "npc",
-              "text": "С днем рождения!! Я пихдатая подруга, так что про твой др не забыла и ДАЖЕ приготовила тебе торт! Смотри, это я сама сделала!!!",
+              "text": "С днем рождения!! Я пиздатая подруга, так что про твой др не забыла и ДАЖЕ приготовила тебе торт! Смотри, это я сама сделала!!!",
               "sprite": "assets/novel/anya_happy.webp",
               "wait": 0.8
             },
@@ -927,7 +927,7 @@
           }
         ],
         "npc": {
-          "name": "Лиза",
+          "name": "",
           "img": "assets/sprites/girls/liza.png",
           "x": 420,
           "y": 118,
@@ -974,7 +974,7 @@
         },
         "chars": [
           {
-            "name": "Сонечка",
+            "name": "",
             "img": "assets/sprites/pets/dog_sonechka.png",
             "x": 450,
             "y": 104,
@@ -1110,7 +1110,7 @@
           }
         ],
         "npc": {
-          "name": "Андрей",
+          "name": "",
           "img": "assets/uploads/mvllnts0-file.png",
           "x": 705,
           "y": 319,
