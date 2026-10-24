@@ -482,8 +482,8 @@
           },
           {
             "img": "assets/world/items/item_13.png",
-            "x": 505,
-            "y": 208
+            "x": 500,
+            "y": 205
           },
           {
             "img": "assets/world/items/window_03.png",
@@ -498,7 +498,7 @@
           {
             "img": "assets/world/items/item_23.png",
             "x": 470,
-            "y": 226,
+            "y": 220,
             "lift": 40
           },
           {
@@ -545,7 +545,7 @@
           },
           {
             "img": "assets/world/furniture/plant.png",
-            "x": 274,
+            "x": 270,
             "y": 262,
             "solid": true
           },
@@ -657,8 +657,8 @@
           },
           {
             "img": "assets/world/items/item_60.png",
-            "x": 98,
-            "y": 216,
+            "x": 113,
+            "y": 219,
             "lift": 40
           },
           {
@@ -993,32 +993,33 @@
         "y": 11,
         "w": 16,
         "h": 13,
-        "wall": "assets/world/walls/plum.png",
-        "floor": "assets/world/floors/checker_plum.png",
+        "wall": "assets/uploads/mvlyfcly-file.png",
+        "floor": "assets/uploads/mvlyferz-file.png",
         "music": "",
         "props": [
           {
             "img": "assets/world/furniture/record_box_b.png",
-            "x": 604,
-            "y": 246,
+            "x": 589,
+            "y": 351,
             "solid": true
           },
           {
             "img": "assets/world/furniture/phonograph_b.png",
-            "x": 622,
-            "y": 246,
+            "x": 802,
+            "y": 311,
             "solid": true
           },
           {
-            "img": "assets/world/furniture/bookcase_dark.png",
-            "x": 672,
-            "y": 246,
-            "solid": true
+            "img": "assets/uploads/mvlzu30v-file.png",
+            "x": 702,
+            "y": 267,
+            "solid": true,
+            "w": 69
           },
           {
             "img": "assets/world/furniture/fireplace_b.png",
-            "x": 730,
-            "y": 246,
+            "x": 778,
+            "y": 278,
             "solid": true
           },
           {
@@ -1034,9 +1035,10 @@
             "solid": true
           },
           {
-            "img": "assets/world/items/item_09.png",
-            "x": 646,
-            "y": 204
+            "img": "assets/uploads/mvm0ab68-1.png",
+            "x": 641,
+            "y": 230,
+            "w": 38.9
           },
           {
             "img": "assets/world/items/window_05.png",
@@ -1049,17 +1051,19 @@
             "y": 202
           },
           {
-            "img": "assets/world/furniture/rug_big_c.png",
+            "img": "assets/uploads/mvlyftq7-file.png",
             "x": 704,
-            "y": 348,
-            "flat": true
+            "y": 338,
+            "flat": true,
+            "w": 54
           },
           {
-            "img": "assets/world/furniture/sofa_side_c.png",
-            "x": 812,
-            "y": 350,
+            "img": "assets/uploads/mvlyhxap-file.png",
+            "x": 638,
+            "y": 257,
             "solid": true,
-            "foot": 46
+            "foot": 46,
+            "w": 46
           },
           {
             "img": "assets/world/furniture/table_round.png",
@@ -1099,16 +1103,16 @@
           },
           {
             "img": "assets/world/furniture/floor_lamp_b.png",
-            "x": 792,
-            "y": 372,
+            "x": 808,
+            "y": 377,
             "solid": true
           }
         ],
         "npc": {
           "name": "Андрей",
           "img": "assets/uploads/mvllnts0-file.png",
-          "x": 704,
-          "y": 316,
+          "x": 705,
+          "y": 319,
           "dialog": [
             {
               "who": "npc",
