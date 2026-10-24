@@ -805,11 +805,11 @@
       "dressup": {
         "name": "Гардеробная",
         "x": 18,
-        "y": 0,
+        "y": -0.1,
         "w": 16,
-        "h": 11,
-        "wall": "assets/world/walls/rose.png",
-        "floor": "assets/world/floors/wood_red.png",
+        "h": 11.1,
+        "wall": "assets/uploads/mvm2cwv4-cntyf.png",
+        "floor": "assets/uploads/mvm2qkuh-gkbnrf.png",
         "music": "",
         "props": [
           {
@@ -882,10 +882,11 @@
             "lift": 40
           },
           {
-            "img": "assets/world/furniture/rug_tall_c.png",
-            "x": 366,
-            "y": 150,
-            "flat": true
+            "img": "assets/uploads/mvm3flx5-file.png",
+            "x": 419,
+            "y": 154,
+            "flat": true,
+            "w": 58.7
           },
           {
             "img": "assets/world/furniture/armchair_c.png",
