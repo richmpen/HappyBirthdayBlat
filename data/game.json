@@ -814,8 +814,8 @@
         "props": [
           {
             "img": "assets/world/furniture/wardrobe.png",
-            "x": 530,
-            "y": 173,
+            "x": 304,
+            "y": 172,
             "solid": true
           },
           {
@@ -836,7 +836,8 @@
             "img": "assets/uploads/mvnssgka-file.png",
             "x": 374,
             "y": 67,
-            "solid": true
+            "solid": true,
+            "w": 22
           },
           {
             "img": "assets/world/furniture/dresser.png",
@@ -864,8 +865,8 @@
           },
           {
             "img": "assets/uploads/mvnuvx3v-file.png",
-            "x": 419,
-            "y": 64,
+            "x": 418,
+            "y": 65,
             "w": 60
           },
           {
@@ -880,9 +881,9 @@
             "lift": 40
           },
           {
-            "img": "assets/world/items/item_27.png",
-            "x": 302,
-            "y": 164,
+            "img": "assets/uploads/mvnv3t0m-file.png",
+            "x": 527,
+            "y": 168,
             "lift": 40
           },
           {
@@ -891,6 +892,13 @@
             "y": 173,
             "flat": true,
             "w": 56
+          },
+          {
+            "img": "assets/uploads/mvnv9xoc-file.png",
+            "x": 488,
+            "y": 168,
+            "flat": true,
+            "w": 26
           },
           {
             "img": "assets/uploads/mvnrfxgn-file.png",
