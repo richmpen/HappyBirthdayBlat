@@ -545,8 +545,8 @@
           },
           {
             "img": "assets/world/furniture/plant.png",
-            "x": 270,
-            "y": 262,
+            "x": 267,
+            "y": 258,
             "solid": true
           },
           {
@@ -808,37 +808,39 @@
         "y": -0.1,
         "w": 16,
         "h": 11.1,
-        "wall": "assets/uploads/mvnrae6s-cntyf.png",
+        "wall": "assets/uploads/mvns16lf-cntyf.png",
         "floor": "assets/uploads/mvm2qkuh-gkbnrf.png",
         "music": "",
         "props": [
           {
             "img": "assets/world/furniture/wardrobe.png",
-            "x": 308,
-            "y": 70,
+            "x": 530,
+            "y": 173,
             "solid": true
           },
           {
-            "img": "assets/world/furniture/wardrobe_b.png",
-            "x": 326,
-            "y": 70,
-            "solid": true
+            "img": "assets/uploads/mvnsj12o-2.png",
+            "x": 332,
+            "y": 72,
+            "solid": true,
+            "w": 43
           },
           {
-            "img": "assets/world/furniture/cupboard_b.png",
-            "x": 350,
-            "y": 70,
-            "solid": true
+            "img": "assets/uploads/mvntfl03-file.png",
+            "x": 301,
+            "y": 72,
+            "solid": true,
+            "w": 13
           },
           {
-            "img": "assets/world/furniture/mirror.png",
-            "x": 382,
-            "y": 68,
+            "img": "assets/uploads/mvnssgka-file.png",
+            "x": 374,
+            "y": 67,
             "solid": true
           },
           {
             "img": "assets/world/furniture/dresser.png",
-            "x": 479,
+            "x": 477,
             "y": 73,
             "solid": true
           },
@@ -856,18 +858,20 @@
           },
           {
             "img": "assets/world/items/item_31.png",
-            "x": 440,
-            "y": 34
+            "x": 353,
+            "y": 28,
+            "w": 13
           },
           {
-            "img": "assets/world/items/window_19.png",
-            "x": 428,
-            "y": 40
+            "img": "assets/uploads/mvnuvx3v-file.png",
+            "x": 419,
+            "y": 64,
+            "w": 60
           },
           {
             "img": "assets/uploads/mvnr97ks-file.png",
-            "x": 355,
-            "y": 32
+            "x": 463,
+            "y": 28
           },
           {
             "img": "assets/world/items/item_12.png",
@@ -877,8 +881,8 @@
           },
           {
             "img": "assets/world/items/item_27.png",
-            "x": 350,
-            "y": 50,
+            "x": 302,
+            "y": 164,
             "lift": 40
           },
           {
@@ -916,10 +920,12 @@
             "lift": 30
           },
           {
-            "img": "assets/world/furniture/plant_b.png",
-            "x": 300,
-            "y": 164,
-            "solid": true
+            "img": "assets/uploads/mvnrxm2g-file.png",
+            "x": 301,
+            "y": 60,
+            "solid": true,
+            "lift": 18,
+            "w": 8
           },
           {
             "img": "assets/uploads/mvnrvn25-file.png",
@@ -979,7 +985,7 @@
             "name": "",
             "img": "assets/sprites/pets/dog_sonechka.png",
             "x": 488,
-            "y": 115,
+            "y": 118,
             "dialog": [
               "Гав-гав!",
               {
@@ -987,7 +993,7 @@
                 "text": "Я выебу ваши души, шавки пидрильные! "
               }
             ],
-            "lift": 17
+            "lift": 13
           }
         ]
       },
