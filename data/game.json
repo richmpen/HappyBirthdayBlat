@@ -748,8 +748,7 @@
             {
               "who": "npc",
               "text": "С днем рождения!! Я пиздатая подруга, так что про твой др не забыла и ДАЖЕ приготовила тебе торт! Смотри, это я сама сделала!!!",
-              "sprite": "assets/novel/anya_happy.webp",
-              "wait": 0.8
+              "sprite": "assets/novel/anya_happy.webp"
             },
             {
               "pic": "assets/cutscenes/kitchen_intro.webp",
