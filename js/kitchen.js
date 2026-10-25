@@ -762,7 +762,8 @@ STEPS.decor = {
       el = new Image();
       el.className = 'ent px k-deco'; el.draggable = false; el.src = G.asset(it.img);
       layer.appendChild(el);
-      st.drag = { el, fresh: true, dx: 0, dy: size(it.img, 24, 24).h / 2 };   // украшение — серединой под курсором
+      el._h = size(it.img, 24, 24).h;                     // высоту знаем заранее: картинка могла ещё не догрузиться
+      st.drag = { el, fresh: true, dx: 0, dy: el._h / 2 };   // украшение — серединой под курсором
     } else {
       st.drag = { el, fresh: false, dx: parseFloat(el.style.left) - p.x, dy: parseFloat(el.style.top) - p.y };
     }
@@ -781,7 +782,7 @@ STEPS.decor = {
     st.drag = null;
     d.el.classList.remove('is-drag');
     // попало ли на торт — по середине украшения (у картинок украшений пустые поля), до самого низа торта
-    const c = K.decor.cake, x = parseFloat(d.el.style.left), y = parseFloat(d.el.style.top) - (d.el.naturalHeight || 24) / 2;
+    const c = K.decor.cake, x = parseFloat(d.el.style.left), y = parseFloat(d.el.style.top) - (d.el._h || d.el.naturalHeight || 24) / 2;
     const on = x > c.x - st.cs.w / 2 + 4 && x < c.x + st.cs.w / 2 - 4 && y > c.y - st.cs.h + 4 && y < c.y - 4;
     if (on) { if (d.fresh) st.count++; G.sfx.plop(); fx('popStar', x, y - 8, { scale: .6 }); }
     else { if (!d.fresh) st.count--; d.el.remove(); }

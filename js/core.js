@@ -526,12 +526,19 @@ function paintNovel(o, name) {
   else if (o.sprite) s.sprite = [].concat(o.sprite).filter(Boolean);
   if (o.spriteEvery) s.every = o.spriteEvery;
   const frames = s.sprite || [];
-  frames.forEach(p => { if (!s.pre.has(p)) { const i = new Image(); i.src = G.asset(p); s.pre.set(p, i); } });
+  frames.forEach(p => preSprite(s, p));
   clearInterval(s.sprT);
   if (frames.length) {
     let f = 0;
-    const set = p => { const u = G.asset(p); if (novSpr.getAttribute('src') !== u) novSpr.src = u; };
-    set(frames[0]);
+    // новый спрайт показываем, только когда он загрузился — иначе на миг видно портрет из прошлого диалога
+    const set = (p, first) => {
+      const u = G.asset(p), im = s.pre.get(p);
+      if (novSpr.getAttribute('src') === u) return;
+      if (!(im?.complete && im.naturalWidth) && !first) return;     // кадр ещё грузится — пусть пока стоит прежний
+      if (first && !(im?.complete && im.naturalWidth)) novSpr.style.visibility = 'hidden';
+      novSpr.src = u;
+    };
+    set(frames[0], true);
     if (frames.length > 1) s.sprT = setInterval(() => set(frames[++f % frames.length]), Math.max(.1, s.every || 1) * 1000);
     if (novSpr.hidden) { novSpr.hidden = false; novSpr.classList.remove('is-in'); void novSpr.offsetWidth; novSpr.classList.add('is-in'); }
   } else novSpr.hidden = true;
@@ -568,9 +575,16 @@ function placePortrait(on) {
   dlg.style.left = dlg.style.right = '';
   if (on && o.x < G.VW / 2) dlg.style.left = Math.max(50, Math.round(o.x + half + 14)) + 'px';
   else if (on) dlg.style.right = Math.max(50, Math.round(G.VW - o.x + half + 14)) + 'px';
-  if (!novSpr.onload) novSpr.onload = () => { if (dlgState && !novSpr.hidden) placePortrait(true); };
+
 }
 G.placePortrait = () => { if (dlgState?.novel) placePortrait(!novSpr.hidden); };
+
+novSpr.addEventListener('load', () => { novSpr.style.visibility = ''; if (dlgState && !novSpr.hidden) placePortrait(true); });
+/** загрузить спрайт заранее */
+function preSprite(s, p) {
+  if (!p || p === '-' || s.pre.has(p)) return;
+  const i = new Image(); i.src = G.asset(p); s.pre.set(p, i);
+}
 
 /** перейти к следующей фразе само через sec секунд (в редакторе — ждём, пока его закроют) */
 function autoNext(s, sec) {
@@ -621,6 +635,7 @@ function endDialog(result) {
   dlg.hidden = true;
   dlgChoices.hidden = true;
   nov.hidden = true; novSpr.hidden = true; novPic.classList.remove('is-on'); dlg.style.left = dlg.style.right = '';
+  novSpr.removeAttribute('src'); novSpr.style.visibility = '';     // следующий диалог не покажет этот портрет
   delete dlg.dataset.edit; delete nov.dataset.edit;
   s.resolve(result);
 }
@@ -636,6 +651,7 @@ function openDialog(lines, speaker, choices, path) {
     if (!lines.length) { resolve(0); return; }
     dlgState = { src, lines, i: 0, speaker, path, choices: null, allChoices: choices, sel: 0, resolve, novel: isNovel(lines), sprite: null, pre: new Map() };
     if (choices && lines.length === 1) dlgState.choices = choices;
+    for (const l of lines) [].concat(l?.sprite || []).forEach(p => preSprite(dlgState, p));   // все спрайты диалога — сразу
     if (path) dlg.dataset.edit = nov.dataset.edit = path;
     G.dialogOpen = true;
     dlg.hidden = false;
