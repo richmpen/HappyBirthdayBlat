@@ -808,7 +808,7 @@
         "y": -0.1,
         "w": 16,
         "h": 11.1,
-        "wall": "assets/uploads/mvm2cwv4-cntyf.png",
+        "wall": "assets/uploads/mvnrae6s-cntyf.png",
         "floor": "assets/uploads/mvm2qkuh-gkbnrf.png",
         "music": "",
         "props": [
@@ -838,8 +838,8 @@
           },
           {
             "img": "assets/world/furniture/dresser.png",
-            "x": 468,
-            "y": 70,
+            "x": 479,
+            "y": 73,
             "solid": true
           },
           {
@@ -865,13 +865,13 @@
             "y": 40
           },
           {
-            "img": "assets/world/items/item_08.png",
-            "x": 356,
-            "y": 30
+            "img": "assets/uploads/mvnr97ks-file.png",
+            "x": 355,
+            "y": 32
           },
           {
             "img": "assets/world/items/item_12.png",
-            "x": 468,
+            "x": 478,
             "y": 48,
             "lift": 40
           },
@@ -883,17 +883,18 @@
           },
           {
             "img": "assets/uploads/mvm3flx5-file.png",
-            "x": 419,
-            "y": 154,
+            "x": 417,
+            "y": 173,
             "flat": true,
-            "w": 58.7
+            "w": 56
           },
           {
-            "img": "assets/world/furniture/armchair_c.png",
-            "x": 508,
-            "y": 136,
+            "img": "assets/uploads/mvnrfxgn-file.png",
+            "x": 488,
+            "y": 129,
             "solid": true,
-            "foot": 16
+            "foot": 16,
+            "w": 76
           },
           {
             "img": "assets/world/furniture/ironing_board_b.png",
@@ -902,15 +903,16 @@
             "solid": true
           },
           {
-            "img": "assets/world/furniture/nightstand.png",
-            "x": 524,
-            "y": 164,
-            "solid": true
+            "img": "assets/uploads/mvnrj0f9-file.png",
+            "x": 488,
+            "y": 153,
+            "solid": true,
+            "w": 48
           },
           {
             "img": "assets/world/furniture/table_lamp_b.png",
-            "x": 524,
-            "y": 146,
+            "x": 311,
+            "y": 102,
             "lift": 30
           },
           {
@@ -920,17 +922,17 @@
             "solid": true
           },
           {
-            "img": "assets/world/furniture/stool_c.png",
-            "x": 466,
-            "y": 150,
+            "img": "assets/uploads/mvnrvn25-file.png",
+            "x": 451,
+            "y": 73,
             "solid": true
           }
         ],
         "npc": {
           "name": "",
           "img": "assets/sprites/girls/liza.png",
-          "x": 420,
-          "y": 118,
+          "x": 416,
+          "y": 121,
           "dialog": [
             {
               "who": "npc",
@@ -976,15 +978,16 @@
           {
             "name": "",
             "img": "assets/sprites/pets/dog_sonechka.png",
-            "x": 450,
-            "y": 104,
+            "x": 488,
+            "y": 115,
             "dialog": [
               "Гав-гав!",
               {
                 "who": "npc",
                 "text": "Я выебу ваши души, шавки пидрильные! "
               }
-            ]
+            ],
+            "lift": 17
           }
         ]
       },
