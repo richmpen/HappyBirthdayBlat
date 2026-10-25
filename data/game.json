@@ -813,9 +813,9 @@
         "music": "",
         "props": [
           {
-            "img": "assets/world/furniture/wardrobe.png",
-            "x": 304,
-            "y": 172,
+            "img": "assets/uploads/mvnw3ea2-file.png",
+            "x": 322,
+            "y": 155,
             "solid": true
           },
           {
@@ -847,15 +847,16 @@
           },
           {
             "img": "assets/world/furniture/coat_rack_b.png",
-            "x": 500,
-            "y": 72,
+            "x": 296,
+            "y": 103,
             "solid": true
           },
           {
-            "img": "assets/world/furniture/cabinet_tall.png",
-            "x": 526,
-            "y": 70,
-            "solid": true
+            "img": "assets/uploads/mvnx9uaj-1.png",
+            "x": 517,
+            "y": 74,
+            "solid": true,
+            "w": 44
           },
           {
             "img": "assets/world/items/item_31.png",
@@ -910,8 +911,8 @@
           },
           {
             "img": "assets/world/furniture/ironing_board_b.png",
-            "x": 318,
-            "y": 136,
+            "x": 340,
+            "y": 115,
             "solid": true
           },
           {
