@@ -813,8 +813,8 @@
         "props": [
           {
             "img": "assets/uploads/mvnw3ea2-file.png",
-            "x": 322,
-            "y": 155,
+            "x": 320,
+            "y": 156,
             "solid": true
           },
           {
@@ -826,8 +826,8 @@
           },
           {
             "img": "assets/uploads/mvntfl03-file.png",
-            "x": 301,
-            "y": 72,
+            "x": 300,
+            "y": 73,
             "solid": true,
             "w": 13
           },
@@ -839,23 +839,18 @@
             "w": 22
           },
           {
-            "img": "assets/world/furniture/dresser.png",
-            "x": 477,
+            "img": "assets/uploads/mvt9mkpv-file.png",
+            "x": 488,
             "y": 73,
-            "solid": true
-          },
-          {
-            "img": "assets/world/furniture/coat_rack_b.png",
-            "x": 296,
-            "y": 103,
-            "solid": true
+            "solid": true,
+            "w": 37.3
           },
           {
             "img": "assets/uploads/mvnx9uaj-1.png",
-            "x": 517,
+            "x": 524,
             "y": 74,
             "solid": true,
-            "w": 44
+            "w": 31.6
           },
           {
             "img": "assets/world/items/item_31.png",
@@ -871,14 +866,9 @@
           },
           {
             "img": "assets/uploads/mvnr97ks-file.png",
-            "x": 463,
-            "y": 28
-          },
-          {
-            "img": "assets/world/items/item_12.png",
-            "x": 478,
-            "y": 48,
-            "lift": 40
+            "x": 524,
+            "y": 30,
+            "w": 13.4
           },
           {
             "img": "assets/uploads/mvnv3t0m-file.png",
@@ -901,6 +891,13 @@
             "w": 26
           },
           {
+            "img": "assets/uploads/mvta4w1q-file.png",
+            "x": 332,
+            "y": 97,
+            "flat": true,
+            "w": 43.2
+          },
+          {
             "img": "assets/uploads/mvnrfxgn-file.png",
             "x": 488,
             "y": 129,
@@ -909,10 +906,18 @@
             "w": 76
           },
           {
-            "img": "assets/world/furniture/ironing_board_b.png",
-            "x": 340,
-            "y": 115,
-            "solid": true
+            "img": "assets/uploads/mvta1vvw-file.png",
+            "x": 304,
+            "y": 172,
+            "solid": true,
+            "w": 19
+          },
+          {
+            "img": "assets/uploads/mvta1vvw-file.png",
+            "x": 306,
+            "y": 113,
+            "solid": true,
+            "w": 19
           },
           {
             "img": "assets/uploads/mvnrj0f9-file.png",
@@ -922,22 +927,23 @@
             "w": 48
           },
           {
-            "img": "assets/world/furniture/table_lamp_b.png",
-            "x": 311,
-            "y": 102,
-            "lift": 30
+            "img": "assets/uploads/mvt9wihb-file.png",
+            "x": 394,
+            "y": 70,
+            "lift": 30,
+            "w": 14.1
           },
           {
             "img": "assets/uploads/mvnrxm2g-file.png",
-            "x": 301,
-            "y": 60,
+            "x": 300,
+            "y": 61,
             "solid": true,
             "lift": 18,
             "w": 8
           },
           {
             "img": "assets/uploads/mvnrvn25-file.png",
-            "x": 451,
+            "x": 454,
             "y": 73,
             "solid": true
           }
