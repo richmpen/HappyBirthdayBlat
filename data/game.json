@@ -906,6 +906,14 @@
             "w": 76
           },
           {
+            "img": "assets/uploads/mvtabapm-file.png",
+            "x": 392,
+            "y": 70,
+            "solid": true,
+            "foot": 16,
+            "w": 15
+          },
+          {
             "img": "assets/uploads/mvta1vvw-file.png",
             "x": 304,
             "y": 172,
@@ -925,13 +933,6 @@
             "y": 153,
             "solid": true,
             "w": 48
-          },
-          {
-            "img": "assets/uploads/mvt9wihb-file.png",
-            "x": 394,
-            "y": 70,
-            "lift": 30,
-            "w": 14.1
           },
           {
             "img": "assets/uploads/mvnrxm2g-file.png",
