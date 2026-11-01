@@ -408,8 +408,8 @@
           },
           {
             "img": "assets/world/furniture/sofa_pillows_c.png",
-            "x": 453,
-            "y": 299,
+            "x": 417,
+            "y": 303,
             "solid": true,
             "foot": 14
           },
@@ -423,9 +423,10 @@
           {
             "img": "assets/uploads/mvlj2h7w-armchair_side_c.png",
             "x": 472,
-            "y": 352,
+            "y": 355,
             "solid": true,
-            "foot": 16
+            "foot": 16,
+            "flip": true
           },
           {
             "img": "assets/uploads/mvlj26wp-armchair_side_c.png",
@@ -499,7 +500,7 @@
             "img": "assets/world/items/item_23.png",
             "x": 470,
             "y": 220,
-            "lift": 40
+            "lift": 27
           },
           {
             "img": "assets/world/items/item_21.png",
@@ -871,12 +872,6 @@
             "w": 13.4
           },
           {
-            "img": "assets/uploads/mvnv3t0m-file.png",
-            "x": 527,
-            "y": 168,
-            "lift": 40
-          },
-          {
             "img": "assets/uploads/mvm3flx5-file.png",
             "x": 417,
             "y": 173,
@@ -933,6 +928,13 @@
             "y": 153,
             "solid": true,
             "w": 48
+          },
+          {
+            "img": "assets/uploads/mvxu8wvz-file.png",
+            "x": 529,
+            "y": 171,
+            "solid": true,
+            "w": 22
           },
           {
             "img": "assets/uploads/mvnrxm2g-file.png",
@@ -1035,28 +1037,29 @@
             "solid": true
           },
           {
-            "img": "assets/uploads/mvlzu30v-file.png",
-            "x": 702,
-            "y": 267,
+            "img": "assets/uploads/mvxt7ypw-file.png",
+            "x": 701,
+            "y": 268,
             "solid": true,
             "w": 69
           },
           {
-            "img": "assets/world/furniture/fireplace_b.png",
-            "x": 778,
-            "y": 278,
-            "solid": true
+            "img": "assets/uploads/mvxsn05t-file.png",
+            "x": 753,
+            "y": 252,
+            "solid": true,
+            "w": 17
           },
           {
             "img": "assets/world/furniture/floor_lamp_b.png",
-            "x": 768,
-            "y": 250,
+            "x": 794,
+            "y": 260,
             "solid": true
           },
           {
             "img": "assets/world/furniture/cabinet_narrow_b.png",
-            "x": 800,
-            "y": 246,
+            "x": 819,
+            "y": 260,
             "solid": true
           },
           {
@@ -1068,12 +1071,13 @@
           {
             "img": "assets/world/items/window_05.png",
             "x": 770,
-            "y": 214
+            "y": 218
           },
           {
-            "img": "assets/world/items/item_13.png",
+            "img": "assets/uploads/mvxt00r9-file.png",
             "x": 705,
-            "y": 202
+            "y": 238,
+            "w": 92
           },
           {
             "img": "assets/uploads/mvlyftq7-file.png",
@@ -1083,9 +1087,9 @@
             "w": 54
           },
           {
-            "img": "assets/uploads/mvlyhxap-file.png",
-            "x": 638,
-            "y": 257,
+            "img": "assets/uploads/mvxt4gh0-file.png",
+            "x": 639,
+            "y": 254,
             "solid": true,
             "foot": 46,
             "w": 46
