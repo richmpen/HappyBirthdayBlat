@@ -561,8 +561,8 @@
           {
             "name": "",
             "img": "assets/sprites/pets/cat_lizzy.png",
-            "x": 520,
-            "y": 300,
+            "x": 588,
+            "y": 295,
             "dialog": [
               {
                 "who": "npc",
@@ -1025,16 +1025,32 @@
         "music": "",
         "props": [
           {
-            "img": "assets/world/furniture/record_box_b.png",
-            "x": 589,
-            "y": 351,
-            "solid": true
+            "img": "assets/uploads/mvxx5qe5-file.png",
+            "x": 758,
+            "y": 313,
+            "solid": true,
+            "w": 37
           },
           {
-            "img": "assets/world/furniture/phonograph_b.png",
-            "x": 802,
-            "y": 311,
-            "solid": true
+            "img": "assets/uploads/mvxx5qe5-file.png",
+            "x": 798,
+            "y": 313,
+            "solid": true,
+            "w": 37
+          },
+          {
+            "img": "assets/uploads/mvxx5qe5-file.png",
+            "x": 798,
+            "y": 331,
+            "solid": true,
+            "w": 37
+          },
+          {
+            "img": "assets/uploads/mvxx5qe5-file.png",
+            "x": 758,
+            "y": 331,
+            "solid": true,
+            "w": 37
           },
           {
             "img": "assets/uploads/mvxt7ypw-file.png",
@@ -1051,16 +1067,11 @@
             "w": 17
           },
           {
-            "img": "assets/world/furniture/floor_lamp_b.png",
-            "x": 794,
-            "y": 260,
-            "solid": true
-          },
-          {
-            "img": "assets/world/furniture/cabinet_narrow_b.png",
-            "x": 819,
-            "y": 260,
-            "solid": true
+            "img": "assets/uploads/mvxzro5j-file.png",
+            "x": 797,
+            "y": 253,
+            "solid": true,
+            "w": 40.9
           },
           {
             "img": "assets/uploads/mvm0ab68-1.png",
@@ -1069,9 +1080,22 @@
             "w": 38.9
           },
           {
-            "img": "assets/world/items/window_05.png",
-            "x": 770,
-            "y": 218
+            "img": "assets/uploads/mvxvfsew-file.png",
+            "x": 605,
+            "y": 229,
+            "w": 16
+          },
+          {
+            "img": "assets/uploads/mvy3bnsd-file.png",
+            "x": 756,
+            "y": 218,
+            "w": 23
+          },
+          {
+            "img": "assets/uploads/mvy3ew66-file.png",
+            "x": 783,
+            "y": 216,
+            "w": 23
           },
           {
             "img": "assets/uploads/mvxt00r9-file.png",
@@ -1095,46 +1119,11 @@
             "w": 46
           },
           {
-            "img": "assets/world/furniture/table_round.png",
-            "x": 620,
-            "y": 360,
-            "solid": true
-          },
-          {
-            "img": "assets/world/furniture/stool_b.png",
-            "x": 600,
-            "y": 372,
-            "solid": true
-          },
-          {
-            "img": "assets/world/furniture/stool_b.png",
-            "x": 642,
-            "y": 372,
-            "solid": true
-          },
-          {
-            "img": "assets/world/items/item_45.png",
-            "x": 617,
-            "y": 346,
-            "lift": 40
-          },
-          {
-            "img": "assets/world/items/item_47.png",
+            "img": "assets/uploads/mvy304bw-file.png",
             "x": 624,
-            "y": 348,
-            "lift": 40
-          },
-          {
-            "img": "assets/world/furniture/plant.png",
-            "x": 590,
-            "y": 262,
-            "solid": true
-          },
-          {
-            "img": "assets/world/furniture/floor_lamp_b.png",
-            "x": 808,
-            "y": 377,
-            "solid": true
+            "y": 372,
+            "solid": true,
+            "w": 72
           }
         ],
         "npc": {
