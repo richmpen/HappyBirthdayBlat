@@ -561,8 +561,8 @@
           {
             "name": "",
             "img": "assets/sprites/pets/cat_lizzy.png",
-            "x": 588,
-            "y": 295,
+            "x": 596,
+            "y": 285,
             "dialog": [
               {
                 "who": "npc",
