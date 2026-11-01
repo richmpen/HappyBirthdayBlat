@@ -561,8 +561,8 @@
           {
             "name": "",
             "img": "assets/sprites/pets/cat_lizzy.png",
-            "x": 596,
-            "y": 285,
+            "x": 561,
+            "y": 287,
             "dialog": [
               {
                 "who": "npc",
@@ -1020,70 +1020,93 @@
         "y": 11,
         "w": 16,
         "h": 13,
-        "wall": "assets/uploads/mvlyfcly-file.png",
-        "floor": "assets/uploads/mvlyferz-file.png",
+        "wall": "assets/uploads/mvy4pf7c-file.png",
+        "floor": "assets/uploads/mvy4ruf6-file.png",
         "music": "",
         "props": [
           {
             "img": "assets/uploads/mvxx5qe5-file.png",
-            "x": 758,
-            "y": 313,
+            "x": 743,
+            "y": 367,
             "solid": true,
             "w": 37
           },
           {
             "img": "assets/uploads/mvxx5qe5-file.png",
-            "x": 798,
-            "y": 313,
-            "solid": true,
-            "w": 37
-          },
-          {
-            "img": "assets/uploads/mvxx5qe5-file.png",
-            "x": 798,
-            "y": 331,
-            "solid": true,
-            "w": 37
-          },
-          {
-            "img": "assets/uploads/mvxx5qe5-file.png",
-            "x": 758,
-            "y": 331,
+            "x": 664,
+            "y": 366,
             "solid": true,
             "w": 37
           },
           {
             "img": "assets/uploads/mvxt7ypw-file.png",
-            "x": 701,
+            "x": 706,
             "y": 268,
             "solid": true,
             "w": 69
           },
           {
             "img": "assets/uploads/mvxsn05t-file.png",
-            "x": 753,
+            "x": 760,
             "y": 252,
             "solid": true,
             "w": 17
           },
           {
             "img": "assets/uploads/mvxzro5j-file.png",
-            "x": 797,
+            "x": 799,
             "y": 253,
             "solid": true,
             "w": 40.9
           },
           {
+            "img": "assets/uploads/mvxzro5j-file.png",
+            "x": 602,
+            "y": 251,
+            "solid": true,
+            "w": 40.9,
+            "flip": true
+          },
+          {
+            "img": "assets/uploads/mvy4e86e-file.png",
+            "x": 610,
+            "y": 369,
+            "solid": true,
+            "w": 19
+          },
+          {
+            "img": "assets/uploads/mvy4e86e-file.png",
+            "x": 801,
+            "y": 369,
+            "solid": true,
+            "w": 19
+          },
+          {
             "img": "assets/uploads/mvm0ab68-1.png",
-            "x": 641,
-            "y": 230,
+            "x": 649,
+            "y": 231,
             "w": 38.9
           },
           {
             "img": "assets/uploads/mvxvfsew-file.png",
-            "x": 605,
-            "y": 229,
-            "w": 16
+            "x": 787,
+            "y": 209,
+            "w": 14
+          },
+          {
+            "img": "assets/uploads/mvy51ofm-file.png",
+            "x": 598,
+            "y": 255,
+            "w": 39,
+            "lift": 2
+          },
+          {
+            "img": "assets/uploads/mvy51ofm-file.png",
+            "x": 812,
+            "y": 254,
+            "w": 39,
+            "lift": 2,
+            "flip": true
           },
           {
             "img": "assets/uploads/mvy3bnsd-file.png",
@@ -1093,8 +1116,8 @@
           },
           {
             "img": "assets/uploads/mvy3ew66-file.png",
-            "x": 783,
-            "y": 216,
+            "x": 621,
+            "y": 215,
             "w": 23
           },
           {
@@ -1106,22 +1129,22 @@
           {
             "img": "assets/uploads/mvlyftq7-file.png",
             "x": 704,
-            "y": 338,
+            "y": 330,
             "flat": true,
             "w": 54
           },
           {
             "img": "assets/uploads/mvxt4gh0-file.png",
-            "x": 639,
-            "y": 254,
+            "x": 649,
+            "y": 258,
             "solid": true,
             "foot": 46,
             "w": 46
           },
           {
             "img": "assets/uploads/mvy304bw-file.png",
-            "x": 624,
-            "y": 372,
+            "x": 789,
+            "y": 326,
             "solid": true,
             "w": 72
           }
@@ -1129,8 +1152,8 @@
         "npc": {
           "name": "",
           "img": "assets/uploads/mvllnts0-file.png",
-          "x": 705,
-          "y": 319,
+          "x": 706,
+          "y": 313,
           "dialog": [
             {
               "who": "npc",
