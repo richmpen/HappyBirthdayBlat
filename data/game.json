@@ -506,13 +506,13 @@
             "img": "assets/world/items/item_21.png",
             "x": 409,
             "y": 338,
-            "lift": 40
+            "lift": 17
           },
           {
             "img": "assets/world/items/item_49.png",
             "x": 422,
             "y": 340,
-            "lift": 40
+            "lift": 14
           },
           {
             "img": "assets/world/furniture/table_round_b.png",
