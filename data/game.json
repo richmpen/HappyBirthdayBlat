@@ -959,30 +959,44 @@
           "dialog": [
             {
               "who": "npc",
-              "text": "Привет, моя сладуся. Не перестаю тобой любоваться",
-              "sprite": "assets/novel/liza_happy.webp"
+              "text": "Леночка, привет!!!",
+              "sprite": "assets/uploads/mvyxwl0n-file.png"
             },
             {
               "who": "npc",
-              "text": "Но сегодня твой праздник и сиять нужно ярче всех.",
+              "text": " Боже, ты вообще себя видела???",
               "sprite": "assets/novel/liza_normal.webp"
             },
             {
-              "who": "npc",
-              "text": "Мой шкаф в твоем распоряжении. Выбирай все, что нравится",
-              "sprite": "assets/novel/liza_normal.webp"
+              "who": "hero",
+              "text": "Со мной что-то не так?",
+              "sprite": "-"
             },
             {
               "who": "npc",
-              "text": "А я посмотрю 💕",
+              "text": "Да нет же, ты выглядишь слишком потрясающе, это незаконно!",
+              "sprite": "assets/uploads/mvyy1n3w-2.png"
+            },
+            {
+              "who": "npc",
+              "text": "Но я сходила в магазин, и чуть ли не каждая вещь идеально подходила тебе, поэтому я купила всё.",
+              "sprite": "assets/uploads/mvyy398e-file.png"
+            },
+            {
+              "who": "hero",
+              "text": "Что прости?"
+            },
+            {
+              "who": "npc",
+              "text": "Без лишних слов, иди примеряй, а я посмотрю 💕",
               "sprite": "assets/novel/liza_flirt.webp"
             }
           ],
           "dialogAfter": [
             {
               "who": "npc",
-              "text": "шо разъеб? а как для такой красотюлечки не постараться",
-              "sprite": "assets/novel/liza_flirt.webp"
+              "text": "Если будешь дальше у меня перед глазами находиться, моё сердце точно не выдержит",
+              "sprite": "assets/uploads/mvyy10x2-2.png"
             },
             {
               "who": "npc",
