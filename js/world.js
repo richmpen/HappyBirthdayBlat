@@ -171,7 +171,8 @@ function discoIn(n, wrap) {
   }
   wrap.appendChild(burst);
   G.fx?.at('roomReveal', box, n.x, n.y - 20, { z: 9600 });
-  [0, 120, 240, 360, 520].forEach((t, i) => setTimeout(() => G.blip([523, 659, 784, 1047, 1319][i], .12, 'square', .03), t));
+  if (n.danceSound) G.playSound(n.danceSound);
+  else [0, 120, 240, 360, 520].forEach((t, i) => setTimeout(() => G.blip([523, 659, 784, 1047, 1319][i], .12, 'square', .03), t));
   setTimeout(() => { burst.remove(); wrap.classList.remove('is-disco'); danceDecor(wrap); }, 1300);
 }
 
@@ -407,6 +408,7 @@ async function talk(n, afterGame) {
     const at = n.el.dataset.edit;                                               // путь персонажа в конфиге — для редактора
     if (n.type === 'char') { await G.say(npc.dialog, npc.name, at + '.dialog'); return; }       // кошка, собака: просто поговорить
     if (!G.isDone(id)) {
+      if (npc.danceImg) G.preloadSound(npc.danceSound);
       if (await G.say(npc.dialog, npc.name, at + '.dialog') < 0) return;
       if (npc.danceImg && !G.progress.danced?.[id] && G.scenes[id]) {
         (G.progress.danced ||= {})[id] = true; G.saveProgress();

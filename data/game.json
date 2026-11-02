@@ -984,7 +984,8 @@
             },
             {
               "who": "hero",
-              "text": "Что прости?"
+              "text": "Что прости?",
+              "sound": "assets/audio/what-sorry.mp3"
             },
             {
               "who": "npc",
@@ -1196,7 +1197,8 @@
             "Теперь всё готово к празднику…"
           ],
           "danceImg": "assets/sprites/andrey_dance.png",
-          "danceWait": 3
+          "danceWait": 3,
+          "danceSound": "assets/audio/michael-jackson.mp3"
         },
         "cutscene": {
           "video": "assets/cutscenes/rhythm.mp4",

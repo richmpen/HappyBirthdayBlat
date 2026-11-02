@@ -138,6 +138,19 @@ G.sfx = {
   plop: () => G.blip(300, .12, 'sine', .07)
 };
 
+/** короткий звук из файла (реплика в диалоге, танец); загрузить заранее — чтобы прозвучал без паузы */
+const sndPre = new Map();
+G.preloadSound = src => {
+  if (src && !sndPre.has(src)) { const el = new Audio(G.asset(src)); el.preload = 'auto'; sndPre.set(src, el); }
+  return sndPre.get(src);
+};
+G.playSound = src => {
+  const el = G.preloadSound(src);
+  if (!el || !G.soundOn) return;
+  el.currentTime = 0;
+  el.play().catch(() => {});
+};
+
 /** звук вкл/выкл (колокольчик): блипы и музыка */
 G.setSound = on => { G.soundOn = !!on; writeLS('cherry.sound', G.soundOn); };
 
@@ -608,6 +621,7 @@ function showLine() {
   clearTimeout(s.autoT); s.lock = false;
   const nv = s.novel ? paintNovel(o, name) : {};
   s.picOn = !!o.pic;
+  if (o.sound && s.soundAt !== s.i) { s.soundAt = s.i; G.playSound(o.sound); }   // один раз: правка в редакторе перерисовывает фразу
   if (nv.picOnly && o.wait > 0) { s.lock = true; autoNext(s, o.wait + (nv.fresh ? 1.35 : 0)); }  // картинка висит, потом диалог дальше
   typeLine(text);
 }
@@ -651,7 +665,7 @@ function openDialog(lines, speaker, choices, path) {
     if (!lines.length) { resolve(0); return; }
     dlgState = { src, lines, i: 0, speaker, path, choices: null, allChoices: choices, sel: 0, resolve, novel: isNovel(lines), sprite: null, pre: new Map() };
     if (choices && lines.length === 1) dlgState.choices = choices;
-    for (const l of lines) [].concat(l?.sprite || []).forEach(p => preSprite(dlgState, p));   // все спрайты диалога — сразу
+    for (const l of lines) { [].concat(l?.sprite || []).forEach(p => preSprite(dlgState, p)); G.preloadSound(l?.sound); }   // все спрайты и звуки диалога — сразу
     if (path) dlg.dataset.edit = nov.dataset.edit = path;
     G.dialogOpen = true;
     dlg.hidden = false;

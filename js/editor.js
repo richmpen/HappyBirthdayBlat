@@ -110,7 +110,7 @@ const LABELS = {
   end: 'Финальный экран', love: 'Строка «мы тебя любим»', heart: 'Сердечко', button: 'Кнопка', textImg: 'Надпись на кнопке',
   unlock: 'Когда открывается: пусто / all / kitchen / dressup / rhythm / finale / wish', locked: 'Надпись «закрыто»', close: 'Кнопка «закрыть»',
   garlandLeft: 'Гирлянда слева', garlandRight: 'Гирлянда справа',
-  chars: 'Другие персонажи (просто разговор)', danceImg: 'Картинка «танцует» (после разговора)', danceWait: 'Пауза перед игрой, с',
+  chars: 'Другие персонажи (просто разговор)', danceImg: 'Картинка «танцует» (после разговора)', danceSound: 'Звук, когда начинает танцевать', danceWait: 'Пауза перед игрой, с',
   who: 'Кто говорит', sprite: 'Спрайт слева', pic: 'Картинка на весь экран', spriteEvery: 'Смена кадров спрайта, с',
   hide: 'Спрятан', novel: 'Портрет в диалогах (общий): x — середина, y — низ, h — высота', portrait: 'Портрет в диалоге (свой размер и место)', talkAfterGame: 'Сам заговаривает после мини-игры', dough: 'Тесто (поднимается из противня)', riseFrom: 'Насколько тесто сначала в противне, px', lift: 'Слой выше / ниже (+/−)'
 };
@@ -124,7 +124,7 @@ const TEMPLATES = {
 };
 const hidden = p => p === 'dressup.items' || p === 'dressup.layout' || p === 'github' || /\.charts$/.test(p);
 const IMG_KEYS = /^(img|sprite|pic|danceImg|dough|imgFull|imgDone|bg|thumb|cover|portrait|wall|floor|closed|open|inside|sponge|cream|spatula|yolk|shell|drop|cherry|frame|flower|btnDark|btnLight|sparkleImg|playImg|cherryImg|bellImg|edgeTop|edgeBottom|textImg|garlandLeft|garlandRight)$/;
-const AUD_KEYS = /^(music|audio|sound)$/;
+const AUD_KEYS = /^(music|audio|sound|danceSound)$/;
 function kind(p, key, val) {
   if (typeof val === 'number') return 'num';
   if (typeof val === 'boolean') return 'bool';
