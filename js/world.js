@@ -397,7 +397,7 @@ function showHint() {
   hintEl.classList.add('is-on');
 }
 
-async function talk(n) {
+async function talk(n, afterGame) {
   const id = n.room, npc = n.o, T_ = G.cfg.texts;
   if (talking) return;
   talking = true;
@@ -422,7 +422,7 @@ async function talk(n) {
         if (await G.ask(after, [T_.playAgain, T_.notNow], npc.name, at + '.dialogAfter') !== 0) return;
       } else {
         if (await G.say(after, npc.name, at + '.dialogAfter') < 0) return;
-        if (!G.scenes[id]) return;
+        if (!G.scenes[id] || afterGame) return;                                 // сам заговорил после игры: только диалог, без «сыграть ещё?»
         if (await G.choose(T_.replayQuestion, [T_.playAgain, T_.notNow], npc.name) !== 0) return;
       }
     }
@@ -472,7 +472,7 @@ G.scenes.world = {
     // вернулись после мини-игры и катсцены: персонаж сам заговаривает (talkAfterGame)
     if (p.talk) {
       const n = ents.find(e => e.type === 'npc' && e.room === P.room);
-      if (n?.o.talkAfterGame) setTimeout(() => { if (G.sceneId === 'world' && !G.editing && !G.dialogOpen) talk(n); }, 1000);
+      if (n?.o.talkAfterGame) setTimeout(() => { if (G.sceneId === 'world' && !G.editing && !G.dialogOpen) talk(n, true); }, 1000);
     }
   },
 

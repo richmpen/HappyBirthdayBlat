@@ -960,12 +960,12 @@
             {
               "who": "npc",
               "text": "Леночка, привет!!!",
-              "sprite": "assets/uploads/mvyxwl0n-file.png"
+              "sprite": "assets/novel/liza_happy.webp"
             },
             {
               "who": "npc",
-              "text": " Боже, ты вообще себя видела???",
-              "sprite": "assets/novel/liza_normal.webp"
+              "text": "Боже, ты вообще себя видела???",
+              "sprite": "assets/novel/liza_think.webp"
             },
             {
               "who": "hero",
@@ -975,12 +975,12 @@
             {
               "who": "npc",
               "text": "Да нет же, ты выглядишь слишком потрясающе, это незаконно!",
-              "sprite": "assets/uploads/mvyy1n3w-2.png"
+              "sprite": "assets/novel/liza_happy.webp"
             },
             {
               "who": "npc",
               "text": "Но я сходила в магазин, и чуть ли не каждая вещь идеально подходила тебе, поэтому я купила всё.",
-              "sprite": "assets/uploads/mvyy398e-file.png"
+              "sprite": "assets/novel/liza_think.webp"
             },
             {
               "who": "hero",
@@ -996,14 +996,15 @@
             {
               "who": "npc",
               "text": "Если будешь дальше у меня перед глазами находиться, моё сердце точно не выдержит",
-              "sprite": "assets/uploads/mvyy10x2-2.png"
+              "sprite": "assets/novel/liza_shy.webp"
             },
             {
               "who": "npc",
-              "text": "иди к Андрею, а то он уже ебу дал",
+              "text": "Иди быстрее к Андрею, а то он уже ебу дал",
               "sprite": "assets/novel/liza_normal.webp"
             }
-          ]
+          ],
+          "talkAfterGame": true
         },
         "cutscene": {
           "video": "assets/cutscenes/dressup.mp4",
