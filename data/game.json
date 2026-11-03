@@ -798,8 +798,10 @@
           "talkAfterGame": true
         },
         "cutscene": {
-          "img": "assets/uploads/mvyxtf33-23.10.26.png",
-          "text": ""
+          "img": "assets/gallery/kitchen.webp",
+          "text": "",
+          "video": "assets/cutscenes/kitchen.mp4",
+          "framed": true
         }
       },
       "dressup": {
@@ -3890,10 +3892,12 @@
       },
       {
         "name": "Красный бархат",
-        "img": "assets/cutscenes/kitchen_end.webp",
+        "img": "assets/gallery/kitchen.webp",
         "unlock": "kitchen",
         "hint": "испеки торт на кухне",
-        "text": "Торт готов!"
+        "text": "Торт готов!",
+        "video": "assets/cutscenes/kitchen.mp4",
+        "thumb": "assets/gallery/kitchen_s.webp"
       },
       {
         "name": "Наряд готов",
